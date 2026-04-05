@@ -1,274 +1,412 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'SIMAKU')</title>
 
-    <!-- Load CSS first -->
-    <!-- CSS AdminLTE -->
     <link rel="stylesheet" href="{{ asset('vendor/adminlte/dist/css/adminlte.min.css') }}">
-
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}">
-
-    <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
         /* ========================================= */
-        /* PREMIUM LAYOUT OVERRIDES */
+        /* VARIABLES & BASE                          */
         /* ========================================= */
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
-        
         :root {
-            --layout-bg: #f8fafc;
-            --layout-surface: #ffffff;
-            --layout-primary: #4338ca;
-            --layout-primary-soft: #e0e7ff;
-            --layout-border: #e2e8f0;
-            --layout-text: #0f172a;
-            --layout-text-muted: #64748b;
-            --shadow-soft: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-            --shadow-glass: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+            --bg:           #f1f5f9;
+            --surface:      #ffffff;
+            --border:       #e2e8f0;
+            --border-soft:  #f0f4f8;
+            --primary:      #4338ca;
+            --primary-soft: #e0e7ff;
+            --primary-text: #3730a3;
+            --text:         #0f172a;
+            --text-muted:   #64748b;
+            --text-hint:    #94a3b8;
+            --danger:       #e11d48;
+            --success:      #059669;
+            --sidebar-w:    240px;
         }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif !important;
-            background-color: var(--layout-bg) !important;
-            color: var(--layout-text);
+            background-color: var(--bg) !important;
+            color: var(--text);
         }
 
-        .wrapper {
-            background-color: var(--layout-bg) !important;
-        }
+        .wrapper { background-color: var(--bg) !important; }
+        .content-wrapper { background-color: transparent !important; margin-left: var(--sidebar-w) !important; }
 
-        .content-wrapper {
-            background-color: transparent !important;
-        }
-
-        /* Glassmorphism Navbar */
-        .main-header.navbar {
-            background: rgba(255, 255, 255, 0.8) !important;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--layout-border) !important;
-            box-shadow: none !important;
-            position: sticky;
-            top: 0;
-            z-index: 1039;
-            padding: 0.75rem 1rem;
-        }
-
-        .navbar-page-title {
-            font-family: 'Plus Jakarta Sans', sans-serif !important;
-            font-size: 1.25rem !important;
-            font-weight: 700 !important;
-            color: var(--layout-text) !important;
-            margin: 0 !important;
-            letter-spacing: -0.02em !important;
-        }
-
-        /* Sidebar Styling */
+        /* ========================================= */
+        /* SIDEBAR                                   */
+        /* ========================================= */
         .main-sidebar {
-            background-color: var(--layout-surface) !important;
-            box-shadow: 1px 0 10px rgba(0,0,0,0.03) !important;
-            border-right: 1px solid var(--layout-border) !important;
-        }
-
-        .brand-link {
-            border-bottom: 1px solid var(--layout-border) !important;
-            background: var(--layout-surface) !important;
-            padding: 1.2rem 1rem !important;
-            display: flex;
-            align-items: center;
-        }
-        
-        .brand-image {
-            float: none;
-            margin-right: 8px;
-            margin-top: 0;
-        }
-
-        .brand-text {
-            font-weight: 700 !important;
-            color: var(--layout-text) !important;
-            letter-spacing: -0.02em;
-        }
-
-        .sidebar {
-            padding-top: 1rem;
-        }
-
-        /* Nav Pills (Sidebar Menu) */
-        .nav-sidebar .nav-item {
-            margin-bottom: 4px;
-        }
-
-        .nav-sidebar .nav-link {
-            border-radius: 12px;
-            margin: 0 12px;
-            padding: 10px 16px;
-            color: var(--layout-text-muted) !important;
-            font-weight: 500;
-            transition: all 0.2s ease;
-        }
-
-        .nav-sidebar .nav-link p {
-            font-size: 0.95rem;
-        }
-
-        .nav-sidebar .nav-link:hover {
-            background-color: #f1f5f9 !important;
-            color: var(--layout-primary) !important;
-            transform: translateX(2px);
-        }
-
-        /* Active Menu State */
-        .sidebar-light-primary .nav-sidebar > .nav-item > .nav-link.active,
-        .nav-treeview > .nav-item > .nav-link.active {
-            background-color: var(--layout-primary-soft) !important;
-            color: var(--layout-primary) !important;
-            border-left: none !important;
-            font-weight: 600;
+            width: var(--sidebar-w) !important;
+            background-color: var(--surface) !important;
+            border-right: 1px solid var(--border) !important;
             box-shadow: none !important;
         }
 
-        .nav-sidebar .nav-link.active i {
-            color: var(--layout-primary) !important;
+        /* Brand */
+        .brand-link {
+            height: 64px;
+            padding: 0 18px !important;
+            display: flex !important;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid var(--border) !important;
+            background: var(--surface) !important;
+            text-decoration: none !important;
         }
 
-        .nav-treeview {
-            padding-top: 5px;
-            padding-bottom: 5px;
-            background: transparent !important;
-        }
-        
-        .nav-item.menu-open > .nav-treeview {
-            border-left: 2px solid var(--layout-border);
-            margin-left: 1.5rem;
-            padding-left: 0;
-            display: block !important;
+        .brand-logo-wrap {
+            width: 34px; height: 34px; flex-shrink: 0;
+            background: var(--primary-soft);
+            border-radius: 9px;
+            display: flex; align-items: center; justify-content: center;
         }
 
-        .nav-treeview > .nav-item > .nav-link {
-            padding-left: 1rem !important;
-            margin-left: 8px;
-            border-radius: 8px;
-            font-size: 0.9rem;
-        }
-        
-        /* Dropdown arrow */
-        .nav-sidebar .nav-link > .right {
-            position: absolute;
-            right: 1.2rem;
-            top: 0.85rem;
-            transition: transform 0.3s ease;
-        }
-        .nav-item.menu-open > .nav-link > .right {
-            transform: rotate(-90deg);
+        .brand-logo-wrap img { width: 22px; height: 22px; object-fit: contain; }
+
+        .brand-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: -0.02em;
+            line-height: 1;
         }
 
-        /* User Menu Navbar */
-        .user-menu .profile-link {
+        .brand-sub {
+            font-size: 10px;
+            color: var(--text-hint);
+            margin-top: 2px;
+            font-weight: 400;
+        }
+
+        /* Mini user profile in sidebar */
+        .sidebar-user {
+            margin: 14px 12px;
+            padding: 12px;
+            background: var(--bg);
+            border-radius: 12px;
             display: flex;
             align-items: center;
             gap: 10px;
-            padding: 4px 12px !important;
-            border-radius: 50px;
-            background: var(--layout-border);
-            transition: all 0.2s;
-            border: 1px solid transparent;
-            text-decoration: none;
-        }
-        
-        .user-menu .profile-link:hover {
-            background: #e2e8f0;
         }
 
-        .user-menu .user-image {
-            width: 32px;
-            height: 32px;
-            margin-top: 0;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        .sidebar-user-avatar {
+            width: 36px; height: 36px; flex-shrink: 0;
+            border-radius: 50%;
+            background: var(--primary-soft);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 12px; font-weight: 700;
+            color: var(--primary-text);
+            overflow: hidden;
         }
 
-        .user-menu .user-info {
-            display: flex;
-            flex-direction: column;
-            line-height: 1.2;
-            text-align: left;
-        }
+        .sidebar-user-avatar img { width: 100%; height: 100%; object-fit: cover; }
 
-        .user-menu .user-name {
+        .sidebar-user-name {
+            font-size: 12.5px;
             font-weight: 600;
-            font-size: 0.85rem;
-            color: var(--layout-text);
+            color: var(--text);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 140px;
         }
 
-        .user-menu .user-role {
-            font-size: 0.7rem;
-            color: var(--layout-text-muted);
-            font-weight: 500;
+        .sidebar-user-role {
+            font-size: 10px;
+            color: var(--text-muted);
+            margin-top: 1px;
             text-transform: capitalize;
         }
 
-        .profile-arrow {
-            font-size: 0.7rem;
-            color: var(--layout-text-muted);
-            margin-left: 4px;
-        }
-
-        /* Modals */
-        .modal-content {
-            border-radius: 16px;
-            border: none;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        }
-
-        .modal-body {
-            padding: 30px;
-        }
-
-        .modal-title {
+        /* Section labels */
+        .nav-section-label {
+            font-size: 9.5px;
             font-weight: 700;
-            color: var(--layout-text);
-            font-size: 1.25rem;
+            letter-spacing: 0.09em;
+            text-transform: uppercase;
+            color: var(--text-hint);
+            padding: 14px 18px 6px;
         }
 
-        .btn-outline-primary {
-            border: 2px solid var(--layout-border);
-            color: var(--layout-text);
-            border-radius: 12px;
+        /* Nav items */
+        .sidebar { padding-top: 0 !important; overflow-y: auto; }
+
+        .nav-sidebar .nav-item { margin: 0 10px 2px; }
+
+        .nav-sidebar .nav-link {
+            border-radius: 10px !important;
+            padding: 9px 12px !important;
+            margin: 0 !important;
+            color: var(--text-muted) !important;
+            font-weight: 500;
+            font-size: 13.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: background 0.15s, color 0.15s, transform 0.15s;
+            position: relative;
+        }
+
+        .nav-sidebar .nav-link i.nav-icon {
+            width: 20px;
+            text-align: center;
+            font-size: 14px;
+            margin-right: 0 !important;
+            flex-shrink: 0;
+            color: var(--text-hint);
+            transition: color 0.15s;
+        }
+
+        .nav-sidebar .nav-link p {
+            margin: 0 !important;
+            font-size: 13.5px;
+            line-height: 1;
+        }
+
+        .nav-sidebar .nav-link:hover {
+            background: var(--bg) !important;
+            color: var(--text) !important;
+            transform: translateX(2px);
+        }
+
+        .nav-sidebar .nav-link:hover i.nav-icon { color: var(--primary); }
+
+        /* Active state */
+        .nav-sidebar .nav-link.active,
+        .sidebar-light-primary .nav-sidebar > .nav-item > .nav-link.active {
+            background: var(--primary-soft) !important;
+            color: var(--primary) !important;
             font-weight: 600;
+            box-shadow: none !important;
         }
 
-        .btn-outline-primary:hover {
-            background-color: var(--layout-bg);
-            color: var(--layout-text);
-            border-color: var(--layout-border);
+        .nav-sidebar .nav-link.active i.nav-icon { color: var(--primary) !important; }
+
+        /* Logout item */
+        .nav-link-logout { color: var(--danger) !important; }
+        .nav-link-logout i.nav-icon { color: var(--danger) !important; }
+        .nav-link-logout:hover { background: #fff1f2 !important; color: var(--danger) !important; }
+
+        /* Sidebar divider */
+        .nav-divider {
+            height: 1px;
+            background: var(--border);
+            margin: 10px 18px;
+        }
+
+        /* ========================================= */
+        /* NAVBAR                                    */
+        /* ========================================= */
+        .main-header.navbar {
+            background: rgba(255, 255, 255, 0.9) !important;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border) !important;
+            box-shadow: none !important;
+            height: 64px;
+            padding: 0 20px !important;
+            left: var(--sidebar-w) !important;
+            position: sticky;
+            top: 0;
+            z-index: 1039;
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-page-title {
+            font-size: 16px !important;
+            font-weight: 700 !important;
+            color: var(--text) !important;
+            letter-spacing: -0.02em !important;
+            margin: 0 !important;
+        }
+
+        /* Notification bell */
+        .notif-btn {
+            width: 36px; height: 36px;
+            border-radius: 9px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: center;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.15s;
+            text-decoration: none;
+        }
+
+        .notif-btn:hover { background: var(--border-soft); }
+        .notif-btn i { font-size: 14px; color: var(--text-muted); }
+
+        .notif-dot {
+            position: absolute; top: 7px; right: 7px;
+            width: 7px; height: 7px; border-radius: 50%;
+            background: var(--danger);
+            border: 1.5px solid var(--surface);
+        }
+
+        /* User chip in navbar */
+        .navbar-user-chip {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 12px 5px 6px;
+            border-radius: 50px;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            cursor: pointer;
+            transition: background 0.15s, border-color 0.15s;
+            text-decoration: none !important;
+        }
+
+        .navbar-user-chip:hover {
+            background: var(--bg);
+            border-color: #cbd5e1;
+        }
+
+        .navbar-chip-avatar {
+            width: 28px; height: 28px; flex-shrink: 0;
+            border-radius: 50%;
+            overflow: hidden;
+            background: var(--primary-soft);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 10px; font-weight: 700; color: var(--primary-text);
+        }
+
+        .navbar-chip-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+        .navbar-chip-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text);
+            white-space: nowrap;
+        }
+
+        .navbar-chip-chevron { font-size: 10px; color: var(--text-hint); margin-left: 2px; }
+
+        /* Dropdown menu */
+        .navbar-user-chip + .dropdown-menu {
+            border-radius: 12px !important;
+            border: 1px solid var(--border) !important;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08) !important;
+            padding: 6px !important;
+            min-width: 180px;
+        }
+
+        .navbar-user-chip + .dropdown-menu .dropdown-item {
+            border-radius: 8px !important;
+            font-size: 13.5px;
+            padding: 8px 12px;
+            color: var(--text);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .navbar-user-chip + .dropdown-menu .dropdown-item i {
+            font-size: 13px;
+            color: var(--text-muted);
+            width: 16px;
+            text-align: center;
+        }
+
+        .navbar-user-chip + .dropdown-menu .dropdown-item:hover {
+            background: var(--bg) !important;
+        }
+
+        .dropdown-item-logout { color: var(--danger) !important; }
+        .dropdown-item-logout i { color: var(--danger) !important; }
+
+        .dropdown-divider-custom {
+            height: 1px;
+            background: var(--border);
+            margin: 5px 0;
+        }
+
+        /* ========================================= */
+        /* CONTENT AREA                              */
+        /* ========================================= */
+        .content { padding: 28px 28px; }
+
+        /* ========================================= */
+        /* FOOTER                                    */
+        /* ========================================= */
+        .main-footer {
+            background: transparent !important;
+            border-top: 1px solid var(--border) !important;
+            color: var(--text-hint) !important;
+            font-size: 12px !important;
+            padding: 14px 28px !important;
+            margin-left: var(--sidebar-w);
+        }
+
+        /* ========================================= */
+        /* MODALS                                    */
+        /* ========================================= */
+        .modal-content {
+            border-radius: 18px !important;
+            border: none !important;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1) !important;
+        }
+
+        .modal-body { padding: 32px !important; }
+
+        /* ========================================= */
+        /* BUTTONS                                   */
+        /* ========================================= */
+        .btn {
+            font-family: 'Plus Jakarta Sans', sans-serif !important;
+            font-weight: 600 !important;
+            border-radius: 10px !important;
+            font-size: 13.5px !important;
+            transition: all 0.15s !important;
         }
 
         .btn-primary {
-            background-color: var(--layout-primary);
-            border: none;
-            border-radius: 12px;
-            color: white;
-            font-weight: 600;
-            transition: all 0.2s ease;
+            background: var(--primary) !important;
+            border-color: var(--primary) !important;
         }
 
-        .btn-primary:hover {
-            background-color: #312e81;
-            transform: translateY(-1px);
+        .btn-primary:hover { background: #3730a3 !important; transform: translateY(-1px); }
+
+        .btn-outline-secondary {
+            border: 1.5px solid var(--border) !important;
+            color: var(--text) !important;
+            background: transparent !important;
         }
-        
+
+        .btn-danger-soft {
+            background: #fff1f2 !important;
+            color: var(--danger) !important;
+            border: 1.5px solid #fecdd3 !important;
+        }
+
+        .btn-danger-soft:hover { background: #ffe4e6 !important; }
+
+        /* ========================================= */
+        /* RESPONSIVE                                */
+        /* ========================================= */
+        @media (max-width: 991px) {
+            .content-wrapper { margin-left: 0 !important; }
+            .main-footer { margin-left: 0 !important; }
+            .main-header.navbar { left: 0 !important; }
+        }
     </style>
 
     @yield('styles')
 </head>
-<body class="hold-transition sidebar-mini">
-    <!-- User Session Report Script - Added early to ensure it runs -->
+<body class="hold-transition sidebar-mini layout-fixed">
+
     <script>
         (function() {
             try {
@@ -280,156 +418,201 @@
                     pageAccessed: window.location.pathname,
                     sessionActive: {{ Session::has('token') ? 'true' : 'false' }}
                 };
-
-                // Log immediately as a fallback
-                console.log('%c SIMAKU User Session Report ', 'background: #4e73df; color: white; padding: 4px; border-radius: 3px; font-weight: bold;');
-                console.log(JSON.stringify(userReport, null, 2));
-
-                // Store in window object for debugging if needed
                 window.userSessionReport = userReport;
-            } catch(e) {
-                console.error('Error generating user report:', e);
-            }
+                console.log('%c SIMAKU Session ', 'background:#4338ca;color:#fff;padding:3px 8px;border-radius:4px;font-weight:bold;');
+                console.log(JSON.stringify(userReport, null, 2));
+            } catch(e) {}
         })();
     </script>
 
     <div class="wrapper">
-        <!-- Navbar -->
+
+        <!-- ══════════════════════════════
+             NAVBAR
+        ══════════════════════════════ -->
         <nav class="main-header navbar navbar-expand navbar-light">
+
+            <!-- Left: hamburger + page title -->
             <ul class="navbar-nav align-items-center">
-                <li class="nav-item">
-                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                <li class="nav-item mr-3">
+                    <a class="nav-link p-0" data-widget="pushmenu" href="#" role="button" style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:9px;background:var(--bg);border:1px solid var(--border);">
+                        <i class="fas fa-bars" style="font-size:13px;color:var(--text-muted);"></i>
+                    </a>
                 </li>
-                <!-- Page Title Injected Here -->
-                <li class="nav-item d-none d-sm-inline-block ml-3">
+                <li class="nav-item d-none d-sm-inline-block">
                     <h1 class="navbar-page-title">@yield('header', 'Dashboard')</h1>
                 </li>
             </ul>
 
-            <!-- Right navbar links -->
-            <ul class="navbar-nav ml-auto align-items-center">
-                <!-- Page Actions / Buttons Injected Here -->
-                <li class="nav-item mr-3 d-none d-sm-inline-block">
+            <!-- Right: actions + notif + user -->
+            <ul class="navbar-nav ml-auto align-items-center" style="gap:10px;">
+
+                <!-- Page-specific button slot -->
+                @hasSection('header_button')
+                <li class="nav-item d-none d-sm-inline-block">
                     @yield('header_button')
                 </li>
-                
+                @endif
+
                 <!-- Notifications -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link" data-toggle="dropdown" href="#">
+                    <a class="notif-btn" data-toggle="dropdown" href="#" role="button">
                         <i class="far fa-bell"></i>
-                        <span class="badge badge-primary navbar-badge">2</span>
+                        <span class="notif-dot"></span>
                     </a>
-                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                        <span class="dropdown-item dropdown-header">2 Notifikasi</span>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-envelope mr-2 px-1 text-primary"></i> Tagihan UKT baru
-                            <span class="float-right text-muted text-sm">3h</span>
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="border-radius:14px;border:1px solid var(--border);box-shadow:0 8px 24px rgba(0,0,0,0.08);padding:6px;min-width:260px;">
+                        <div style="padding:8px 12px 10px;border-bottom:1px solid var(--border);margin-bottom:4px;">
+                            <span style="font-size:13px;font-weight:700;color:var(--text);">Notifikasi</span>
+                            <span style="font-size:11px;color:var(--text-hint);margin-left:6px;">2 baru</span>
+                        </div>
+                        <a href="#" class="dropdown-item" style="border-radius:8px;font-size:13px;padding:9px 12px;display:flex;gap:10px;align-items:flex-start;">
+                            <span style="width:28px;height:28px;border-radius:8px;background:#eff6ff;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                                <i class="fas fa-file-invoice" style="font-size:12px;color:#3b82f6;"></i>
+                            </span>
+                            <div>
+                                <div style="font-weight:600;color:var(--text);font-size:12.5px;">Tagihan UKT baru</div>
+                                <div style="font-size:11px;color:var(--text-hint);margin-top:1px;">3 jam yang lalu</div>
+                            </div>
                         </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-file mr-2 px-1 text-success"></i> Pembayaran diterima
-                            <span class="float-right text-muted text-sm">1w</span>
+                        <a href="#" class="dropdown-item" style="border-radius:8px;font-size:13px;padding:9px 12px;display:flex;gap:10px;align-items:flex-start;">
+                            <span style="width:28px;height:28px;border-radius:8px;background:#f0fdf4;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                                <i class="fas fa-check" style="font-size:12px;color:#16a34a;"></i>
+                            </span>
+                            <div>
+                                <div style="font-weight:600;color:var(--text);font-size:12.5px;">Pembayaran diterima</div>
+                                <div style="font-size:11px;color:var(--text-hint);margin-top:1px;">1 minggu yang lalu</div>
+                            </div>
                         </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item dropdown-footer">Lihat Semua Notifikasi</a>
+                        <div style="padding:8px 12px 4px;border-top:1px solid var(--border);margin-top:4px;">
+                            <a href="#" style="font-size:12px;color:var(--primary);font-weight:600;text-decoration:none;">Lihat semua notifikasi →</a>
+                        </div>
                     </div>
                 </li>
-                <!-- User -->
-                <li class="nav-item dropdown user-menu ml-2">
-                    <a href="#" class="nav-link dropdown-toggle profile-link" data-toggle="dropdown">
-                        <img src="{{ asset('assets/Profile.jpeg') }}" class="user-image rounded-circle" alt="User Image">
-                        <div class="user-info">
-                            <span class="user-name" onclick="window.location.href='/profile'; event.stopPropagation(); return false;">{{ Session::get('username') ?? 'Username' }}</span>
-                            <span class="user-role">{{ Session::get('role') ?? 'role' }}</span>
+
+                <!-- User dropdown -->
+                <li class="nav-item dropdown">
+                    <a href="#" class="navbar-user-chip dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        <div class="navbar-chip-avatar">
+                            <img src="{{ asset('assets/Profile.jpeg') }}" alt="Avatar"
+                                 onerror="this.style.display='none';this.parentElement.innerHTML='{{ strtoupper(substr(Session::get('username','U'),0,1)) }}'">
                         </div>
-                        <i class="fas fa-chevron-down profile-arrow"></i>
+                        <span class="navbar-chip-name">{{ Session::get('username', 'Username') }}</span>
+                        <i class="fas fa-chevron-down navbar-chip-chevron"></i>
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="border-radius: 12px; overflow: hidden; border: 1px solid var(--layout-border); box-shadow: var(--shadow-glass);">
-                        <li class="user-header bg-primary">
-                            <img src="{{ asset('assets/Profile.jpeg') }}" class="img-circle elevation-2" alt="User Image">
-                            <p>
-                                {{ Session::get('username') ?? 'Username' }}
-                                <small>{{ Session::get('email') ?? 'user@example.com' }}</small>
-                            </p>
-                        </li>
-                        <li class="user-footer">
-                            <a href="/profile" class="btn btn-default btn-flat" style="border-radius: 8px;">Profile</a>
-                            <a href="#" class="btn btn-default btn-flat float-right" data-toggle="modal" data-target="#logoutModal" style="border-radius: 8px;">Keluar</a>
-                        </li>
-                    </ul>
+                    <div class="dropdown-menu dropdown-menu-right" style="border-radius:12px;border:1px solid var(--border);box-shadow:0 8px 24px rgba(0,0,0,0.08);padding:6px;min-width:180px;margin-top:6px;">
+                        <a href="/profile" class="dropdown-item">
+                            <i class="fas fa-user"></i> Profile saya
+                        </a>
+                        <a href="/settings" class="dropdown-item">
+                            <i class="fas fa-cog"></i> Pengaturan
+                        </a>
+                        <div class="dropdown-divider-custom"></div>
+                        <a href="#" class="dropdown-item dropdown-item-logout" data-toggle="modal" data-target="#logoutModal">
+                            <i class="fas fa-sign-out-alt"></i> Keluar
+                        </a>
+                    </div>
                 </li>
             </ul>
         </nav>
 
-        <!-- Main Sidebar Container -->
-        <aside class="main-sidebar sidebar-light-primary">
-            <!-- Brand Logo -->
-            <a href="/lihat-tagihan-ukt" class="brand-link">
-                <img src="{{ asset('assets/Logo universitas.png') }}" alt="Logo" class="brand-image img-circle elevation-2">
-                <span class="brand-text font-weight-light">SIMAKU</span>
+        <!-- ══════════════════════════════
+             SIDEBAR
+        ══════════════════════════════ -->
+        <aside class="main-sidebar sidebar-light-primary elevation-0">
+
+            <!-- Brand -->
+            <a href="/tagihan-ukt" class="brand-link">
+                <div class="brand-logo-wrap">
+                    <img src="{{ asset('assets/Logo universitas.png') }}" alt="Logo Polines">
+                </div>
+                <div>
+                    <div class="brand-name">SIMAKU</div>
+                    <div class="brand-sub">Politeknik Negeri Semarang</div>
+                </div>
             </a>
 
-            <!-- Sidebar -->
             <div class="sidebar">
-                <!-- Sidebar Menu -->
-                <nav class="mt-2">
+
+                <!-- Mini user profile -->
+                <div class="sidebar-user">
+                    <div class="sidebar-user-avatar">
+                        <img src="{{ asset('assets/Profile.jpeg') }}" alt="Avatar"
+                             onerror="this.style.display='none'">
+                        {{-- Fallback initials jika gambar gagal load --}}
+                    </div>
+                    <div style="overflow:hidden;">
+                        <div class="sidebar-user-name">{{ Session::get('username', 'Username') }}</div>
+                        <div class="sidebar-user-role">{{ Session::get('role', 'role') }}</div>
+                    </div>
+                </div>
+
+                <!-- Navigation -->
+                <nav class="mt-1">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <li class="nav-item {{ request()->is('lihat-tagihan-ukt*') || request()->is('daftar-ulang*') ? 'menu-open' : '' }}">
-                            <a href="#" class="nav-link {{ request()->is('lihat-tagihan-ukt*') || request()->is('daftar-ulang*') ? 'active' : '' }}">    
-                                <i class="nav-icon fas fa-border-all"></i>
-                                <p>
-                                    Dashboard
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
+
+                        <!-- Section: Keuangan -->
+                        <li class="nav-item"><div class="nav-section-label">Keuangan</div></li>
+
+                        <li class="nav-item">
+                            <a href="/lihat-tagihan-ukt" class="nav-link {{ request()->is('lihat-tagihan-ukt*') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-file-invoice"></i>
+                                <p>Tagihan UKT</p>
                             </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="/lihat-tagihan-ukt" class="nav-link {{ request()->is('lihat-tagihan-ukt*') ? 'active' : '' }}">
-                                        <i class="fas fa-file-invoice nav-icon" style="font-size: 0.85rem"></i>
-                                        <p>Tagihan UKT</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="/daftar-ulang" class="nav-link {{ request()->is('daftar-ulang*') ? 'active' : '' }}">
-                                        <i class="fas fa-clipboard-list nav-icon" style="font-size: 0.85rem"></i>
-                                        <p>Daftar Ulang UKT</p>
-                                    </a>
-                                </li>
-                            </ul>
                         </li>
+
+                        <li class="nav-item">
+                            <a href="/daftar-ulang" class="nav-link {{ request()->is('daftar-ulang*') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-clipboard-list"></i>
+                                <p>Daftar Ulang UKT</p>
+                            </a>
+                        </li>
+
                         <li class="nav-item">
                             <a href="/beasiswa" class="nav-link {{ request()->is('beasiswa*') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-graduation-cap"></i>
                                 <p>Beasiswa</p>
                             </a>
                         </li>
+
+                        <!-- Divider -->
+                        <li class="nav-item"><div class="nav-divider"></div></li>
+
+                        <!-- Section: Akun -->
+                        <li class="nav-item"><div class="nav-section-label">Akun</div></li>
+
                         <li class="nav-item">
                             <a href="/profile" class="nav-link {{ request()->is('profile*') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-user"></i>
                                 <p>Profile</p>
                             </a>
                         </li>
+
                         <li class="nav-item">
                             <a href="/settings" class="nav-link {{ request()->is('settings*') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-cog"></i>
-                                <p>Settings</p>
+                                <p>Pengaturan</p>
                             </a>
                         </li>
-                        <li class="nav-item mt-4">
-                            <a href="#" class="nav-link text-danger" style="color: #e11d48 !important;" data-toggle="modal" data-target="#logoutModal">
+
+                        <!-- Divider -->
+                        <li class="nav-item"><div class="nav-divider"></div></li>
+
+                        <li class="nav-item">
+                            <a href="#" class="nav-link nav-link-logout" data-toggle="modal" data-target="#logoutModal">
                                 <i class="nav-icon fas fa-sign-out-alt"></i>
                                 <p>Logout</p>
                             </a>
                         </li>
+
                     </ul>
                 </nav>
             </div>
         </aside>
 
-        <!-- Content Wrapper -->
+        <!-- ══════════════════════════════
+             CONTENT WRAPPER
+        ══════════════════════════════ -->
         <div class="content-wrapper">
-            <!-- Main content with top padding since header is removed -->
             <div class="content pt-4 pb-4">
                 <div class="container-fluid">
                     @yield('content')
@@ -437,76 +620,74 @@
             </div>
         </div>
 
-        <!-- Footer -->
-        <footer class="main-footer" style="background: transparent; border-top: 1px solid var(--layout-border); color: var(--layout-text-muted); padding: 1.5rem;">
-            <div class="float-right d-none d-sm-inline font-weight-500">
-                SIMAKU - Sistem Keuangan Mahasiswa
-            </div>
-            <strong>Copyright &copy; {{ date('Y') }}</strong> All rights reserved.
+        <!-- ══════════════════════════════
+             FOOTER
+        ══════════════════════════════ -->
+        <footer class="main-footer">
+            <strong>Copyright &copy; {{ date('Y') }} Politeknik Negeri Semarang.</strong>
+            <span class="float-right d-none d-sm-inline">SIMAKU — Sistem Informasi Keuangan Mahasiswa</span>
         </footer>
-    </div>
 
-    <!-- Modal Konfirmasi Logout -->
+    </div>{{-- /.wrapper --}}
+
+    <!-- ══════════════════════════════
+         MODAL LOGOUT
+    ══════════════════════════════ -->
     <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
             <div class="modal-content">
-                <div class="modal-body text-center py-4">
-                    <div style="width: 60px; height: 60px; background: #fff1f2; color: #e11d48; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 20px;">
-                        <i class="fas fa-sign-out-alt"></i>
+                <div class="modal-body text-center">
+
+                    <div style="width:56px;height:56px;background:#fff1f2;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;">
+                        <i class="fas fa-sign-out-alt" style="font-size:22px;color:var(--danger);"></i>
                     </div>
-                    <h5 class="modal-title mb-2" id="logoutModalLabel">Keluar dari Akun</h5>
-                    <p class="text-muted mb-4">Apakah Anda yakin ingin keluar dari sesi ini?</p>
-                    <div class="d-flex justify-content-center" style="gap: 8px;">
-                        <button type="button" class="btn btn-outline-primary mr-2" data-dismiss="modal" style="min-width: 120px;">Batal</button>
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: inline;">
+
+                    <h5 style="font-weight:700;color:var(--text);margin-bottom:8px;">Keluar dari akun?</h5>
+                    <p style="font-size:13.5px;color:var(--text-muted);margin-bottom:24px;line-height:1.6;">
+                        Sesi Anda akan diakhiri dan Anda perlu login kembali untuk melanjutkan.
+                    </p>
+
+                    <div style="display:flex;gap:10px;">
+                        <button type="button" class="btn btn-outline-secondary flex-fill" data-dismiss="modal">
+                            Batal
+                        </button>
+                        <form action="{{ route('logout') }}" method="POST" style="flex:1;">
                             @csrf
-                            <button type="submit" class="btn btn-primary" style="background: #e11d48; min-width: 120px;">Ya, Keluar</button>
+                            <button type="submit" class="btn btn-danger-soft w-100">
+                                Ya, Keluar
+                            </button>
                         </form>
                     </div>
+
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Scripts - Load these after the HTML so the page renders faster -->
+    <!-- Scripts -->
     <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('vendor/adminlte/dist/js/adminlte.min.js') }}"></script>
 
     <script>
-    $(document).ready(function() {
-        // Aktifkan treeview AdminLTE
-        if($.fn.Treeview) {
-            $('[data-widget="treeview"]').Treeview('init');
-        }
+    $(document).ready(function () {
 
-        // Responsive sidebar handling
-        $('.nav-link[data-widget="pushmenu"]').on('click', function() {
-            if ($(window).width() < 992) {
-                $('body').toggleClass('sidebar-open');
-                $('body').removeClass('sidebar-collapse');
-            } else {
-                $('body').toggleClass('sidebar-collapse');
-                $('body').removeClass('sidebar-open');
-            }
-            return false;
-        });
-
-        // Handle window resize
-        $(window).resize(function() {
-            if ($(window).width() >= 992) {
-                $('body').removeClass('sidebar-open');
-            }
-        });
-
-        $('.navbar-nav .user-menu .user-name').on('click', function(e) {
+        // Sidebar toggle responsive
+        $('[data-widget="pushmenu"]').on('click', function (e) {
             e.preventDefault();
-            e.stopPropagation(); // Mencegah dropdown terbuka
-            window.location.href = '/profile';
+            if ($(window).width() < 992) {
+                $('body').toggleClass('sidebar-open').removeClass('sidebar-collapse');
+            } else {
+                $('body').toggleClass('sidebar-collapse').removeClass('sidebar-open');
+            }
         });
 
-        // Log the user session report again after page is fully loaded
-        console.log('%c SIMAKU User Session Report (Ready) ', 'background: #4e73df; color: white; padding: 4px; border-radius: 3px; font-weight: bold;');
+        $(window).on('resize', function () {
+            if ($(window).width() >= 992) $('body').removeClass('sidebar-open');
+        });
+
+        // Session log
+        console.log('%c SIMAKU Session (ready) ', 'background:#4338ca;color:#fff;padding:3px 8px;border-radius:4px;font-weight:bold;');
         console.log(JSON.stringify(window.userSessionReport, null, 2));
     });
     </script>
