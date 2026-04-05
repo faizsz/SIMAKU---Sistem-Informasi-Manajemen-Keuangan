@@ -2,383 +2,309 @@
 
 @section('title', 'Tagihan UKT - SIMAKU')
 
-@section('header', 'Informasi Tagihan UKT')
-
-@section('header_button')
-<a href="{{ route('golongan-ukt') }}" class="btn-premium">
-    <i class="fas fa-sliders-h"></i><span>Lihat Golongan UKT</span>
-</a>
-@endsection
+@section('header', 'Tagihan UKT')
 
 @section('styles')
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap');
 
-    /* CSS Reset & Variables */
     :root {
-        --color-primary: #4338ca;
-        --color-primary-soft: #e0e7ff;
-        --color-success: #059669;
-        --color-success-soft: #d1fae5;
-        --color-danger: #e11d48;
-        --color-danger-soft: #ffe4e6;
-        --color-warning: #d97706;
-        --color-warning-soft: #fef3c7;
-        --color-surface: #ffffff;
-        --color-bg: #f8fafc;
-        --color-text: #0f172a;
-        --color-text-muted: #64748b;
-        --color-border: #e2e8f0;
-        
-        --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-        --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-        --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
-        --shadow-glow: 0 0 20px rgba(67, 56, 202, 0.15);
-        
-        --radius-md: 12px;
-        --radius-lg: 20px;
-        --radius-full: 9999px;
+        --primary:       #4338ca;
+        --primary-soft:  #e0e7ff;
+        --primary-text:  #3730a3;
+        --success:       #059669;
+        --success-soft:  #d1fae5;
+        --danger:        #e11d48;
+        --danger-soft:   #ffe4e6;
+        --warning:       #d97706;
+        --warning-soft:  #fef3c7;
+        --surface:       #ffffff;
+        --bg:            #f1f5f9;
+        --text:          #0f172a;
+        --text-muted:    #64748b;
+        --text-hint:     #94a3b8;
+        --border:        #e2e8f0;
+        --radius:        12px;
+        --radius-lg:     16px;
     }
 
-    /* Page Override to hide AdminLTE default background */
     .content-wrapper {
-        background-color: var(--color-bg) !important;
+        background-color: var(--bg) !important;
         font-family: 'Plus Jakarta Sans', sans-serif !important;
     }
-    
-    .header-subtitle {
-        font-size: 0.95rem;
-        color: var(--color-text-muted);
-        margin-top: -5px;
-        margin-bottom: 2rem;
-        animation: fadeUp 0.6s ease-out 0.1s both;
+
+    /* ── Page header area ── */
+    .page-meta {
+        font-size: 13px;
+        color: var(--text-muted);
+        margin-bottom: 24px;
     }
 
-    /* Premium Button */
-    .btn-premium {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
-        color: white !important;
-        padding: 10px 22px;
-        border-radius: var(--radius-full);
-        font-weight: 600;
-        font-size: 0.9rem;
-        text-decoration: none;
-        box-shadow: var(--shadow-md);
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        border: 1px solid rgba(255,255,255,0.1);
-        animation: fadeUp 0.6s ease-out 0.1s both;
-    }
-    .btn-premium:hover {
-        transform: translateY(-2px);
-        box-shadow: var(--shadow-glow);
-    }
-
-    /* Layout & Animations */
-    @keyframes fadeUp {
-        0% { opacity: 0; transform: translateY(20px); }
-        100% { opacity: 1; transform: translateY(0); }
-    }
-    
-    .stagger-1 { animation: fadeUp 0.6s ease-out 0.1s both; }
-    .stagger-2 { animation: fadeUp 0.6s ease-out 0.2s both; }
-    .stagger-3 { animation: fadeUp 0.6s ease-out 0.3s both; }
-    .stagger-4 { animation: fadeUp 0.6s ease-out 0.4s both; }
-
-    /* Stat Cards */
+    /* ── Stat Cards ── */
     .stats-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 20px;
-        margin-bottom: 2rem;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+        margin-bottom: 20px;
     }
-    
-    .stat-card-premium {
-        background: var(--color-surface);
+
+    @media (max-width: 900px) { .stats-grid { grid-template-columns: 1fr; } }
+
+    .stat-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
         border-radius: var(--radius-lg);
-        padding: 24px;
+        padding: 20px 22px;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        box-shadow: var(--shadow-md);
-        border: 1px solid rgba(255,255,255,0.8);
-        transition: all 0.3s ease;
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .stat-card-premium::before {
-        content: '';
-        position: absolute;
-        top: 0; left: 0; right: 0; bottom: 0;
-        backdrop-filter: blur(10px);
-        z-index: 0;
-        border-radius: var(--radius-lg);
+        gap: 16px;
+        transition: box-shadow 0.2s, transform 0.2s;
     }
 
-    .stat-card-premium::after {
-        content: '';
-        position: absolute;
-        top: 0; left: 0; width: 100%; height: 4px;
-        z-index: 1;
-    }
-    
-    .stat-card-premium:hover {
-        transform: translateY(-4px);
-        box-shadow: var(--shadow-lg);
+    .stat-card:hover {
+        box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+        transform: translateY(-2px);
     }
 
-    .stat-info {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        z-index: 2;
-    }
-    
     .stat-label {
-        font-size: 0.85rem;
+        font-size: 11px;
         font-weight: 700;
         text-transform: uppercase;
-        letter-spacing: 0.05em;
-        color: var(--color-text-muted);
+        letter-spacing: 0.07em;
+        color: var(--text-muted);
+        margin-bottom: 6px;
     }
-    
+
     .stat-value {
         font-family: 'JetBrains Mono', monospace;
-        font-size: 1.75rem;
+        font-size: 22px;
         font-weight: 700;
-        color: var(--color-text);
-        line-height: 1.2;
         letter-spacing: -0.02em;
+        line-height: 1;
     }
 
-    .stat-icon-wrapper {
-        width: 56px;
-        height: 56px;
-        border-radius: 16px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 24px;
-        z-index: 2;
-        transition: transform 0.3s ease;
-    }
-    
-    .stat-card-premium:hover .stat-icon-wrapper {
-        transform: scale(1.1) rotate(-5deg);
+    .stat-sub {
+        font-size: 11.5px;
+        color: var(--text-hint);
+        margin-top: 5px;
     }
 
-    /* Card Variants */
-    .card-total { background: linear-gradient(145deg, #ffffff, #f1f5f9); }
-    .card-total::after { background: var(--color-primary); }
-    .card-total .stat-value { color: var(--color-primary); }
-    .card-total .stat-icon-wrapper { background: var(--color-primary-soft); color: var(--color-primary); }
+    .stat-icon {
+        width: 48px; height: 48px; flex-shrink: 0;
+        border-radius: 12px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 18px;
+        transition: transform 0.2s;
+    }
 
-    .card-unpaid { background: linear-gradient(145deg, #ffffff, #fff1f2); }
-    .card-unpaid::after { background: var(--color-danger); }
-    .card-unpaid .stat-value { color: var(--color-danger); }
-    .card-unpaid .stat-icon-wrapper { background: var(--color-danger-soft); color: var(--color-danger); }
+    .stat-card:hover .stat-icon { transform: scale(1.08) rotate(-4deg); }
 
-    .card-paid { background: linear-gradient(145deg, #ffffff, #ecfdf5); }
-    .card-paid::after { background: var(--color-success); }
-    .card-paid .stat-value { color: var(--color-success); }
-    .card-paid .stat-icon-wrapper { background: var(--color-success-soft); color: var(--color-success); }
+    .stat-card.total  .stat-value { color: var(--primary); }
+    .stat-card.total  .stat-icon  { background: var(--primary-soft); color: var(--primary); }
 
-    /* Table Section */
+    .stat-card.unpaid .stat-value { color: var(--danger); }
+    .stat-card.unpaid .stat-icon  { background: var(--danger-soft); color: var(--danger); }
+
+    .stat-card.paid   .stat-value { color: var(--success); }
+    .stat-card.paid   .stat-icon  { background: var(--success-soft); color: var(--success); }
+
+    /* ── Table Card ── */
     .table-card {
-        background: var(--color-surface);
+        background: var(--surface);
+        border: 1px solid var(--border);
         border-radius: var(--radius-lg);
-        box-shadow: var(--shadow-md);
-        border: 1px solid var(--color-border);
         overflow: hidden;
+        margin-bottom: 28px;
     }
 
-    .table-header {
-        padding: 24px;
-        border-bottom: 1px solid var(--color-border);
+    .table-card-header {
+        padding: 18px 22px;
+        border-bottom: 1px solid var(--border);
         display: flex;
-        justify-content: space-between;
         align-items: center;
-        background: #ffffff;
+        justify-content: space-between;
+        gap: 12px;
     }
 
-    .table-title {
-        font-size: 1.15rem;
+    .table-card-title {
+        font-size: 14px;
         font-weight: 700;
-        color: var(--color-text);
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        gap: 8px;
         margin: 0;
+    }
+
+    .table-card-title i { color: var(--primary); font-size: 13px; }
+
+    .table-header-actions {
         display: flex;
         align-items: center;
         gap: 10px;
     }
 
     .badge-count {
-        background: var(--color-bg);
-        color: var(--color-text-muted);
-        padding: 6px 14px;
-        border-radius: var(--radius-full);
-        font-size: 0.8rem;
+        font-size: 11px;
         font-weight: 600;
-        border: 1px solid var(--color-border);
+        color: var(--text-muted);
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 4px 12px;
     }
 
-    /* The Table */
-    .table-premium {
-        width: 100%;
-        border-collapse: separate;
-        border-spacing: 0;
-        text-align: left;
-    }
-
-    .table-premium th {
-        background: #fdfdfe;
-        padding: 16px 24px;
-        font-size: 0.75rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        color: var(--color-text-muted);
-        border-bottom: 1px solid var(--color-border);
-        white-space: nowrap;
-    }
-
-    .table-premium td {
-        padding: 18px 24px;
-        font-size: 0.95rem;
-        color: var(--color-text);
-        border-bottom: 1px solid var(--color-border);
-        vertical-align: middle;
-        background: #ffffff;
-        transition: background-color 0.2s ease;
-    }
-
-    .table-premium tbody tr:last-child td {
-        border-bottom: none;
-    }
-
-    .table-premium tbody tr:hover td {
-        background: #f8fafc;
-    }
-
-    .td-number {
-        font-weight: 600;
-        color: var(--color-text-muted);
-    }
-
-    .td-invoice {
-        font-family: 'JetBrains Mono', monospace;
-        font-weight: 600;
-        letter-spacing: 0.02em;
-        color: #334155;
-    }
-
-    .td-amount {
-        font-family: 'JetBrains Mono', monospace;
-        font-weight: 600;
-        color: var(--color-text);
-    }
-    
-    .td-amount-paid {
-        color: var(--color-success);
-    }
-
-    /* Badges */
-    .badge-premium {
+    /* Link Golongan UKT — subtle, in-table-header */
+    .link-golongan {
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        padding: 6px 12px;
-        border-radius: var(--radius-full);
-        font-size: 0.75rem;
+        font-size: 12.5px;
+        font-weight: 600;
+        color: var(--primary);
+        text-decoration: none;
+        padding: 7px 14px;
+        border-radius: 8px;
+        border: 1px solid var(--primary-soft);
+        background: var(--primary-soft);
+        transition: background 0.15s, border-color 0.15s;
+    }
+
+    .link-golongan:hover {
+        background: #c7d2fe;
+        border-color: #a5b4fc;
+        color: var(--primary-text);
+    }
+
+    .link-golongan i { font-size: 11px; }
+
+    /* ── Table ── */
+    .table-premium {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .table-premium thead th {
+        background: var(--bg);
+        padding: 11px 20px;
+        font-size: 10.5px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+        color: var(--text-muted);
+        border-bottom: 1px solid var(--border);
+        white-space: nowrap;
+    }
+
+    .table-premium tbody td {
+        padding: 15px 20px;
+        font-size: 13.5px;
+        color: var(--text);
+        border-bottom: 1px solid var(--border);
+        vertical-align: middle;
+        transition: background 0.15s;
+    }
+
+    .table-premium tbody tr:last-child td { border-bottom: none; }
+    .table-premium tbody tr:hover td { background: #f8fafc; }
+
+    .td-no       { font-weight: 600; color: var(--text-hint); font-size: 12px; }
+    .td-invoice  { font-family: 'JetBrains Mono', monospace; font-size: 12.5px; font-weight: 600; color: #334155; }
+    .td-amount   { font-family: 'JetBrains Mono', monospace; font-weight: 600; }
+    .td-paid     { color: var(--success); }
+
+    /* ── Badges ── */
+    .badge-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 11px;
         font-weight: 700;
         letter-spacing: 0.02em;
-        text-transform: uppercase;
     }
 
     .badge-dot {
-        width: 6px;
-        height: 6px;
+        width: 5px; height: 5px;
         border-radius: 50%;
+        flex-shrink: 0;
     }
 
-    .badge-success { background: var(--color-success-soft); color: var(--color-success); }
-    .badge-success .badge-dot { background: var(--color-success); box-shadow: 0 0 8px var(--color-success); }
+    .badge-success { background: var(--success-soft); color: var(--success); }
+    .badge-success .badge-dot { background: var(--success); }
 
-    .badge-danger { background: var(--color-danger-soft); color: var(--color-danger); }
-    .badge-danger .badge-dot { background: var(--color-danger); box-shadow: 0 0 8px var(--color-danger); }
+    .badge-danger  { background: var(--danger-soft);  color: var(--danger); }
+    .badge-danger  .badge-dot { background: var(--danger); }
 
-    .badge-warning { background: var(--color-warning-soft); color: var(--color-warning); }
-    .badge-warning .badge-dot { background: var(--color-warning); box-shadow: 0 0 8px var(--color-warning); }
+    .badge-warning { background: var(--warning-soft); color: var(--warning); }
+    .badge-warning .badge-dot { background: var(--warning); }
 
     .badge-type {
-        background: var(--color-primary-soft);
-        color: var(--color-primary);
+        background: var(--primary-soft);
+        color: var(--primary-text);
     }
 
-    /* Actions */
-    .btn-action {
+    /* ── Action button ── */
+    .btn-row-action {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        width: 36px;
-        height: 36px;
-        border-radius: 10px;
-        background: #f1f5f9;
-        color: var(--color-text-muted);
+        width: 32px; height: 32px;
+        border-radius: 8px;
+        background: var(--bg);
+        color: var(--text-muted);
+        border: 1px solid var(--border);
         text-decoration: none;
-        transition: all 0.2s ease;
-        border: 1px solid transparent;
+        transition: all 0.15s;
+        font-size: 12px;
     }
 
-    .btn-action:hover {
-        background: #ffffff;
-        color: var(--color-primary);
-        border-color: var(--color-border);
-        box-shadow: var(--shadow-sm);
-        transform: translateY(-2px);
+    .btn-row-action:hover {
+        background: var(--primary-soft);
+        color: var(--primary);
+        border-color: #a5b4fc;
     }
 
-    /* Empty State */
+    /* ── Empty state ── */
     .empty-state {
-        padding: 60px 24px;
+        padding: 64px 24px;
         text-align: center;
-        color: var(--color-text-muted);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 16px;
+        color: var(--text-muted);
     }
 
     .empty-state-icon {
-        font-size: 48px;
-        color: #cbd5e1;
-        margin-bottom: 8px;
-    }
-    
-    .empty-state h4 {
-        font-size: 1.1rem;
-        font-weight: 600;
-        color: var(--color-text);
-        margin: 0;
-    }
-    .empty-state p {
-        font-size: 0.9rem;
-        margin: 0;
-        max-width: 300px;
+        width: 64px; height: 64px;
+        border-radius: 16px;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        display: flex; align-items: center; justify-content: center;
+        margin: 0 auto 16px;
+        font-size: 24px;
+        color: var(--text-hint);
     }
 
-    /* Responsive adjustments */
+    .empty-state h5 {
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 6px;
+    }
+
+    .empty-state p {
+        font-size: 13px;
+        margin: 0;
+        max-width: 280px;
+        margin: 0 auto;
+    }
+
+    /* ── Responsive ── */
     @media (max-width: 768px) {
         .table-premium th:nth-child(3),
         .table-premium td:nth-child(3),
-        .table-premium th:nth-child(5),
-        .table-premium td:nth-child(5),
         .table-premium th:nth-child(6),
-        .table-premium td:nth-child(6) {
-            display: none;
-        }
+        .table-premium td:nth-child(6) { display: none; }
     }
 </style>
 @endsection
@@ -390,66 +316,69 @@
     $totalBelumTerbayar = $totalSemuaTagihan - $totalSudahTerbayar;
 @endphp
 
-<p class="header-subtitle">Kelola dan pantau pembayaran Uang Kuliah Tunggal (UKT) Anda dengan mudah.</p>
+{{-- Subtitle --}}
+<p class="page-meta">Kelola dan pantau pembayaran Uang Kuliah Tunggal (UKT) Anda.</p>
 
-<!-- Stat Cards -->
+{{-- ══ Stat Cards ══ --}}
 <div class="stats-grid">
-    <!-- Semua Tagihan -->
-    <div class="stat-card-premium card-total stagger-1">
-        <div class="stat-info">
-            <span class="stat-label">Total Tagihan</span>
-            <span class="stat-value">Rp {{ number_format($totalSemuaTagihan, 0, ',', '.') }}</span>
+
+    <div class="stat-card total">
+        <div>
+            <div class="stat-label">Total Tagihan</div>
+            <div class="stat-value">Rp {{ number_format($totalSemuaTagihan, 0, ',', '.') }}</div>
+            <div class="stat-sub">Keseluruhan tagihan UKT</div>
         </div>
-        <div class="stat-icon-wrapper">
-            <i class="fas fa-wallet"></i>
-        </div>
+        <div class="stat-icon"><i class="fas fa-wallet"></i></div>
     </div>
 
-    <!-- Belum Terbayar -->
-    <div class="stat-card-premium card-unpaid stagger-2">
-        <div class="stat-info">
-            <span class="stat-label">Belum Dibayar</span>
-            <span class="stat-value">Rp {{ number_format($totalBelumTerbayar, 0, ',', '.') }}</span>
+    <div class="stat-card unpaid">
+        <div>
+            <div class="stat-label">Belum Dibayar</div>
+            <div class="stat-value">Rp {{ number_format($totalBelumTerbayar, 0, ',', '.') }}</div>
+            <div class="stat-sub">Sisa yang harus dilunasi</div>
         </div>
-        <div class="stat-icon-wrapper">
-            <i class="fas fa-exclamation-circle"></i>
-        </div>
+        <div class="stat-icon"><i class="fas fa-exclamation-circle"></i></div>
     </div>
 
-    <!-- Sudah Terbayar -->
-    <div class="stat-card-premium card-paid stagger-3">
-        <div class="stat-info">
-            <span class="stat-label">Sudah Dibayar</span>
-            <span class="stat-value">Rp {{ number_format($totalSudahTerbayar, 0, ',', '.') }}</span>
+    <div class="stat-card paid">
+        <div>
+            <div class="stat-label">Sudah Dibayar</div>
+            <div class="stat-value">Rp {{ number_format($totalSudahTerbayar, 0, ',', '.') }}</div>
+            <div class="stat-sub">Total yang telah terbayar</div>
         </div>
-        <div class="stat-icon-wrapper">
-            <i class="fas fa-check-circle"></i>
-        </div>
+        <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
     </div>
+
 </div>
 
-<!-- Table Card -->
-<div class="table-card stagger-4 mb-5">
-    <div class="table-header">
-        <h5 class="table-title">
-            <i class="fas fa-file-invoice" style="color: var(--color-primary);"></i>
+{{-- ══ Table Card ══ --}}
+<div class="table-card">
+    <div class="table-card-header">
+        <h5 class="table-card-title">
+            <i class="fas fa-file-invoice"></i>
             Riwayat Tagihan
         </h5>
-        <span class="badge-count">{{ count($dataTagihan) }} Invoice</span>
+        <div class="table-header-actions">
+            <span class="badge-count">{{ count($dataTagihan) }} invoice</span>
+            <a href="{{ route('golongan-ukt') }}" class="link-golongan">
+                <i class="fas fa-layer-group"></i>
+                Golongan UKT
+            </a>
+        </div>
     </div>
 
     <div class="table-responsive">
         <table class="table-premium">
             <thead>
                 <tr>
-                    <th class="text-center" width="5%">No</th>
-                    <th width="15%">No. Invoice</th>
-                    <th width="15%">Semester</th>
-                    <th width="20%">Tagihan</th>
-                    <th width="20%">Terbayar</th>
-                    <th width="10%">Jenis</th>
+                    <th class="text-center" width="4%">No</th>
+                    <th width="14%">No. Invoice</th>
+                    <th width="18%">Semester</th>
+                    <th width="18%">Tagihan</th>
+                    <th width="18%">Terbayar</th>
+                    <th width="12%">Jenis</th>
                     <th width="10%">Status</th>
-                    <th class="text-center" width="5%">Aksi</th>
+                    <th class="text-center" width="6%">Aksi</th>
                 </tr>
             </thead>
             <tbody>
@@ -469,41 +398,37 @@
                         };
                     @endphp
                     <tr>
-                        <td class="text-center td-number">{{ $index + 1 }}</td>
-                        
+                        <td class="text-center td-no">{{ $index + 1 }}</td>
+
                         <td class="td-invoice">
                             #INV-{{ str_pad($item['id_ukt_semester'], 5, '0', STR_PAD_LEFT) }}
                         </td>
-                        
-                        <td>
-                            <span style="font-weight: 500;">{{ $item['periode'] }}</span>
-                        </td>
-                        
+
+                        <td style="font-weight:500;">{{ $item['periode'] }}</td>
+
                         <td class="td-amount">
                             Rp {{ number_format($total_tagihan, 0, ',', '.') }}
                         </td>
-                        
-                        <td class="td-amount td-amount-paid">
+
+                        <td class="td-amount td-paid">
                             Rp {{ number_format($total_terbayar, 0, ',', '.') }}
                         </td>
-                        
+
                         <td>
-                            <span class="badge-premium badge-type">
-                                {{ $item['jenis'] }}
-                            </span>
+                            <span class="badge-pill badge-type">{{ $item['jenis'] }}</span>
                         </td>
-                        
+
                         <td>
-                            <span class="badge-premium {{ $badgeClass }}">
+                            <span class="badge-pill {{ $badgeClass }}">
                                 <span class="badge-dot"></span>
                                 {{ $statusText }}
                             </span>
                         </td>
-                        
+
                         <td class="text-center">
-                            <a href="{{ route('mahasiswa-dashboard.show', ['id' => $item['id_ukt_semester']]) }}" 
-                                class="btn-action" 
-                                title="Lihat Detail">
+                            <a href="{{ route('mahasiswa-dashboard.show', ['id' => $item['id_ukt_semester']]) }}"
+                               class="btn-row-action"
+                               title="Lihat Detail">
                                 <i class="fas fa-arrow-right"></i>
                             </a>
                         </td>
@@ -515,8 +440,8 @@
                                 <div class="empty-state-icon">
                                     <i class="fas fa-box-open"></i>
                                 </div>
-                                <h4>Tidak Ada Tagihan</h4>
-                                <p>Anda belum memiliki riwayat tagihan UKT pada saat ini.</p>
+                                <h5>Tidak Ada Tagihan</h5>
+                                <p>Anda belum memiliki riwayat tagihan UKT saat ini.</p>
                             </div>
                         </td>
                     </tr>
@@ -525,4 +450,5 @@
         </table>
     </div>
 </div>
+
 @endsection
