@@ -74,7 +74,7 @@
         .brand-logo-wrap img { width: 22px; height: 22px; object-fit: contain; }
 
         .brand-name {
-            font-size: 15px;
+            font-size: 16px;
             font-weight: 700;
             color: var(--text);
             letter-spacing: -0.02em;
@@ -82,10 +82,10 @@
         }
 
         .brand-sub {
-            font-size: 10px;
+            font-size: 11px;
+            font-weight: 500;
             color: var(--text-hint);
             margin-top: 2px;
-            font-weight: 400;
         }
 
         /* Mini user profile in sidebar */
@@ -112,8 +112,8 @@
         .sidebar-user-avatar img { width: 100%; height: 100%; object-fit: cover; }
 
         .sidebar-user-name {
-            font-size: 12.5px;
-            font-weight: 600;
+            font-size: 13.5px;
+            font-weight: 700;
             color: var(--text);
             white-space: nowrap;
             overflow: hidden;
@@ -122,7 +122,8 @@
         }
 
         .sidebar-user-role {
-            font-size: 10px;
+            font-size: 11px;
+            font-weight: 500;
             color: var(--text-muted);
             margin-top: 1px;
             text-transform: capitalize;
@@ -130,7 +131,7 @@
 
         /* Section labels */
         .nav-section-label {
-            font-size: 9.5px;
+            font-size: 10px;
             font-weight: 700;
             letter-spacing: 0.09em;
             text-transform: uppercase;
@@ -145,11 +146,11 @@
 
         .nav-sidebar .nav-link {
             border-radius: 10px !important;
-            padding: 9px 12px !important;
+            padding: 10px 12px !important;
             margin: 0 !important;
             color: var(--text-muted) !important;
-            font-weight: 500;
-            font-size: 13.5px;
+            font-weight: 600;
+            font-size: 14px;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -169,7 +170,8 @@
 
         .nav-sidebar .nav-link p {
             margin: 0 !important;
-            font-size: 13.5px;
+            font-size: 14px;
+            font-weight: 600;
             line-height: 1;
         }
 
@@ -224,7 +226,7 @@
         }
 
         .navbar-page-title {
-            font-size: 16px !important;
+            font-size: 18px !important;
             font-weight: 700 !important;
             color: var(--text) !important;
             letter-spacing: -0.02em !important;
@@ -285,8 +287,8 @@
         .navbar-chip-avatar img { width: 100%; height: 100%; object-fit: cover; }
 
         .navbar-chip-name {
-            font-size: 13px;
-            font-weight: 600;
+            font-size: 14px;
+            font-weight: 700;
             color: var(--text);
             white-space: nowrap;
         }
@@ -304,10 +306,10 @@
 
         .navbar-user-chip + .dropdown-menu .dropdown-item {
             border-radius: 8px !important;
-            font-size: 13.5px;
-            padding: 8px 12px;
+            font-size: 14px;
+            padding: 9px 12px;
             color: var(--text);
-            font-weight: 500;
+            font-weight: 600;
             display: flex;
             align-items: center;
             gap: 9px;

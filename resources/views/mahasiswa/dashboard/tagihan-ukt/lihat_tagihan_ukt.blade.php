@@ -68,26 +68,27 @@
     }
 
     .stat-label {
-        font-size: 11px;
+        font-size: 11.5px;
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.07em;
         color: var(--text-muted);
-        margin-bottom: 6px;
+        margin-bottom: 7px;
     }
 
     .stat-value {
         font-family: 'JetBrains Mono', monospace;
-        font-size: 22px;
+        font-size: 24px;
         font-weight: 700;
         letter-spacing: -0.02em;
         line-height: 1;
     }
 
     .stat-sub {
-        font-size: 11.5px;
+        font-size: 12px;
+        font-weight: 500;
         color: var(--text-hint);
-        margin-top: 5px;
+        margin-top: 6px;
     }
 
     .stat-icon {
@@ -128,7 +129,7 @@
     }
 
     .table-card-title {
-        font-size: 14px;
+        font-size: 15px;
         font-weight: 700;
         color: var(--text);
         display: flex;
@@ -137,7 +138,7 @@
         margin: 0;
     }
 
-    .table-card-title i { color: var(--primary); font-size: 13px; }
+    .table-card-title i { color: var(--primary); font-size: 14px; }
 
     .table-header-actions {
         display: flex;
@@ -146,13 +147,13 @@
     }
 
     .badge-count {
-        font-size: 11px;
+        font-size: 12px;
         font-weight: 600;
         color: var(--text-muted);
         background: var(--bg);
         border: 1px solid var(--border);
         border-radius: 20px;
-        padding: 4px 12px;
+        padding: 5px 13px;
     }
 
     /* Link Golongan UKT — subtle, in-table-header */
@@ -160,7 +161,7 @@
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        font-size: 12.5px;
+        font-size: 13px;
         font-weight: 600;
         color: var(--primary);
         text-decoration: none;
@@ -187,8 +188,8 @@
 
     .table-premium thead th {
         background: var(--bg);
-        padding: 11px 20px;
-        font-size: 10.5px;
+        padding: 12px 20px;
+        font-size: 11px;
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.07em;
@@ -199,7 +200,8 @@
 
     .table-premium tbody td {
         padding: 15px 20px;
-        font-size: 13.5px;
+        font-size: 14px;
+        font-weight: 500;
         color: var(--text);
         border-bottom: 1px solid var(--border);
         vertical-align: middle;
@@ -209,9 +211,9 @@
     .table-premium tbody tr:last-child td { border-bottom: none; }
     .table-premium tbody tr:hover td { background: #f8fafc; }
 
-    .td-no       { font-weight: 600; color: var(--text-hint); font-size: 12px; }
-    .td-invoice  { font-family: 'JetBrains Mono', monospace; font-size: 12.5px; font-weight: 600; color: #334155; }
-    .td-amount   { font-family: 'JetBrains Mono', monospace; font-weight: 600; }
+    .td-no       { font-weight: 600; color: var(--text-hint); font-size: 13px; }
+    .td-invoice  { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 600; color: #334155; }
+    .td-amount   { font-family: 'JetBrains Mono', monospace; font-weight: 700; }
     .td-paid     { color: var(--success); }
 
     /* ── Badges ── */
@@ -219,9 +221,9 @@
         display: inline-flex;
         align-items: center;
         gap: 5px;
-        padding: 4px 10px;
+        padding: 5px 11px;
         border-radius: 20px;
-        font-size: 11px;
+        font-size: 12px;
         font-weight: 700;
         letter-spacing: 0.02em;
     }
