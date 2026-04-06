@@ -26,6 +26,9 @@
         --border:        #e2e8f0;
         --radius:        12px;
         --radius-lg:     16px;
+        --shadow-sm:     0 1px 2px rgba(0,0,0,0.04);
+        --shadow-md:     0 4px 12px rgba(0,0,0,0.08);
+        --shadow-lg:     0 8px 24px rgba(0,0,0,0.12);
     }
 
     .content-wrapper {
@@ -35,17 +38,18 @@
 
     /* ── Page header area ── */
     .page-meta {
-        font-size: 13px;
+        font-size: 14px;
         color: var(--text-muted);
         margin-bottom: 24px;
+        line-height: 1.5;
     }
 
     /* ── Stat Cards ── */
     .stats-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 14px;
-        margin-bottom: 20px;
+        gap: 16px;
+        margin-bottom: 24px;
     }
 
     @media (max-width: 900px) { .stats-grid { grid-template-columns: 1fr; } }
@@ -54,52 +58,62 @@
         background: var(--surface);
         border: 1px solid var(--border);
         border-radius: var(--radius-lg);
-        padding: 20px 22px;
+        padding: 22px 24px;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 16px;
-        transition: box-shadow 0.2s, transform 0.2s;
+        gap: 18px;
+        transition: all 0.2s ease;
+        cursor: default;
+        box-shadow: var(--shadow-sm);
     }
 
     .stat-card:hover {
-        box-shadow: 0 4px 16px rgba(0,0,0,0.07);
-        transform: translateY(-2px);
+        box-shadow: var(--shadow-lg);
+        transform: translateY(-3px);
+        border-color: #c7d2fe;
+    }
+
+    .stat-card:active {
+        transform: translateY(-1px);
+        transition: none;
     }
 
     .stat-label {
-        font-size: 11.5px;
+        font-size: 12px;
         font-weight: 700;
         text-transform: uppercase;
-        letter-spacing: 0.07em;
+        letter-spacing: 0.08em;
         color: var(--text-muted);
-        margin-bottom: 7px;
+        margin-bottom: 8px;
     }
 
     .stat-value {
         font-family: 'JetBrains Mono', monospace;
-        font-size: 24px;
+        font-size: 26px;
         font-weight: 700;
         letter-spacing: -0.02em;
-        line-height: 1;
+        line-height: 1.1;
     }
 
     .stat-sub {
-        font-size: 12px;
+        font-size: 13px;
         font-weight: 500;
         color: var(--text-hint);
         margin-top: 6px;
     }
 
     .stat-icon {
-        width: 48px; height: 48px; flex-shrink: 0;
-        border-radius: 12px;
+        width: 52px; height: 52px; flex-shrink: 0;
+        border-radius: 14px;
         display: flex; align-items: center; justify-content: center;
-        font-size: 18px;
-        transition: transform 0.2s;
+        font-size: 20px;
+        transition: transform 0.25s ease;
     }
 
-    .stat-card:hover .stat-icon { transform: scale(1.08) rotate(-4deg); }
+    .stat-card:hover .stat-icon {
+        transform: scale(1.1) rotate(-3deg);
+    }
 
     .stat-card.total  .stat-value { color: var(--primary); }
     .stat-card.total  .stat-icon  { background: var(--primary-soft); color: var(--primary); }
@@ -117,33 +131,35 @@
         border-radius: var(--radius-lg);
         overflow: hidden;
         margin-bottom: 28px;
+        box-shadow: var(--shadow-sm);
     }
 
     .table-card-header {
-        padding: 18px 22px;
+        padding: 20px 24px;
         border-bottom: 1px solid var(--border);
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 12px;
+        background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
     }
 
     .table-card-title {
-        font-size: 15px;
+        font-size: 16px;
         font-weight: 700;
         color: var(--text);
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 9px;
         margin: 0;
     }
 
-    .table-card-title i { color: var(--primary); font-size: 14px; }
+    .table-card-title i { color: var(--primary); font-size: 15px; }
 
     .table-header-actions {
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 12px;
     }
 
     .badge-count {
@@ -153,10 +169,10 @@
         background: var(--bg);
         border: 1px solid var(--border);
         border-radius: 20px;
-        padding: 5px 13px;
+        padding: 6px 14px;
     }
 
-    /* Link Golongan UKT — subtle, in-table-header */
+    /* Link Golongan UKT */
     .link-golongan {
         display: inline-flex;
         align-items: center;
@@ -165,17 +181,22 @@
         font-weight: 600;
         color: var(--primary);
         text-decoration: none;
-        padding: 7px 14px;
-        border-radius: 8px;
+        padding: 8px 16px;
+        border-radius: 9px;
         border: 1px solid var(--primary-soft);
         background: var(--primary-soft);
-        transition: background 0.15s, border-color 0.15s;
+        transition: all 0.15s ease;
     }
 
     .link-golongan:hover {
         background: #c7d2fe;
         border-color: #a5b4fc;
         color: var(--primary-text);
+        transform: translateY(-1px);
+    }
+
+    .link-golongan:active {
+        transform: translateY(0);
     }
 
     .link-golongan i { font-size: 11px; }
@@ -188,31 +209,76 @@
 
     .table-premium thead th {
         background: var(--bg);
-        padding: 12px 20px;
-        font-size: 11px;
+        padding: 14px 20px;
+        font-size: 12px;
         font-weight: 700;
         text-transform: uppercase;
-        letter-spacing: 0.07em;
+        letter-spacing: 0.08em;
         color: var(--text-muted);
-        border-bottom: 1px solid var(--border);
+        border-bottom: 2px solid var(--border);
         white-space: nowrap;
     }
 
     .table-premium tbody td {
-        padding: 15px 20px;
-        font-size: 14px;
+        padding: 18px 20px;
+        font-size: 15px;
         font-weight: 500;
         color: var(--text);
         border-bottom: 1px solid var(--border);
         vertical-align: middle;
-        transition: background 0.15s;
+        transition: background 0.15s ease;
     }
 
     .table-premium tbody tr:last-child td { border-bottom: none; }
-    .table-premium tbody tr:hover td { background: #f8fafc; }
 
-    .td-no       { font-weight: 600; color: var(--text-hint); font-size: 13px; }
-    .td-invoice  { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 600; color: #334155; }
+    /* 🔥 Interactive row: clickable feel */
+    .table-premium tbody tr {
+        cursor: pointer;
+        transition: all 0.15s ease;
+        position: relative;
+    }
+
+    .table-premium tbody tr:hover {
+        background: #f8fafc !important;
+        transform: translateX(3px);
+    }
+
+    .table-premium tbody tr:hover::after {
+        content: '›';
+        position: absolute;
+        right: 18px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 20px;
+        color: var(--primary);
+        font-weight: 300;
+        opacity: 1;
+        transition: all 0.15s;
+        pointer-events: none;
+    }
+
+    .table-premium tbody tr::after {
+        content: '›';
+        position: absolute;
+        right: 18px;
+        top: 50%;
+        transform: translateY(-50%) translateX(8px);
+        font-size: 20px;
+        color: var(--text-hint);
+        opacity: 0;
+        transition: all 0.15s;
+        pointer-events: none;
+        font-weight: 300;
+    }
+
+    /* Highlight border kiri saat hover */
+    .table-premium tbody tr:hover {
+        border-left: 3px solid var(--primary);
+        margin-left: 0;
+    }
+
+    .td-no       { font-weight: 600; color: var(--text-hint); font-size: 14px; }
+    .td-invoice  { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; color: #334155; }
     .td-amount   { font-family: 'JetBrains Mono', monospace; font-weight: 700; }
     .td-paid     { color: var(--success); }
 
@@ -220,8 +286,8 @@
     .badge-pill {
         display: inline-flex;
         align-items: center;
-        gap: 5px;
-        padding: 5px 11px;
+        gap: 6px;
+        padding: 6px 13px;
         border-radius: 20px;
         font-size: 12px;
         font-weight: 700;
@@ -229,7 +295,7 @@
     }
 
     .badge-dot {
-        width: 5px; height: 5px;
+        width: 6px; height: 6px;
         border-radius: 50%;
         flex-shrink: 0;
     }
@@ -248,57 +314,101 @@
         color: var(--primary-text);
     }
 
-    /* ── Action button ── */
+    /* ── Action button — 🔥 ENHANCED ── */
     .btn-row-action {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        width: 32px; height: 32px;
-        border-radius: 8px;
-        background: var(--bg);
-        color: var(--text-muted);
-        border: 1px solid var(--border);
+        width: 42px; height: 42px;
+        border-radius: 11px;
+        background: var(--surface);
+        color: var(--primary);
+        border: 1.5px solid var(--primary-soft);
         text-decoration: none;
-        transition: all 0.15s;
-        font-size: 12px;
+        transition: all 0.2s ease;
+        font-size: 15px;
+        cursor: pointer;
+        box-shadow: var(--shadow-sm);
+        position: relative;
+        z-index: 2;
+        pointer-events: auto;
     }
 
     .btn-row-action:hover {
-        background: var(--primary-soft);
-        color: var(--primary);
-        border-color: #a5b4fc;
+        background: var(--primary);
+        color: white;
+        border-color: var(--primary);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(67, 56, 202, 0.3);
+    }
+
+    .btn-row-action:active {
+        transform: scale(0.96) translateY(0);
+        transition: none;
+        box-shadow: 0 2px 8px rgba(67, 56, 202, 0.2);
+    }
+
+    /* Tooltip sederhana pakai CSS */
+    .btn-row-action[data-tooltip]:hover::before {
+        content: attr(data-tooltip);
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%) translateY(-6px);
+        background: #1e293b;
+        color: white;
+        font-size: 11px;
+        font-weight: 500;
+        padding: 5px 10px;
+        border-radius: 6px;
+        white-space: nowrap;
+        z-index: 10;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .btn-row-action[data-tooltip]:hover::after {
+        content: '';
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%) translateY(1px);
+        border: 5px solid transparent;
+        border-top-color: #1e293b;
+        z-index: 10;
     }
 
     /* ── Empty state ── */
     .empty-state {
-        padding: 64px 24px;
+        padding: 72px 24px;
         text-align: center;
         color: var(--text-muted);
     }
 
     .empty-state-icon {
-        width: 64px; height: 64px;
-        border-radius: 16px;
+        width: 72px; height: 72px;
+        border-radius: 18px;
         background: var(--bg);
         border: 1px solid var(--border);
         display: flex; align-items: center; justify-content: center;
-        margin: 0 auto 16px;
-        font-size: 24px;
+        margin: 0 auto 18px;
+        font-size: 28px;
         color: var(--text-hint);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.5);
     }
 
     .empty-state h5 {
-        font-size: 15px;
+        font-size: 16px;
         font-weight: 700;
         color: var(--text);
-        margin-bottom: 6px;
+        margin-bottom: 8px;
     }
 
     .empty-state p {
-        font-size: 13px;
+        font-size: 14px;
         margin: 0;
-        max-width: 280px;
+        max-width: 300px;
         margin: 0 auto;
+        line-height: 1.5;
     }
 
     /* ── Responsive ── */
@@ -307,6 +417,20 @@
         .table-premium td:nth-child(3),
         .table-premium th:nth-child(6),
         .table-premium td:nth-child(6) { display: none; }
+
+        .stats-grid { grid-template-columns: 1fr; }
+
+        .btn-row-action {
+            width: 38px; height: 38px;
+            font-size: 14px;
+        }
+    }
+
+    /* ── Accessibility: Focus states ── */
+    .btn-row-action:focus-visible,
+    .link-golongan:focus-visible {
+        outline: 2px solid var(--primary);
+        outline-offset: 2px;
     }
 </style>
 @endsection
@@ -319,7 +443,7 @@
 @endphp
 
 {{-- Subtitle --}}
-<p class="page-meta">Kelola dan pantau pembayaran Uang Kuliah Tunggal (UKT) Anda.</p>
+<p class="page-meta">Kelola dan pantau pembayaran Uang Kuliah Tunggal (UKT) Anda. <br class="d-none d-md-inline">Klik pada baris untuk melihat detail tagihan.</p>
 
 {{-- ══ Stat Cards ══ --}}
 <div class="stats-grid">
@@ -390,6 +514,7 @@
                         $total_terbayar = $item['total_terbayar']  ?? 0;
                         $status_raw     = strtolower($item['status_raw'] ?? '');
                         $statusText     = $item['status'] ?? '-';
+                        $detailUrl      = route('mahasiswa-dashboard.show', ['id' => $item['id_ukt_semester']]);
 
                         $badgeClass = match ($status_raw) {
                             'terbayar'    => 'badge-success',
@@ -399,7 +524,8 @@
                             default       => 'badge-warning',
                         };
                     @endphp
-                    <tr>
+                    {{-- 🔥 Row clickable: onclick redirect, tapi tombol aksi tetap prioritas --}}
+                    <tr onclick="window.location.href='{{ $detailUrl }}'" style="cursor: pointer;">
                         <td class="text-center td-no">{{ $index + 1 }}</td>
 
                         <td class="td-invoice">
@@ -428,10 +554,13 @@
                         </td>
 
                         <td class="text-center">
-                            <a href="{{ route('mahasiswa-dashboard.show', ['id' => $item['id_ukt_semester']]) }}"
+                            {{-- 🔥 Tombol aksi: stopPropagation biar nggak double redirect --}}
+                            <a href="{{ $detailUrl }}"
                                class="btn-row-action"
-                               title="Lihat Detail">
-                                <i class="fas fa-arrow-right"></i>
+                               data-tooltip="Lihat Detail"
+                               title="Lihat Detail Tagihan"
+                               onclick="event.stopPropagation();">
+                                <i class="fas fa-eye"></i>
                             </a>
                         </td>
                     </tr>
@@ -453,4 +582,22 @@
     </div>
 </div>
 
+{{-- 🔥 Optional: Simple JS untuk tooltip kalau mau lebih smooth --}}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Kalau mau tooltip Bootstrap, aktifin ini:
+        // $('[data-toggle="tooltip"]').tooltip();
+
+        // Efek ripple sederhana untuk tombol aksi (opsional)
+        document.querySelectorAll('.btn-row-action').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                // Biarkan link bekerja normal, cuma buat feedback visual
+                this.style.transform = 'scale(0.94)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 100);
+            });
+        });
+    });
+</script>
 @endsection

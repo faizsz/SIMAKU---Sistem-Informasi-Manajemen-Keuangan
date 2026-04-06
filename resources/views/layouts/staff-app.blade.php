@@ -1,235 +1,414 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'SIMAKU')</title>
 
-    <!-- Load CSS first -->
-    <!-- CSS AdminLTE -->
     <link rel="stylesheet" href="{{ asset('vendor/adminlte/dist/css/adminlte.min.css') }}">
-
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}">
-
-    <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
-        /* Override langsung untuk menu aktif */
-        .sidebar-light-primary .nav-sidebar > .nav-item > .nav-link.active {
-            border-left: 4px solid #4e73df !important;
-            padding-left: calc(1rem - 4px) !important;
-            background-color: #4e73df !important;
-            color: #ffffff !important;
+        /* ========================================= */
+        /* VARIABLES & BASE                          */
+        /* ========================================= */
+        :root {
+            --bg:           #f1f5f9;
+            --surface:      #ffffff;
+            --border:       #e2e8f0;
+            --border-soft:  #f0f4f8;
+            --primary:      #4338ca;
+            --primary-soft: #e0e7ff;
+            --primary-text: #3730a3;
+            --text:         #0f172a;
+            --text-muted:   #64748b;
+            --text-hint:    #94a3b8;
+            --danger:       #e11d48;
+            --success:      #059669;
+            --sidebar-w:    240px;
         }
 
-        .nav-treeview > .nav-item > .nav-link.active {
-            background-color: rgba(78, 115, 223, 0.15) !important;
-            color: #4e73df !important;
-            border-left: 2px solid #4e73df !important;
-            padding-left: calc(1rem - 2px) !important;
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif !important;
+            background-color: var(--bg) !important;
+            color: var(--text);
         }
 
-        /* Force menu to display when parent is open */
-        .nav-item.menu-open > .nav-treeview {
-            display: block !important;
-            margin-left: 0.5rem;
-            padding-left: 0.75rem;
-            border-left: 1px dotted #e0e0e0;
+        .wrapper { background-color: var(--bg) !important; }
+        .content-wrapper { background-color: transparent !important; margin-left: var(--sidebar-w) !important; }
+
+        /* ========================================= */
+        /* SIDEBAR                                   */
+        /* ========================================= */
+        .main-sidebar {
+            width: var(--sidebar-w) !important;
+            background-color: var(--surface) !important;
+            border-right: 1px solid var(--border) !important;
+            box-shadow: none !important;
         }
 
-        /* Atur ikon panah dropdown */
-        .nav-sidebar .nav-link > .right {
-            position: absolute;
-            right: 1rem;
-            top: 0.7rem;
+        /* Brand */
+        .brand-link {
+            height: 64px;
+            padding: 0 18px !important;
+            display: flex !important;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid var(--border) !important;
+            background: var(--surface) !important;
+            text-decoration: none !important;
         }
 
-        /* Style untuk modal logout */
-        #logoutModal .modal-content {
-            border-radius: 10px;
-            border: none;
+        .brand-logo-wrap {
+            width: 34px; height: 34px; flex-shrink: 0;
+            background: var(--primary-soft);
+            border-radius: 9px;
+            display: flex; align-items: center; justify-content: center;
         }
 
-        #logoutModal .modal-body {
-            padding: 30px;
+        .brand-logo-wrap img { width: 22px; height: 22px; object-fit: contain; }
+
+        .brand-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: -0.02em;
+            line-height: 1;
         }
 
-        #logoutModal .modal-title {
-            font-weight: 600;
-            color: #333;
-            font-size: 1.2rem;
+        .brand-sub {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-hint);
+            margin-top: 2px;
         }
 
-        #logoutModal .btn {
-            padding: 8px 20px;
-            font-size: 14px;
+        /* Mini user profile in sidebar */
+        .sidebar-user {
+            margin: 14px 12px;
+            padding: 12px;
+            background: var(--bg);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        #logoutModal .btn-outline-primary {
-            border: 2px solid #4e73df;
-            color: #4e73df;
-            border-radius: 5px;
-            background-color: transparent;
-        }
-
-        #logoutModal .btn-outline-primary:hover {
-            background-color: #f8f9fc;
-            color: #4e73df;
-        }
-
-        #logoutModal .btn-primary {
-            background-color: #4e73df;
-            border: none;
-            border-radius: 5px;
-            color: white;
-        }
-
-        #logoutModal .btn-primary:hover {
-            background-color: #2e59d9;
-        }
-
-        /* Tambahkan di bagian <style> */
-        .navbar-nav .user-menu .user-info .user-name {
-            font-weight: 600;
-            font-size: 0.9rem;
-            color: #333;
-            cursor: pointer;
-            transition: color 0.2s;
-        }
-
-        .navbar-nav .user-menu .user-info .user-name:hover {
-            color: #4e73df;
-            text-decoration: none;
-        }
-
-        /* Custom styling untuk menu Pengajuan Cicilan */
-        /* Removed since Pengajuan Cicilan is now a submenu */
-
-        /* Status cards styling */
-        .status-card {
-            text-align: center;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-
-        .status-card.verified {
-            background-color: #d4edda;
-            border: 1px solid #c3e6cb;
-        }
-
-        .status-card.unverified {
-            background-color: #fff3cd;
-            border: 1px solid #ffeaa7;
-        }
-
-        .status-card.rejected {
-            background-color: #f8d7da;
-            border: 1px solid #f5c6cb;
-        }
-
-        .status-card h3 {
-            font-size: 2rem;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .status-card p {
-            margin: 0;
-            font-size: 0.9rem;
-        }
-
-        .status-icon {
-            font-size: 1.5rem;
-            margin-right: 10px;
-        }
-
-        .filter-section {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,.1);
-        }
-
-        .table-container {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,.1);
+        .sidebar-user-avatar {
+            width: 36px; height: 36px; flex-shrink: 0;
+            border-radius: 50%;
+            background: var(--primary-soft);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 12px; font-weight: 700;
+            color: var(--primary-text);
             overflow: hidden;
         }
 
-        .table-container .card-header {
-            background-color: #f8f9fa;
-            border-bottom: 1px solid #dee2e6;
-            padding: 15px 20px;
+        .sidebar-user-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+        .sidebar-user-name {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: var(--text);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 140px;
+        }
+
+        .sidebar-user-role {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-muted);
+            margin-top: 1px;
+            text-transform: capitalize;
+        }
+
+        /* Section labels */
+        .nav-section-label {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.09em;
+            text-transform: uppercase;
+            color: var(--text-hint);
+            padding: 14px 18px 6px;
+        }
+
+        /* Nav items */
+        .sidebar { padding-top: 0 !important; overflow-y: auto; }
+
+        .nav-sidebar .nav-item { margin: 0 10px 2px; }
+
+        .nav-sidebar .nav-link {
+            border-radius: 10px !important;
+            padding: 10px 12px !important;
+            margin: 0 !important;
+            color: var(--text-muted) !important;
             font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: background 0.15s, color 0.15s, transform 0.15s;
+            position: relative;
         }
 
-        .badge-diverifikasi {
-            background-color: #d1ecf1;
-            color: #0c5460;
-            padding: 6px 15px;
-            border-radius: 15px;
-            font-size: 12px;
-            font-weight: 500;
-            display: inline-block;
+        .nav-sidebar .nav-link i.nav-icon {
+            width: 20px;
+            text-align: center;
+            font-size: 14px;
+            margin-right: 0 !important;
+            flex-shrink: 0;
+            color: var(--text-hint);
+            transition: color 0.15s;
         }
 
-        .badge-belum-diverifikasi {
-            background-color: #fff3cd;
-            color: #856404;
-            padding: 6px 15px;
-            border-radius: 15px;
-            font-size: 12px;
-            font-weight: 500;
-            display: inline-block;
+        .nav-sidebar .nav-link p {
+            margin: 0 !important;
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 1;
         }
 
-        .badge-ditolak {
-            background-color: #f8d7da;
-            color: #721c24;
-            padding: 6px 15px;
-            border-radius: 15px;
-            font-size: 12px;
-            font-weight: 500;
-            display: inline-block;
+        .nav-sidebar .nav-link:hover {
+            background: var(--bg) !important;
+            color: var(--text) !important;
+            transform: translateX(2px);
         }
 
-        .btn-view {
-            background-color: #6c7ae0;
-            border: none;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: 500;
-            display: inline-flex;
+        .nav-sidebar .nav-link:hover i.nav-icon { color: var(--primary); }
+
+        /* Active state */
+        .nav-sidebar .nav-link.active,
+        .sidebar-light-primary .nav-sidebar > .nav-item > .nav-link.active {
+            background: var(--primary-soft) !important;
+            color: var(--primary) !important;
+            font-weight: 600;
+            box-shadow: none !important;
+        }
+
+        .nav-sidebar .nav-link.active i.nav-icon { color: var(--primary) !important; }
+
+        /* Logout item */
+        .nav-link-logout { color: var(--danger) !important; }
+        .nav-link-logout i.nav-icon { color: var(--danger) !important; }
+        .nav-link-logout:hover { background: #fff1f2 !important; color: var(--danger) !important; }
+
+        /* Sidebar divider */
+        .nav-divider {
+            height: 1px;
+            background: var(--border);
+            margin: 10px 18px;
+        }
+
+        /* ========================================= */
+        /* NAVBAR                                    */
+        /* ========================================= */
+        .main-header.navbar {
+            background: rgba(255, 255, 255, 0.9) !important;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border) !important;
+            box-shadow: none !important;
+            height: 64px;
+            padding: 0 20px !important;
+            left: var(--sidebar-w) !important;
+            position: sticky;
+            top: 0;
+            z-index: 1039;
+            display: flex;
             align-items: center;
         }
 
-        .btn-view:hover {
-            background-color: #5a69d8;
-            color: white;
+        .navbar-page-title {
+            font-size: 18px !important;
+            font-weight: 700 !important;
+            color: var(--text) !important;
+            letter-spacing: -0.02em !important;
+            margin: 0 !important;
         }
 
-        .btn-view i {
-            margin-right: 6px;
-            font-size: 14px;
+        /* Notification bell */
+        .notif-btn {
+            width: 36px; height: 36px;
+            border-radius: 9px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: center;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.15s;
+            text-decoration: none;
         }
 
-        .pagination-info {
-            color: #6c757d;
+        .notif-btn:hover { background: var(--border-soft); }
+        .notif-btn i { font-size: 14px; color: var(--text-muted); }
+
+        .notif-dot {
+            position: absolute; top: 7px; right: 7px;
+            width: 7px; height: 7px; border-radius: 50%;
+            background: var(--danger);
+            border: 1.5px solid var(--surface);
+        }
+
+        /* User chip in navbar */
+        .navbar-user-chip {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 12px 5px 6px;
+            border-radius: 50px;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            cursor: pointer;
+            transition: background 0.15s, border-color 0.15s;
+            text-decoration: none !important;
+        }
+
+        .navbar-user-chip:hover {
+            background: var(--bg);
+            border-color: #cbd5e1;
+        }
+
+        .navbar-chip-avatar {
+            width: 28px; height: 28px; flex-shrink: 0;
+            border-radius: 50%;
+            overflow: hidden;
+            background: var(--primary-soft);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 10px; font-weight: 700; color: var(--primary-text);
+        }
+
+        .navbar-chip-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+        .navbar-chip-name {
             font-size: 14px;
+            font-weight: 700;
+            color: var(--text);
+            white-space: nowrap;
+        }
+
+        .navbar-chip-chevron { font-size: 10px; color: var(--text-hint); margin-left: 2px; }
+
+        /* Dropdown menu */
+        .navbar-user-chip + .dropdown-menu {
+            border-radius: 12px !important;
+            border: 1px solid var(--border) !important;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08) !important;
+            padding: 6px !important;
+            min-width: 180px;
+        }
+
+        .navbar-user-chip + .dropdown-menu .dropdown-item {
+            border-radius: 8px !important;
+            font-size: 14px;
+            padding: 9px 12px;
+            color: var(--text);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .navbar-user-chip + .dropdown-menu .dropdown-item i {
+            font-size: 13px;
+            color: var(--text-muted);
+            width: 16px;
+            text-align: center;
+        }
+
+        .navbar-user-chip + .dropdown-menu .dropdown-item:hover {
+            background: var(--bg) !important;
+        }
+
+        .dropdown-item-logout { color: var(--danger) !important; }
+        .dropdown-item-logout i { color: var(--danger) !important; }
+
+        .dropdown-divider-custom {
+            height: 1px;
+            background: var(--border);
+            margin: 5px 0;
+        }
+
+        /* ========================================= */
+        /* CONTENT AREA                              */
+        /* ========================================= */
+        .content { padding: 28px 28px; }
+
+        /* ========================================= */
+        /* FOOTER                                    */
+        /* ========================================= */
+        .main-footer {
+            background: transparent !important;
+            border-top: 1px solid var(--border) !important;
+            color: var(--text-hint) !important;
+            font-size: 12px !important;
+            padding: 14px 28px !important;
+            margin-left: var(--sidebar-w);
+        }
+
+        /* ========================================= */
+        /* MODALS                                    */
+        /* ========================================= */
+        .modal-content {
+            border-radius: 18px !important;
+            border: none !important;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1) !important;
+        }
+
+        .modal-body { padding: 32px !important; }
+
+        /* ========================================= */
+        /* BUTTONS                                   */
+        /* ========================================= */
+        .btn {
+            font-family: 'Plus Jakarta Sans', sans-serif !important;
+            font-weight: 600 !important;
+            border-radius: 10px !important;
+            font-size: 13.5px !important;
+            transition: all 0.15s !important;
+        }
+
+        .btn-primary {
+            background: var(--primary) !important;
+            border-color: var(--primary) !important;
+        }
+
+        .btn-primary:hover { background: #3730a3 !important; transform: translateY(-1px); }
+
+        .btn-outline-secondary {
+            border: 1.5px solid var(--border) !important;
+            color: var(--text) !important;
+            background: transparent !important;
+        }
+
+        .btn-danger-soft {
+            background: #fff1f2 !important;
+            color: var(--danger) !important;
+            border: 1.5px solid #fecdd3 !important;
+        }
+
+        .btn-danger-soft:hover { background: #ffe4e6 !important; }
+
+        /* ========================================= */
+        /* RESPONSIVE                                */
+        /* ========================================= */
+        @media (max-width: 991px) {
+            .content-wrapper { margin-left: 0 !important; }
+            .main-footer { margin-left: 0 !important; }
+            .main-header.navbar { left: 0 !important; }
         }
     </style>
 
     @yield('styles')
 </head>
-<body class="hold-transition sidebar-mini">
-    <!-- User Session Report Script - Added early to ensure it runs -->
+<body class="hold-transition sidebar-mini layout-fixed">
+
     <script>
         (function() {
             try {
@@ -241,274 +420,315 @@
                     pageAccessed: window.location.pathname,
                     sessionActive: {{ Session::has('token') ? 'true' : 'false' }}
                 };
-
-                // Log immediately as a fallback
-                console.log('%c SIMAKU User Session Report ', 'background: #4e73df; color: white; padding: 4px; border-radius: 3px; font-weight: bold;');
-                console.log(JSON.stringify(userReport, null, 2));
-
-                // Store in window object for debugging if needed
                 window.userSessionReport = userReport;
-            } catch(e) {
-                console.error('Error generating user report:', e);
-            }
+                console.log('%c SIMAKU Session ', 'background:#4338ca;color:#fff;padding:3px 8px;border-radius:4px;font-weight:bold;');
+                console.log(JSON.stringify(userReport, null, 2));
+            } catch(e) {}
         })();
     </script>
 
     <div class="wrapper">
-        <!-- Navbar -->
-        <nav class="main-header navbar navbar-expand navbar-light bg-white">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+
+        <!-- ══════════════════════════════
+             NAVBAR
+        ══════════════════════════════ -->
+        <nav class="main-header navbar navbar-expand navbar-light">
+
+            <!-- Left: hamburger + page title -->
+            <ul class="navbar-nav align-items-center">
+                <li class="nav-item mr-3">
+                    <a class="nav-link p-0" data-widget="pushmenu" href="#" role="button"
+                       style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:9px;background:var(--bg);border:1px solid var(--border);">
+                        <i class="fas fa-bars" style="font-size:13px;color:var(--text-muted);"></i>
+                    </a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                    <h1 class="navbar-page-title">@yield('header', 'Dashboard')</h1>
                 </li>
             </ul>
 
-            <!-- Right navbar links -->
-            <ul class="navbar-nav ml-auto">
+            <!-- Right: actions + notif + user -->
+            <ul class="navbar-nav ml-auto align-items-center" style="gap:10px;">
+
+                @hasSection('header_button')
+                <li class="nav-item d-none d-sm-inline-block">
+                    @yield('header_button')
+                </li>
+                @endif
+
                 <!-- Notifications -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link" data-toggle="dropdown" href="#">
+                    <a class="notif-btn" data-toggle="dropdown" href="#" role="button">
                         <i class="far fa-bell"></i>
-                        <span class="badge badge-primary navbar-badge">2</span>
+                        <span class="notif-dot"></span>
                     </a>
-                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                        <span class="dropdown-item dropdown-header">2 Notifikasi</span>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-envelope mr-2"></i> Tagihan UKT baru
-                            <span class="float-right text-muted text-sm">3 hari yang lalu</span>
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right"
+                         style="border-radius:14px;border:1px solid var(--border);box-shadow:0 8px 24px rgba(0,0,0,0.08);padding:6px;min-width:260px;">
+                        <div style="padding:8px 12px 10px;border-bottom:1px solid var(--border);margin-bottom:4px;">
+                            <span style="font-size:13px;font-weight:700;color:var(--text);">Notifikasi</span>
+                            <span style="font-size:11px;color:var(--text-hint);margin-left:6px;">2 baru</span>
+                        </div>
+                        <a href="#" class="dropdown-item"
+                           style="border-radius:8px;font-size:13px;padding:9px 12px;display:flex;gap:10px;align-items:flex-start;">
+                            <span style="width:28px;height:28px;border-radius:8px;background:#eff6ff;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                                <i class="fas fa-file-invoice" style="font-size:12px;color:#3b82f6;"></i>
+                            </span>
+                            <div>
+                                <div style="font-weight:600;color:var(--text);font-size:12.5px;">Tagihan UKT baru</div>
+                                <div style="font-size:11px;color:var(--text-hint);margin-top:1px;">3 jam yang lalu</div>
+                            </div>
                         </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-file mr-2"></i> Pembayaran diterima
-                            <span class="float-right text-muted text-sm">1 minggu yang lalu</span>
+                        <a href="#" class="dropdown-item"
+                           style="border-radius:8px;font-size:13px;padding:9px 12px;display:flex;gap:10px;align-items:flex-start;">
+                            <span style="width:28px;height:28px;border-radius:8px;background:#f0fdf4;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                                <i class="fas fa-check" style="font-size:12px;color:#16a34a;"></i>
+                            </span>
+                            <div>
+                                <div style="font-weight:600;color:var(--text);font-size:12.5px;">Pembayaran diterima</div>
+                                <div style="font-size:11px;color:var(--text-hint);margin-top:1px;">1 minggu yang lalu</div>
+                            </div>
                         </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item dropdown-footer">Lihat Semua Notifikasi</a>
+                        <div style="padding:8px 12px 4px;border-top:1px solid var(--border);margin-top:4px;">
+                            <a href="#" style="font-size:12px;color:var(--primary);font-weight:600;text-decoration:none;">Lihat semua notifikasi →</a>
+                        </div>
                     </div>
                 </li>
-                <!-- User -->
-                <li class="nav-item dropdown user-menu">
-                    <a href="#" class="nav-link dropdown-toggle profile-link" data-toggle="dropdown">
-                        <img src="{{ asset('assets/Profile.jpeg') }}" class="user-image rounded-circle" alt="User Image">
-                        <div class="user-info">
-                            <span class="user-name" onclick="window.location.href='/profile'; event.stopPropagation(); return false;">{{ Session::get('username') ?? 'Bambang Sulistio' }}</span>
-                            <span class="user-role">{{ Session::get('role') ?? 'Staff Keuangan' }}</span>
+
+                <!-- User dropdown -->
+                <li class="nav-item dropdown">
+                    <a href="#" class="navbar-user-chip dropdown-toggle" data-toggle="dropdown"
+                       role="button" aria-haspopup="true" aria-expanded="false">
+                        <div class="navbar-chip-avatar">
+                            <img src="{{ asset('assets/Profile.jpeg') }}" alt="Avatar"
+                                 onerror="this.style.display='none';this.parentElement.innerHTML='{{ strtoupper(substr(Session::get('username','U'),0,1)) }}'">
                         </div>
-                        <i class="fas fa-chevron-down profile-arrow"></i>
+                        <span class="navbar-chip-name">{{ Session::get('username', 'Username') }}</span>
+                        <i class="fas fa-chevron-down navbar-chip-chevron"></i>
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                        <li class="user-header bg-primary">
-                            <img src="{{ asset('assets/Profile.jpeg') }}" class="img-circle elevation-2" alt="User Image">
-                            <p>
-                                {{ Session::get('username') ?? 'Bambang Sulistio' }}
-                                <small>{{ Session::get('email') ?? 'bambang@example.com' }}</small>
-                            </p>
-                        </li>
-                        <li class="user-footer">
-                            <a href="/profile" class="btn btn-default btn-flat">Profile</a>
-                            <a href="#" class="btn btn-default btn-flat float-right" data-toggle="modal" data-target="#logoutModal">Keluar</a>
-                        </li>
-                    </ul>
+                    <div class="dropdown-menu dropdown-menu-right"
+                         style="border-radius:12px;border:1px solid var(--border);box-shadow:0 8px 24px rgba(0,0,0,0.08);padding:6px;min-width:180px;margin-top:6px;">
+                        <a href="{{ route('staff-profile') }}" class="dropdown-item">
+                            <i class="fas fa-user"></i> Profile saya
+                        </a>
+                        <a href="/staff/settings" class="dropdown-item">
+                            <i class="fas fa-cog"></i> Pengaturan
+                        </a>
+                        <div class="dropdown-divider-custom"></div>
+                        <a href="#" class="dropdown-item dropdown-item-logout" data-toggle="modal" data-target="#logoutModal">
+                            <i class="fas fa-sign-out-alt"></i> Keluar
+                        </a>
+                    </div>
                 </li>
             </ul>
         </nav>
 
-        <!-- Main Sidebar Container -->
-        <aside class="main-sidebar sidebar-light-primary elevation-2">
-            <!-- Brand Logo -->
-            <a href="/dashboard" class="brand-link">
-                <img src="{{ asset('assets/Logo universitas.png') }}" alt="Logo" class="brand-image img-circle elevation-3">
-                <span class="brand-text font-weight-light">SIMAKU</span>
+        <!-- ══════════════════════════════
+             SIDEBAR
+        ══════════════════════════════ -->
+        <aside class="main-sidebar sidebar-light-primary elevation-0">
+
+            <!-- Brand — link langsung ke halaman pertama staff -->
+            <a href="{{ route('staff.pembayaran-ukt') }}" class="brand-link">
+                <div class="brand-logo-wrap">
+                    <img src="{{ asset('assets/Logo universitas.png') }}" alt="Logo Polines">
+                </div>
+                <div>
+                    <div class="brand-name">SIMAKU</div>
+                    <div class="brand-sub">Politeknik Negeri Semarang</div>
+                </div>
             </a>
 
-            <!-- Sidebar -->
             <div class="sidebar">
-                <!-- Sidebar Menu -->
-                <nav class="mt-2">
+
+                <!-- Mini user profile -->
+                <div class="sidebar-user">
+                    <div class="sidebar-user-avatar">
+                        <img src="{{ asset('assets/Profile.jpeg') }}" alt="Avatar"
+                             onerror="this.style.display='none'">
+                    </div>
+                    <div style="overflow:hidden;">
+                        <div class="sidebar-user-name">{{ Session::get('username', 'Username') }}</div>
+                        <div class="sidebar-user-role">{{ Session::get('role', 'Staff Keuangan') }}</div>
+                    </div>
+                </div>
+
+                <!-- Navigation -->
+                <nav class="mt-1">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <!-- Dashboard Menu dengan dropdown -->
-                        <li class="nav-item {{ request()->is('staff*') || request()->is('staff/pembayaran-ukt*') || request()->is('staff/cek-tagihan-ukt*') || request()->is('staff/pengajuan-cicilan*') || request()->is('staff/buat-tagihan-ukt*') ? 'menu-open' : '' }}">
-                            <a href="#" class="nav-link {{ request()->is('staff*') || request()->is('staff/pembayaran-ukt*') || request()->is('staff/cek-tagihan-ukt*') || request()->is('staff/pengajuan-cicilan*') || request()->is('staff/buat-tagihan-ukt*') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-th"></i>
-                                <p>
-                                    Dashboard
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
+
+                        <!-- Section: UKT -->
+                        <li class="nav-item"><div class="nav-section-label">UKT</div></li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('staff.pembayaran-ukt') }}"
+                               class="nav-link {{ request()->is('staff/pembayaran-ukt*') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-money-bill-wave"></i>
+                                <p>Pembayaran UKT</p>
                             </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ route('staff.pembayaran-ukt') }}" class="nav-link {{ request()->is('staff/pembayaran-ukt*') ? 'active' : '' }}">
-                                        <p>Pembayaran UKT</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="/staff/cek-tagihan-ukt" class="nav-link {{ request()->is('staff/cek-tagihan-ukt*') ? 'active' : '' }}">
-                                        <p>Cek Tagihan UKT</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('staff.pengajuan-cicilan') }}" class="nav-link {{ request()->is('staff/pengajuan-cicilan*') ? 'active' : '' }}">
-                                        <p>Pengajuan Cicilan</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="/staff/buat-tagihan-ukt" class="nav-link {{ request()->is('staff/buat-tagihan-ukt*') ? 'active' : '' }}">
-                                        <p>Buat Tagihan UKT</p>
-                                    </a>
-                                </li>
-                            </ul>
                         </li>
 
-                        <!-- Beasiswa -->
                         <li class="nav-item">
-                            <a href="{{ route('staff-keuangan.beasiswa.staff-beasiswa') }}" class="nav-link {{ request()->is('staff-keuangan/beasiswa/staff-beasiswa*') ? 'active' : '' }}">
+                            <a href="/staff/cek-tagihan-ukt"
+                               class="nav-link {{ request()->is('staff/cek-tagihan-ukt*') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-file-invoice"></i>
+                                <p>Cek Tagihan UKT</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('staff.pengajuan-cicilan') }}"
+                               class="nav-link {{ request()->is('staff/pengajuan-cicilan*') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-layer-group"></i>
+                                <p>Pengajuan Cicilan</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="/staff/buat-tagihan-ukt"
+                               class="nav-link {{ request()->is('staff/buat-tagihan-ukt*') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-plus-circle"></i>
+                                <p>Buat Tagihan UKT</p>
+                            </a>
+                        </li>
+
+                        <!-- Divider -->
+                        <li class="nav-item"><div class="nav-divider"></div></li>
+
+                        <!-- Section: Lainnya -->
+                        <li class="nav-item"><div class="nav-section-label">Lainnya</div></li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('staff-keuangan.beasiswa.staff-beasiswa') }}"
+                               class="nav-link {{ request()->is('staff-keuangan/beasiswa*') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-graduation-cap"></i>
                                 <p>Beasiswa</p>
                             </a>
                         </li>
 
-                        <!-- Data Mahasiswa -->
                         <li class="nav-item">
-                            <a href="{{ route('staff-keuangan.data-mahasiswa') }}" class="nav-link {{ request()->is('staff-keuangan/data-mahasiswa*') ? 'active' : '' }}">
+                            <a href="{{ route('staff-keuangan.data-mahasiswa') }}"
+                               class="nav-link {{ request()->is('staff-keuangan/data-mahasiswa*') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-users"></i>
                                 <p>Data Mahasiswa</p>
                             </a>
                         </li>
 
-                        <!-- Profile -->
+                        <!-- Divider -->
+                        <li class="nav-item"><div class="nav-divider"></div></li>
+
+                        <!-- Section: Akun -->
+                        <li class="nav-item"><div class="nav-section-label">Akun</div></li>
+
                         <li class="nav-item">
-                            <a href="{{ route('staff-profile') }}" class="nav-link {{ request()->is('staff-profile*') ? 'active' : '' }}">
+                            <a href="{{ route('staff-profile') }}"
+                               class="nav-link {{ request()->is('staff-profile*') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-user"></i>
                                 <p>Profile</p>
                             </a>
                         </li>
 
-                        <!-- Settings -->
                         <li class="nav-item">
-                            <a href="/staff/settings" class="nav-link {{ request()->is('staff/settings*') ? 'active' : '' }}">
+                            <a href="/staff/settings"
+                               class="nav-link {{ request()->is('staff/settings*') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-cog"></i>
-                                <p>Settings</p>
+                                <p>Pengaturan</p>
                             </a>
                         </li>
 
-                        <!-- Logout -->
+                        <!-- Divider -->
+                        <li class="nav-item"><div class="nav-divider"></div></li>
+
                         <li class="nav-item">
-                            <a href="#" class="nav-link" data-toggle="modal" data-target="#logoutModal">
+                            <a href="#" class="nav-link nav-link-logout" data-toggle="modal" data-target="#logoutModal">
                                 <i class="nav-icon fas fa-sign-out-alt"></i>
                                 <p>Logout</p>
                             </a>
                         </li>
+
                     </ul>
                 </nav>
             </div>
         </aside>
 
-        <!-- Content Wrapper -->
+        <!-- ══════════════════════════════
+             CONTENT WRAPPER
+        ══════════════════════════════ -->
         <div class="content-wrapper">
-            <!-- Content Header -->
-            <div class="content-header">
-                <div class="container-fluid">
-                    <div class="row mb-2">
-                        <div class="col-sm-6">
-                            <h1 class="m-0">@yield('header', 'Dashboard')</h1>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="float-sm-right">
-                                @yield('header_button')
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Main content -->
-            <div class="content">
+            <div class="content pt-4 pb-4">
                 <div class="container-fluid">
                     @yield('content')
                 </div>
             </div>
         </div>
 
-        <!-- Footer -->
+        <!-- ══════════════════════════════
+             FOOTER
+        ══════════════════════════════ -->
         <footer class="main-footer">
-            <div class="float-right d-none d-sm-inline">
-                SIMAKU - Sistem Keuangan Mahasiswa
-            </div>
-            <strong>Copyright &copy; {{ date('Y') }}</strong> All rights reserved.
+            <strong>Copyright &copy; {{ date('Y') }} Politeknik Negeri Semarang.</strong>
+            <span class="float-right d-none d-sm-inline">SIMAKU — Sistem Informasi Keuangan Mahasiswa</span>
         </footer>
-    </div>
 
-    <!-- Modal Konfirmasi Logout -->
+    </div>{{-- /.wrapper --}}
+
+    <!-- ══════════════════════════════
+         MODAL LOGOUT
+    ══════════════════════════════ -->
     <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
             <div class="modal-content">
-                <div class="modal-body text-center py-4">
-                    <h5 class="modal-title mb-4" id="logoutModalLabel">LOGOUT FROM ACCOUNT</h5>
-                    <div class="d-flex justify-content-center">
-                        <button type="button" class="btn btn-outline-primary mr-3" data-dismiss="modal" style="min-width: 120px;">Cancel</button>
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: inline;">
+                <div class="modal-body text-center">
+
+                    <div style="width:56px;height:56px;background:#fff1f2;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;">
+                        <i class="fas fa-sign-out-alt" style="font-size:22px;color:var(--danger);"></i>
+                    </div>
+
+                    <h5 style="font-weight:700;color:var(--text);margin-bottom:8px;">Keluar dari akun?</h5>
+                    <p style="font-size:13.5px;color:var(--text-muted);margin-bottom:24px;line-height:1.6;">
+                        Sesi Anda akan diakhiri dan Anda perlu login kembali untuk melanjutkan.
+                    </p>
+
+                    <div style="display:flex;gap:10px;">
+                        <button type="button" class="btn btn-outline-secondary flex-fill" data-dismiss="modal">
+                            Batal
+                        </button>
+                        <form action="{{ route('logout') }}" method="POST" style="flex:1;">
                             @csrf
-                            <button type="submit" class="btn btn-primary" style="min-width: 120px;">Logout</button>
+                            <button type="submit" class="btn btn-danger-soft w-100">
+                                Ya, Keluar
+                            </button>
                         </form>
                     </div>
+
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Scripts - Load these after the HTML so the page renders faster -->
+    <!-- Scripts -->
     <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('vendor/adminlte/dist/js/adminlte.min.js') }}"></script>
 
     <script>
-    $(document).ready(function() {
-        // Aktifkan treeview AdminLTE
-        if($.fn.Treeview) {
-            $('[data-widget="treeview"]').Treeview('init');
-        }
+    $(document).ready(function () {
 
-        // Pastikan dashboard dropdown aktif jika berada di halaman dashboard atau submenu
-        if (window.location.pathname === '/pembayaran-ukt' ||
-            window.location.pathname === '/cek-tagihan-ukt' ||
-            window.location.pathname === '/pengajuan-cicilan' ||
-            window.location.pathname === '/buat-tagihan-ukt' ||
-            window.location.pathname.startsWith('/dashboard') ||
-            window.location.pathname.startsWith('/pembayaran-ukt') ||
-            window.location.pathname.startsWith('/cek-tagihan-ukt') ||
-            window.location.pathname.startsWith('/pengajuan-cicilan') ||
-            window.location.pathname.startsWith('/buat-tagihan-ukt')) {
-            // Menu akan terbuka otomatis karena kelas menu-open sudah ada di PHP
-        }
-
-        // Responsive sidebar handling
-        $('.nav-link[data-widget="pushmenu"]').on('click', function() {
-            if ($(window).width() < 992) {
-                $('body').toggleClass('sidebar-open');
-                $('body').removeClass('sidebar-collapse');
-            } else {
-                $('body').toggleClass('sidebar-collapse');
-                $('body').removeClass('sidebar-open');
-            }
-            return false;
-        });
-
-        // Handle window resize
-        $(window).resize(function() {
-            if ($(window).width() >= 992) {
-                $('body').removeClass('sidebar-open');
-            }
-        });
-
-        $('.navbar-nav .user-menu .user-name').on('click', function(e) {
+        // Sidebar toggle responsive
+        $('[data-widget="pushmenu"]').on('click', function (e) {
             e.preventDefault();
-            e.stopPropagation(); // Mencegah dropdown terbuka
-            window.location.href = '/profile';
+            if ($(window).width() < 992) {
+                $('body').toggleClass('sidebar-open').removeClass('sidebar-collapse');
+            } else {
+                $('body').toggleClass('sidebar-collapse').removeClass('sidebar-open');
+            }
         });
 
-        // Log the user session report again after page is fully loaded
-        console.log('%c SIMAKU User Session Report (Ready) ', 'background: #4e73df; color: white; padding: 4px; border-radius: 3px; font-weight: bold;');
+        $(window).on('resize', function () {
+            if ($(window).width() >= 992) $('body').removeClass('sidebar-open');
+        });
+
+        // Session log
+        console.log('%c SIMAKU Session (ready) ', 'background:#4338ca;color:#fff;padding:3px 8px;border-radius:4px;font-weight:bold;');
         console.log(JSON.stringify(window.userSessionReport, null, 2));
     });
     </script>
