@@ -2,451 +2,831 @@
 
 @section('title', 'Lihat Tagihan UKT - SIMAKU')
 
-@section('header', 'Lihat Tagihan UKT')
-
-
-@section('content')
-<!-- Back Button -->
-<div class="mt-3 mb-3">
-    <a href="/lihat-tagihan-ukt" class="btn btn-primary">
-        <i class="fas fa-arrow-left"></i> Kembali
-    </a>
-</div>
-<div class="row">
-    <div class="col-12">
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <!-- Informasi Tagihan -->
-                <div class="row">
-                    <div class="col-md-7">
-                        <div class="row mb-3">
-                            <div class="col-4">
-                                <p class="mb-0"><strong>No Tagihan :</strong></p>
-                            </div>
-                            <div class="col-8">
-                                <p class="text-dark mb-0">{{ isset($uktSemester['id']) ? 'INV' . str_pad($uktSemester['id'], 5, '0', STR_PAD_LEFT) : '-' }}</p>
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <div class="col-4">
-                                <p class="mb-0"><strong>Mahasiswa :</strong></p>
-                            </div>
-                            <div class="col-8">
-                                <p class="text-dark mb-0">{{ $uktSemester['enrollment']['mahasiswa']['nama_lengkap'] ?? '-' }}</p>
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <div class="col-4">
-                                <p class="mb-0"><strong>NIM :</strong></p>
-                            </div>
-                            <div class="col-8">
-                                <p class="text-dark mb-0">{{ $uktSemester['enrollment']['mahasiswa']['nim'] ?? '-' }}</p>
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <div class="col-4">
-                                <p class="mb-0"><strong>Semester :</strong></p>
-                            </div>
-                            <div class="col-8">
-                                <p class="text-dark mb-0">{{ $uktSemester['periode_pembayaran']['nama_periode'] ?? '-' }}</p>
-                            </div>
-                        </div>
-
-                        @php
-                            $statusLunas = 'terbayar';
-                            if (!empty($uktSemester['pembayaran'])) {
-                                foreach ($uktSemester['pembayaran'] as $pembayaran) {
-                                    if ($pembayaran['status'] != 'terbayar') {
-                                        $statusLunas = 'belum_bayar';
-                                        break;
-                                    }
-                                }
-                            } else {
-                                $statusLunas = '-';
-                            }
-                        @endphp
-
-                        <div class="row mb-3">
-                            <div class="col-4">
-                                <p class="mb-0"><strong>Daftar Ulang :</strong></p>
-                            </div>
-                            <div class="col-8">
-                                @if($statusLunas == 'terbayar')
-                                    <span class="badge badge-success">Sudah Lunas</span>
-                                @elseif($statusLunas == 'belum_bayar')
-                                    <span class="badge badge-danger">Belum Bayar</span>
-                                @else
-                                    <span class="badge badge-secondary">-</span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <div class="col-4">
-                                <p class="mb-0"><strong>Tanggal Terbit :</strong></p>
-                            </div>
-                            <div class="col-8">
-                                <p class="text-dark mb-0">
-                                    {{ isset($uktSemester['periode_pembayaran']['tanggal_mulai'])
-                                        ? \Carbon\Carbon::parse($uktSemester['periode_pembayaran']['tanggal_mulai'])->translatedFormat('d F Y')
-                                        : '-'
-                                    }}
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <div class="col-4">
-                                <p class="mb-0"><strong>Tanggal Jatuh Tempo :</strong></p>
-                            </div>
-                            <div class="col-8">
-                                <p class="text-dark mb-0">
-                                    {{ isset($uktSemester['periode_pembayaran']['tanggal_selesai'])
-                                        ? \Carbon\Carbon::parse($uktSemester['periode_pembayaran']['tanggal_selesai'])->translatedFormat('d F Y')
-                                        : '-'
-                                    }}
-                                </p>
-                            </div>
-                        </div>
-                    <div class="row mb-3">
-                            <div class="col-4">
-                                <p class="mb-0"><strong>Tagihan :</strong></p>
-                            </div>
-                            <div class="col-8">
-                                <a href="#" class="btn btn-primary btn-sm">
-                                    <i class="fas fa-download"></i>  Download Tagihan
-                                </a>
-                            </div>
-                        </div>
-                    <div class="row mb-3">
-                            <div class="col-4">
-                                <p class="mb-0"><strong>Metode Pembayaran :</strong></p>
-                            </div>
-                            <div class="col-8">
-                            @php
-                                $sudahAjukanCicilan = false;
-                                $totalTagihan = 0;
-                                $totalTerbayar = 0;
-
-                                if (!empty($uktSemester['pembayaran'])) {
-                                    foreach ($uktSemester['pembayaran'] as $pembayaran) {
-                                        $totalTagihan += $pembayaran['nominal_tagihan'];
-
-                                        // Hitung total pembayaran yang sudah terverifikasi
-                                        foreach ($pembayaran['detail_pembayaran'] as $detail) {
-                                            if (strtolower($detail['status'] ?? '') === 'verified') {
-                                                $totalTerbayar += $detail['nominal'];
-                                            }
-                                        }
-                                    }
-
-                                    // Jika ada lebih dari satu pembayaran, maka cicilan sudah diajukan
-                                    if (count($uktSemester['pembayaran']) > 1) {
-                                        $sudahAjukanCicilan = true;
-                                    }
-
-                                    // Tapi kalau seluruh tagihan sudah terbayar, maka anggap tidak bisa ajukan cicilan
-                                    if ($totalTerbayar >= $totalTagihan) {
-                                        $sudahAjukanCicilan = true;
-                                    }
-                                }
-                            @endphp
-                                <div>
-                                    {{-- Tombol Pembayaran Langsung selalu ditampilkan --}}
-                                    <a href="#" class="btn btn-primary btn-sm">
-                                        Pembayaran Langsung
-                                    </a>
-
-                                    {{-- Tampilkan tombol Ajukan Cicilan jika belum pernah mengajukan --}}
-                                    @if(!$sudahAjukanCicilan)
-                                        <a href="{{ route('pengajuan.cicilan', ['id' => $uktSemester['id']]) }}" class="btn btn-success btn-sm">
-                                            Ajukan Cicilan
-                                        </a>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-
-                        @if (!empty($uktsemester['pengajuan_cicilan']) && isset($uktsemester['pengajuan_cicilan'][0]['id']))
-                            <!-- Pengajuan cicilan sudah masuk -->
-                            <div class="alert alert-warning mt-2 mb-2" role="alert">
-                                <i class="fas fa-info-circle"></i> Pengajuan cicilan anda sudah masuk, silahkan lanjutkan proses selanjutnya.
-                            </div>
-                        @else
-                            <!-- Belum ada pengajuan cicilan -->
-                            <div class="alert alert-warning mt-2 mb-2" role="alert">
-                                <i class="fas fa-exclamation-triangle"></i> Silahkan pilih untuk metode pembayaran anda.
-                            </div>
-                        @endif
-                     </div>
-                </div>
-
-
-                @foreach($uktSemester['pembayaran'] as $pembayaran)
-                    @php
-                        // Total tagihan dari masing-masing pembayaran
-                        $totalTagihan = $pembayaran['nominal_tagihan'];
-
-                        // Ambil detail pembayaran pertama (jika ada)
-                        $detail = $pembayaran['detail_pembayaran'][0] ?? null;
-
-                        // Default
-                        $terbayar = 0;
-                        $statusVerifikasi = $detail['status'] ?? null;
-                        $metodePembayaran = $detail['metode_pembayaran'] ?? '-';
-
-                        // Jika statusnya verified, hitung sebagai pembayaran
-                        if ($detail && strtolower($statusVerifikasi) === 'verified') {
-                            $terbayar = $detail['nominal'];
-                        }
-
-                        // Hitung belum dibayar
-                        $belumDibayar = (float) $totalTagihan - (float) $terbayar;
-                    @endphp
-                @endforeach
-                     <div class="table-responsive mt-4">
-                        <table class="table table-bordered">
-                            <thead class="thead-light text-center">
-                                <tr>
-                                    <th>ID Pembayaran</th>
-                                    <th>Tagihan</th>
-                                    <th>Terbayar</th>
-                                    <th>Belum Dibayar</th>
-                                    <th>Status Verifikasi</th>
-                                    <th>Dibayar Melalui</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if (!empty($uktSemester['pembayaran']))
-                                    @foreach($uktSemester['pembayaran'] as $pembayaran)
-                                        @php
-                                            $totalTagihan = $pembayaran['nominal_tagihan'];
-                                            $detail = $pembayaran['detail_pembayaran'][0] ?? null;
-                                            $terbayar = 0;
-                                            $statusVerifikasi = $detail['status'] ?? null;
-                                            $metodePembayaran = $detail['metode_pembayaran'] ?? '-';
-                                            if ($detail && strtolower($statusVerifikasi) === 'verified') {
-                                                $terbayar = $detail['nominal'];
-                                            }
-                                            $belumDibayar = $totalTagihan - $terbayar;
-                                        @endphp
-                                        <tr class="text-center">
-                                            <td>{{ $pembayaran['id'] }}</td>
-                                            <td>Rp{{ number_format($totalTagihan, 0, ',', '.') }}</td>
-                                            <td class="text-success">Rp{{ number_format($terbayar, 0, ',', '.') }}</td>
-                                            <td class="text-danger">Rp{{ number_format($belumDibayar, 0, ',', '.') }}</td>
-                                            <td>
-                                                @if($statusVerifikasi === 'verified')
-                                                    <span class="badge badge-success">Berhasil diverifikasi</span>
-                                                @elseif($statusVerifikasi === 'rejected')
-                                                    <span class="badge badge-danger">Pembayaran ditolak</span>
-                                                @elseif($statusVerifikasi === 'pending')
-                                                    <span class="badge badge-warning">Menunggu diverifikasi</span>
-                                                @else
-                                                    <span class="badge badge-secondary">Belum ada pembayaran</span>
-                                                @endif
-                                            </td>
-                                            <td>
-                                                @if($metodePembayaran !== '-')
-                                                    <span class="badge badge-info">{{ $metodePembayaran }}</span>
-                                                @else
-                                                    -
-                                                @endif
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @else
-                                    <tr>
-                                        <td colspan="6" class="text-center">Belum ada data pembayaran</td>
-                                    </tr>
-                                @endif
-                            </tbody>
-                        </table>
-                    </div>
-
-                <!-- Notes -->
-                <div class="row mb-2">
-                    <div class="col-md-6">
-                        <div class="row">
-                            <div class="col-4">
-                                <p class="mb-0"><strong>Catatan :</strong></p>
-                            </div>
-                            <div class="col-8">
-                                <p class="text-dark mb-0">-</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row mb-4">
-                    <div class="col-md-6">
-                        <div class="row">
-                            <div class="col-4">
-                                <p class="mb-0"><strong>Catatan Pembayaran :</strong></p>
-                            </div>
-                            <div class="col-8">
-                                <p class="text-dark mb-0">-</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-                <!-- Upload Bukti Pembayaran Section -->
-                <div class="card mt-4">
-                    <div class="card-header bg-light">
-                        <h5 class="card-title mb-0">Upload Bukti Pembayaran</h5>
-                    </div>
-                    <div class="card-body">
-                        <!-- Tombol Upload -->
-                        <div class="mb-3">
-                            {{-- <a href="{{ route('upload-bukti-pembayaran', ['id' => $uktSemester['id']]) }}" class="btn btn-primary" style="min-width: 220px;"> --}}
-                            <a href="{{ route('upload-bukti-pembayaran', ['id' => $uktSemester['id']]) }}" class="btn btn-primary" style="min-width: 220px;">
-                                <i class="fas fa-plus"></i> Tambah Bukti Pembayaran
-                            </a>
-                        </div>
-
-                        <!-- Tabel Upload Bukti Pembayaran -->
-                        <div class="table-responsive">
-                            <table class="table table-bordered">
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th class="text-center">No</th>
-                                        <th>Nama Mahasiswa</th>
-                                        <th>Bank Pengirim</th>
-                                        <th>Tanggal Pembayaran</th>
-                                        <th>Jumlah Pembayaran</th>
-                                        <th>Keterangan</th>
-                                        <th class="text-center">Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @if (!empty($uktSemester['pembayaran']) && count($uktSemester['pembayaran']) > 0)
-                                        @php $adaBukti = false; @endphp
-
-                                        @foreach ($uktSemester['pembayaran'] as $index => $pembayaran)
-                                            @if (!empty($pembayaran['detail_pembayaran']) && count($pembayaran['detail_pembayaran']) > 0)
-                                                @php
-                                                    $detail = $pembayaran['detail_pembayaran'][0];
-                                                    $adaBukti = true;
-                                                @endphp
-                                                <tr>
-                                                    <td class="text-center">{{ $index + 1 }}</td>
-                                                    <td>{{ $uktSemester['enrollment']['mahasiswa']['nama_lengkap'] }}</td>
-                                                    <td>BANK {{ $detail['metode_pembayaran'] }}</td>
-                                                    <td>{{ \Carbon\Carbon::parse($detail['tanggal_pembayaran'])->translatedFormat('d F Y') }}</td>
-                                                    <td>Rp{{ number_format($detail['nominal'], 0, ',', '.') }}</td>
-                                                    <td>{{ $detail['catatan'] ?? '-' }}</td>
-                                                    <td class="text-center">
-                                                        {{-- <a href="{{ asset('storage/' . $detail['bukti_pembayaran_path']) }}" download class="btn btn-sm btn-primary"> --}}
-                                                             <a href="{{ asset('storage/' . $detail['bukti_pembayaran_path']) }}" class="btn btn-sm btn-primary" title="Lihat Bukti" target="_blank">
-                                                            <i class="fas fa-download"></i>
-                                                        </a>
-                                                        <a href="#" class="btn btn-sm btn-success" title="Edit">
-                                                        {{-- <a href="{{ route('edit-bukti-pembayaran', ['id' => $detail['id']]) }}" class="btn btn-sm btn-success" title="Edit"> --}}
-                                                            <i class="fas fa-edit"></i>
-                                                        </a>
-                                                        <a href="#" class="btn btn-sm btn-danger" title="Hapus" onclick="return confirm('Yakin ingin menghapus bukti pembayaran ini?')">
-                                                        {{-- <a href="{{ route('hapus-bukti-pembayaran', ['id' => $detail['id']]) }}" class="btn btn-sm btn-danger" title="Hapus" onclick="return confirm('Yakin ingin menghapus bukti pembayaran ini?')"> --}}
-                                                            <i class="fas fa-trash"></i>
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                            @endif
-                                        @endforeach
-
-                                        @if (!$adaBukti)
-                                            <tr>
-                                                <td colspan="7" class="text-center">Belum ada bukti pembayaran</td>
-                                            </tr>
-                                        @endif
-                                    @else
-                                        <tr>
-                                            <td colspan="7" class="text-center">Belum ada bukti pembayaran</td>
-                                        </tr>
-                                    @endif
-
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-@endsection
+@section('header', 'Detail Tagihan')
 
 @section('styles')
 <style>
-    .alert-success {
-        background-color: #d4edda;
-        border-color: #c3e6cb;
-        color: #155724;
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap');
+
+    :root {
+        --primary:       #4338ca;
+        --primary-soft:  #e0e7ff;
+        --primary-text:  #3730a3;
+        --success:       #059669;
+        --success-soft:  #d1fae5;
+        --danger:        #e11d48;
+        --danger-soft:   #ffe4e6;
+        --warning:       #d97706;
+        --warning-soft:  #fef3c7;
+        --info:          #0284c7;
+        --info-soft:     #e0f2fe;
+        --surface:       #ffffff;
+        --bg:            #f1f5f9;
+        --text:          #0f172a;
+        --text-muted:    #64748b;
+        --text-hint:     #94a3b8;
+        --border:        #e2e8f0;
+        --radius:        12px;
+        --radius-lg:     16px;
+        --shadow-sm:     0 1px 2px rgba(0,0,0,0.04);
+        --shadow-md:     0 4px 12px rgba(0,0,0,0.08);
+        --shadow-lg:     0 8px 24px rgba(0,0,0,0.12);
     }
 
-    .alert-danger {
-        background-color: #f8d7da;
-        border-color: #f5c6cb;
-        color: #721c24;
+    .content-wrapper {
+        background-color: var(--bg) !important;
+        font-family: 'Plus Jakarta Sans', sans-serif !important;
     }
 
-    .badge-info {
-        background-color: #17a2b8;
+    /* ── Back Button ── */
+    .back-button-wrapper {
+        margin-bottom: 24px;
     }
 
-    .badge-warning {
-        background-color: #ffc107;
-        color: #212529;
+    .btn-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 18px;
+        background: var(--surface);
+        color: var(--text-muted);
+        border: 1.5px solid var(--border);
+        border-radius: 10px;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.2s ease;
+        cursor: pointer;
     }
 
-    .badge-danger {
-        background-color: #dc3545;
-        color: #fff;
+    .btn-back:hover {
+        background: var(--bg);
+        border-color: var(--text-muted);
+        color: var(--text);
+        transform: translateX(-2px);
+    }
+
+    .btn-back i {
+        font-size: 13px;
+    }
+
+    /* ── Detail Card ── */
+    .detail-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        margin-bottom: 24px;
+        box-shadow: var(--shadow-sm);
+    }
+
+    .detail-card-header {
+        padding: 20px 24px;
+        border-bottom: 1px solid var(--border);
+        background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    }
+
+    .detail-card-title {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--text);
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 9px;
+    }
+
+    .detail-card-title i {
+        color: var(--primary);
+        font-size: 15px;
+    }
+
+    .detail-card-body {
+        padding: 24px;
+    }
+
+    /* ── Info Grid ── */
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        margin-bottom: 24px;
+    }
+
+    @media (max-width: 768px) {
+        .info-grid { grid-template-columns: 1fr; }
+    }
+
+    .info-item {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .info-label {
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--text-muted);
+    }
+
+    .info-value {
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--text);
+    }
+
+    .info-value.monospace {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 14px;
+    }
+
+    /* ── Badges ── */
+    .badge-premium {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+    }
+
+    .badge-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        flex-shrink: 0;
     }
 
     .badge-success {
-        background-color: #28a745;
-        color: #fff;
+        background: var(--success-soft);
+        color: var(--success);
+    }
+    .badge-success .badge-dot { background: var(--success); }
+
+    .badge-danger {
+        background: var(--danger-soft);
+        color: var(--danger);
+    }
+    .badge-danger .badge-dot { background: var(--danger); }
+
+    .badge-warning {
+        background: var(--warning-soft);
+        color: var(--warning);
+    }
+    .badge-warning .badge-dot { background: var(--warning); }
+
+    .badge-info {
+        background: var(--info-soft);
+        color: var(--info);
+    }
+    .badge-info .badge-dot { background: var(--info); }
+
+    .badge-secondary {
+        background: var(--bg);
+        color: var(--text-muted);
+    }
+    .badge-secondary .badge-dot { background: var(--text-hint); }
+
+    /* ── Action Buttons ── */
+    .action-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid var(--border);
     }
 
-    .text-danger {
-        color: #dc3545 !important;
-    }
-
-    .table-bordered thead th {
-        border-bottom: 2px solid #dee2e6;
-    }
-
-    .card-header {
-        background-color: #f8f9fa;
-        border-bottom: 1px solid rgba(0,0,0,.125);
-    }
-
-    .alert-warning {
-        background-color: #fff3cd;
-        border-color: #ffeeba;
-        color: #856404;
-    }
-
-    /* Make sure each section has proper spacing */
-    .card-body p {
-        margin-bottom: 0;
-    }
-
-    strong {
+    .btn-premium {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 11px 20px;
+        border-radius: 10px;
+        font-size: 14px;
         font-weight: 600;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        cursor: pointer;
+        border: none;
+        white-space: nowrap;
     }
 
-    .thead-light th {
-        background-color: #f8f9fc;
+    .btn-primary-premium {
+        background: var(--primary);
+        color: white;
+        box-shadow: 0 3px 10px rgba(67, 56, 202, 0.25);
     }
 
-    .table td, .table th {
+    .btn-primary-premium:hover {
+        background: var(--primary-text);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(67, 56, 202, 0.35);
+    }
+
+    .btn-success-premium {
+        background: var(--success);
+        color: white;
+        box-shadow: 0 3px 10px rgba(5, 150, 105, 0.25);
+    }
+
+    .btn-success-premium:hover {
+        background: #047857;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(5, 150, 105, 0.35);
+    }
+
+    .btn-premium:active {
+        transform: translateY(0) scale(0.98);
+    }
+
+    /* ── Alerts ── */
+    .alert-premium {
+        padding: 14px 18px;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 500;
+        margin-top: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .alert-premium i {
+        font-size: 16px;
+        flex-shrink: 0;
+    }
+
+    .alert-warning-premium {
+        background: var(--warning-soft);
+        color: var(--warning);
+        border: 1px solid #fde68a;
+    }
+
+    .alert-info-premium {
+        background: var(--info-soft);
+        color: var(--info);
+        border: 1px solid #bae6fd;
+    }
+
+    /* ── Table Premium ── */
+    .table-premium {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    .table-premium thead th {
+        background: var(--bg);
+        padding: 14px 16px;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--text-muted);
+        border-bottom: 2px solid var(--border);
+        white-space: nowrap;
+        text-align: left;
+    }
+
+    .table-premium thead th.text-center {
+        text-align: center;
+    }
+
+    .table-premium tbody td {
+        padding: 16px;
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--text);
+        border-bottom: 1px solid var(--border);
         vertical-align: middle;
     }
+
+    .table-premium tbody td.text-center {
+        text-align: center;
+    }
+
+    .table-premium tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    .table-premium tbody tr:hover td {
+        background: #f8fafc;
+    }
+
+    .text-success { color: var(--success) !important; }
+    .text-danger { color: var(--danger) !important; }
+    .text-muted { color: var(--text-muted) !important; }
+
+    /* ── Upload Section ── */
+    .upload-section {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        box-shadow: var(--shadow-sm);
+    }
+
+    .upload-section-header {
+        padding: 18px 24px;
+        border-bottom: 1px solid var(--border);
+        background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    }
+
+    .upload-section-title {
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--text);
+        margin: 0;
+    }
+
+    .upload-section-body {
+        padding: 24px;
+    }
+
+    /* ── Button Group Actions (Edit/Delete) ── */
+    .btn-group-sm {
+        display: inline-flex;
+        gap: 6px;
+    }
+
+    .btn-icon-sm {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        font-size: 12px;
+        text-decoration: none;
+        transition: all 0.15s ease;
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn-icon-primary {
+        background: var(--primary-soft);
+        color: var(--primary);
+    }
+
+    .btn-icon-primary:hover {
+        background: var(--primary);
+        color: white;
+        transform: translateY(-1px);
+    }
+
+    .btn-icon-success {
+        background: var(--success-soft);
+        color: var(--success);
+    }
+
+    .btn-icon-success:hover {
+        background: var(--success);
+        color: white;
+        transform: translateY(-1px);
+    }
+
+    .btn-icon-danger {
+        background: var(--danger-soft);
+        color: var(--danger);
+    }
+
+    .btn-icon-danger:hover {
+        background: var(--danger);
+        color: white;
+        transform: translateY(-1px);
+    }
+
+    /* ── Empty State ── */
+    .empty-state {
+        padding: 48px 24px;
+        text-align: center;
+        color: var(--text-muted);
+    }
+
+    .empty-state-icon {
+        width: 56px;
+        height: 56px;
+        border-radius: 14px;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 14px;
+        font-size: 22px;
+        color: var(--text-hint);
+    }
+
+    .empty-state-text {
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+        .action-buttons {
+            flex-direction: column;
+        }
+
+        .btn-premium {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .table-premium thead {
+            display: none;
+        }
+
+        .table-premium tbody tr {
+            display: block;
+            margin-bottom: 16px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px;
+        }
+
+        .table-premium tbody td {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--border);
+            text-align: right;
+        }
+
+        .table-premium tbody td::before {
+            content: attr(data-label);
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.05em;
+        }
+
+        .table-premium tbody td:last-child {
+            border-bottom: none;
+        }
+    }
 </style>
+@endsection
+
+@section('content')
+{{-- Back Button --}}
+<div class="back-button-wrapper">
+    <a href="/lihat-tagihan-ukt" class="btn-back">
+        <i class="fas fa-arrow-left"></i>
+        <span>Kembali</span>
+    </a>
+</div>
+
+{{-- Detail Card --}}
+<div class="detail-card">
+    <div class="detail-card-header">
+        <h5 class="detail-card-title">
+            <i class="fas fa-file-invoice-dollar"></i>
+            Informasi Tagihan
+        </h5>
+    </div>
+    <div class="detail-card-body">
+        {{-- Info Grid --}}
+        <div class="info-grid">
+            <div class="info-item">
+                <span class="info-label">No. Tagihan</span>
+                <span class="info-value monospace">
+                    {{ isset($uktSemester['id']) ? '#INV-' . str_pad($uktSemester['id'], 5, '0', STR_PAD_LEFT) : '-' }}
+                </span>
+            </div>
+
+            <div class="info-item">
+                <span class="info-label">Mahasiswa</span>
+                <span class="info-value">{{ $uktSemester['enrollment']['mahasiswa']['nama_lengkap'] ?? '-' }}</span>
+            </div>
+
+            <div class="info-item">
+                <span class="info-label">NIM</span>
+                <span class="info-value monospace">{{ $uktSemester['enrollment']['mahasiswa']['nim'] ?? '-' }}</span>
+            </div>
+
+            <div class="info-item">
+                <span class="info-label">Semester</span>
+                <span class="info-value">{{ $uktSemester['periode_pembayaran']['nama_periode'] ?? '-' }}</span>
+            </div>
+
+            <div class="info-item">
+                <span class="info-label">Status Pembayaran</span>
+                @php
+                    $statusLunas = 'terbayar';
+                    if (!empty($uktSemester['pembayaran'])) {
+                        foreach ($uktSemester['pembayaran'] as $pembayaran) {
+                            if ($pembayaran['status'] != 'terbayar') {
+                                $statusLunas = 'belum_bayar';
+                                break;
+                            }
+                        }
+                    } else {
+                        $statusLunas = '-';
+                    }
+                @endphp
+                @if($statusLunas == 'terbayar')
+                    <span class="badge-premium badge-success">
+                        <span class="badge-dot"></span>
+                        Sudah Lunas
+                    </span>
+                @elseif($statusLunas == 'belum_bayar')
+                    <span class="badge-premium badge-danger">
+                        <span class="badge-dot"></span>
+                        Belum Bayar
+                    </span>
+                @else
+                    <span class="badge-premium badge-secondary">
+                        <span class="badge-dot"></span>
+                        -
+                    </span>
+                @endif
+            </div>
+
+            <div class="info-item">
+                <span class="info-label">Tanggal Terbit</span>
+                <span class="info-value">
+                    {{ isset($uktSemester['periode_pembayaran']['tanggal_mulai'])
+                        ? \Carbon\Carbon::parse($uktSemester['periode_pembayaran']['tanggal_mulai'])->translatedFormat('d F Y')
+                        : '-'
+                    }}
+                </span>
+            </div>
+
+            <div class="info-item">
+                <span class="info-label">Tanggal Jatuh Tempo</span>
+                <span class="info-value">
+                    {{ isset($uktSemester['periode_pembayaran']['tanggal_selesai'])
+                        ? \Carbon\Carbon::parse($uktSemester['periode_pembayaran']['tanggal_selesai'])->translatedFormat('d F Y')
+                        : '-'
+                    }}
+                </span>
+            </div>
+
+            <div class="info-item">
+                <span class="info-label">Download Tagihan</span>
+                <a href="#" class="btn-premium btn-primary-premium" style="padding: 8px 16px; font-size: 13px;">
+                    <i class="fas fa-download"></i>
+                    <span>Download</span>
+                </a>
+            </div>
+        </div>
+
+        {{-- Action Buttons --}}
+        <div class="action-buttons">
+            @php
+                $sudahAjukanCicilan = false;
+                $totalTagihan = 0;
+                $totalTerbayar = 0;
+
+                if (!empty($uktSemester['pembayaran'])) {
+                    foreach ($uktSemester['pembayaran'] as $pembayaran) {
+                        $totalTagihan += $pembayaran['nominal_tagihan'];
+
+                        foreach ($pembayaran['detail_pembayaran'] as $detail) {
+                            if (strtolower($detail['status'] ?? '') === 'verified') {
+                                $totalTerbayar += $detail['nominal'];
+                            }
+                        }
+                    }
+
+                    if (count($uktSemester['pembayaran']) > 1) {
+                        $sudahAjukanCicilan = true;
+                    }
+
+                    if ($totalTerbayar >= $totalTagihan) {
+                        $sudahAjukanCicilan = true;
+                    }
+                }
+            @endphp
+
+            <a href="#" class="btn-premium btn-primary-premium">
+                <i class="fas fa-credit-card"></i>
+                <span>Pembayaran Langsung</span>
+            </a>
+
+            @if(!$sudahAjukanCicilan)
+                <a href="{{ route('pengajuan.cicilan', ['id' => $uktSemester['id']]) }}" class="btn-premium btn-success-premium">
+                    <i class="fas fa-hand-holding-usd"></i>
+                    <span>Ajukan Cicilan</span>
+                </a>
+            @endif
+        </div>
+
+        {{-- Alert Messages --}}
+        @if (!empty($uktsemester['pengajuan_cicilan']) && isset($uktsemester['pengajuan_cicilan'][0]['id']))
+            <div class="alert-premium alert-warning-premium">
+                <i class="fas fa-info-circle"></i>
+                <span>Pengajuan cicilan anda sudah masuk, silahkan lanjutkan proses selanjutnya.</span>
+            </div>
+        @else
+            <div class="alert-premium alert-info-premium">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span>Silahkan pilih untuk metode pembayaran anda.</span>
+            </div>
+        @endif
+    </div>
+</div>
+
+{{-- Payment Table --}}
+<div class="detail-card">
+    <div class="detail-card-header">
+        <h5 class="detail-card-title">
+            <i class="fas fa-list"></i>
+            Detail Pembayaran
+        </h5>
+    </div>
+    <div class="detail-card-body">
+        <div class="table-responsive">
+            <table class="table-premium">
+                <thead>
+                    <tr>
+                        <th>ID Pembayaran</th>
+                        <th>Tagihan</th>
+                        <th>Terbayar</th>
+                        <th>Belum Dibayar</th>
+                        <th>Status Verifikasi</th>
+                        <th>Dibayar Melalui</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!empty($uktSemester['pembayaran']))
+                        @foreach($uktSemester['pembayaran'] as $pembayaran)
+                            @php
+                                $totalTagihan = $pembayaran['nominal_tagihan'];
+                                $detail = $pembayaran['detail_pembayaran'][0] ?? null;
+                                $terbayar = 0;
+                                $statusVerifikasi = $detail['status'] ?? null;
+                                $metodePembayaran = $detail['metode_pembayaran'] ?? '-';
+
+                                if ($detail && strtolower($statusVerifikasi) === 'verified') {
+                                    $terbayar = $detail['nominal'];
+                                }
+
+                                $belumDibayar = $totalTagihan - $terbayar;
+                            @endphp
+                            <tr>
+                                <td class="monospace" data-label="ID Pembayaran">{{ $pembayaran['id'] }}</td>
+                                <td class="monospace" data-label="Tagihan">Rp{{ number_format($totalTagihan, 0, ',', '.') }}</td>
+                                <td class="text-success monospace" data-label="Terbayar">Rp{{ number_format($terbayar, 0, ',', '.') }}</td>
+                                <td class="text-danger monospace" data-label="Belum Dibayar">Rp{{ number_format($belumDibayar, 0, ',', '.') }}</td>
+                                <td data-label="Status Verifikasi">
+                                    @if($statusVerifikasi === 'verified')
+                                        <span class="badge-premium badge-success">
+                                            <span class="badge-dot"></span>
+                                            Berhasil diverifikasi
+                                        </span>
+                                    @elseif($statusVerifikasi === 'rejected')
+                                        <span class="badge-premium badge-danger">
+                                            <span class="badge-dot"></span>
+                                            Pembayaran ditolak
+                                        </span>
+                                    @elseif($statusVerifikasi === 'pending')
+                                        <span class="badge-premium badge-warning">
+                                            <span class="badge-dot"></span>
+                                            Menunggu diverifikasi
+                                        </span>
+                                    @else
+                                        <span class="badge-premium badge-secondary">
+                                            <span class="badge-dot"></span>
+                                            Belum ada pembayaran
+                                        </span>
+                                    @endif
+                                </td>
+                                <td data-label="Dibayar Melalui">
+                                    @if($metodePembayaran !== '-')
+                                        <span class="badge-premium badge-info">{{ $metodePembayaran }}</span>
+                                    @else
+                                        <span class="text-muted">-</span>
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforeach
+                    @else
+                        <tr>
+                            <td colspan="6">
+                                <div class="empty-state">
+                                    <div class="empty-state-icon">
+                                        <i class="fas fa-inbox"></i>
+                                    </div>
+                                    <div class="empty-state-text">Belum ada data pembayaran</div>
+                                </div>
+                            </td>
+                        </tr>
+                    @endif
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{{-- Upload Bukti Pembayaran Section --}}
+<div class="upload-section">
+    <div class="upload-section-header">
+        <h5 class="upload-section-title">
+            <i class="fas fa-cloud-upload-alt" style="color: var(--primary); margin-right: 8px;"></i>
+            Upload Bukti Pembayaran
+        </h5>
+    </div>
+    <div class="upload-section-body">
+        {{-- Upload Button --}}
+        <div class="mb-4">
+            <a href="{{ route('upload-bukti-pembayaran', ['id' => $uktSemester['id']]) }}" class="btn-premium btn-primary-premium">
+                <i class="fas fa-plus"></i>
+                <span>Tambah Bukti Pembayaran</span>
+            </a>
+        </div>
+
+        {{-- Upload Table --}}
+        <div class="table-responsive">
+            <table class="table-premium">
+                <thead>
+                    <tr>
+                        <th class="text-center" width="5%">No</th>
+                        <th>Nama Mahasiswa</th>
+                        <th>Bank Pengirim</th>
+                        <th>Tanggal Pembayaran</th>
+                        <th>Jumlah Pembayaran</th>
+                        <th>Keterangan</th>
+                        <th class="text-center" width="15%">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!empty($uktSemester['pembayaran']) && count($uktSemester['pembayaran']) > 0)
+                        @php $adaBukti = false; @endphp
+
+                        @foreach ($uktSemester['pembayaran'] as $index => $pembayaran)
+                            @if (!empty($pembayaran['detail_pembayaran']) && count($pembayaran['detail_pembayaran']) > 0)
+                                @php
+                                    $detail = $pembayaran['detail_pembayaran'][0];
+                                    $adaBukti = true;
+                                @endphp
+                                <tr>
+                                    <td class="text-center" data-label="No">{{ $index + 1 }}</td>
+                                    <td data-label="Nama Mahasiswa">{{ $uktSemester['enrollment']['mahasiswa']['nama_lengkap'] }}</td>
+                                    <td data-label="Bank Pengirim">BANK {{ $detail['metode_pembayaran'] }}</td>
+                                    <td data-label="Tanggal Pembayaran">
+                                        {{ \Carbon\Carbon::parse($detail['tanggal_pembayaran'])->translatedFormat('d F Y') }}
+                                    </td>
+                                    <td class="monospace" data-label="Jumlah Pembayaran">
+                                        Rp{{ number_format($detail['nominal'], 0, ',', '.') }}
+                                    </td>
+                                    <td data-label="Keterangan">{{ $detail['catatan'] ?? '-' }}</td>
+                                    <td class="text-center" data-label="Aksi">
+                                        <div class="btn-group-sm">
+                                            <a href="{{ asset('storage/' . $detail['bukti_pembayaran_path']) }}"
+                                               class="btn-icon-sm btn-icon-primary"
+                                               title="Lihat Bukti"
+                                               target="_blank">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <a href="#" class="btn-icon-sm btn-icon-success" title="Edit">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <a href="#" class="btn-icon-sm btn-icon-danger"
+                                               title="Hapus"
+                                               onclick="return confirm('Yakin ingin menghapus bukti pembayaran ini?')">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endif
+                        @endforeach
+
+                        @if (!$adaBukti)
+                            <tr>
+                                <td colspan="7">
+                                    <div class="empty-state">
+                                        <div class="empty-state-icon">
+                                            <i class="fas fa-file-upload"></i>
+                                        </div>
+                                        <div class="empty-state-text">Belum ada bukti pembayaran</div>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endif
+                    @else
+                        <tr>
+                            <td colspan="7">
+                                <div class="empty-state">
+                                    <div class="empty-state-icon">
+                                        <i class="fas fa-file-upload"></i>
+                                    </div>
+                                    <div class="empty-state-text">Belum ada bukti pembayaran</div>
+                                </div>
+                            </td>
+                        </tr>
+                    @endif
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 @endsection
