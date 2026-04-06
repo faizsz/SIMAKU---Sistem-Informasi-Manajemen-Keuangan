@@ -36,12 +36,62 @@
         font-family: 'Plus Jakarta Sans', sans-serif !important;
     }
 
-    /* ── Page header area ── */
+    /* ── 🔥 Page Header dengan Button ── */
+    .page-header-wrapper {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 20px;
+        margin-bottom: 24px;
+        flex-wrap: wrap;
+    }
+
     .page-meta {
+        flex: 1;
         font-size: 14px;
         color: var(--text-muted);
-        margin-bottom: 24px;
-        line-height: 1.5;
+        line-height: 1.6;
+        min-width: 0; /* Prevent flex item overflow */
+    }
+
+    .page-header-actions {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .link-golongan {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--primary-text);
+        text-decoration: none;
+        padding: 10px 18px;
+        border-radius: 12px;
+        border: 1.5px solid #c7d2fe;
+        background: linear-gradient(135deg, #e0e7ff 0%, #f5f3ff 100%);
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 6px rgba(67, 56, 202, 0.1);
+    }
+
+    .link-golongan:hover {
+        background: linear-gradient(135deg, #c7d2fe 0%, #e0e7ff 100%);
+        border-color: var(--primary);
+        color: var(--primary);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(67, 56, 202, 0.2);
+    }
+
+    .link-golongan:active {
+        transform: translateY(0);
+    }
+
+    .link-golongan i {
+        font-size: 16px;
+        color: var(--primary);
     }
 
     /* ── Stat Cards ── */
@@ -172,35 +222,6 @@
         padding: 6px 14px;
     }
 
-    /* Link Golongan UKT */
-    .link-golongan {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        font-size: 13px;
-        font-weight: 600;
-        color: var(--primary);
-        text-decoration: none;
-        padding: 8px 16px;
-        border-radius: 9px;
-        border: 1px solid var(--primary-soft);
-        background: var(--primary-soft);
-        transition: all 0.15s ease;
-    }
-
-    .link-golongan:hover {
-        background: #c7d2fe;
-        border-color: #a5b4fc;
-        color: var(--primary-text);
-        transform: translateY(-1px);
-    }
-
-    .link-golongan:active {
-        transform: translateY(0);
-    }
-
-    .link-golongan i { font-size: 11px; }
-
     /* ── Table ── */
     .table-premium {
         width: 100%;
@@ -231,7 +252,7 @@
 
     .table-premium tbody tr:last-child td { border-bottom: none; }
 
-    /* 🔥 Interactive row: clickable feel */
+    /* 🔥 Interactive row */
     .table-premium tbody tr {
         cursor: pointer;
         transition: all 0.15s ease;
@@ -241,6 +262,7 @@
     .table-premium tbody tr:hover {
         background: #f8fafc !important;
         transform: translateX(3px);
+        border-left: 3px solid var(--primary);
     }
 
     .table-premium tbody tr:hover::after {
@@ -269,12 +291,6 @@
         transition: all 0.15s;
         pointer-events: none;
         font-weight: 300;
-    }
-
-    /* Highlight border kiri saat hover */
-    .table-premium tbody tr:hover {
-        border-left: 3px solid var(--primary);
-        margin-left: 0;
     }
 
     .td-no       { font-weight: 600; color: var(--text-hint); font-size: 14px; }
@@ -314,67 +330,45 @@
         color: var(--primary-text);
     }
 
-    /* ── Action button — 🔥 ENHANCED ── */
+    /* ── Action Button ── */
     .btn-row-action {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        width: 42px; height: 42px;
-        border-radius: 11px;
-        background: var(--surface);
-        color: var(--primary);
-        border: 1.5px solid var(--primary-soft);
+        gap: 6px;
+        padding: 9px 18px;
+        height: auto;
+        min-height: 38px;
+        border-radius: 20px;
+        background: var(--primary);
+        color: #ffffff;
+        border: none;
         text-decoration: none;
-        transition: all 0.2s ease;
-        font-size: 15px;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.02em;
         cursor: pointer;
-        box-shadow: var(--shadow-sm);
+        transition: all 0.2s ease;
+        box-shadow: 0 3px 10px rgba(67, 56, 202, 0.25);
+        white-space: nowrap;
         position: relative;
         z-index: 2;
         pointer-events: auto;
     }
 
     .btn-row-action:hover {
-        background: var(--primary);
-        color: white;
-        border-color: var(--primary);
+        background: var(--primary-text);
         transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(67, 56, 202, 0.3);
+        box-shadow: 0 6px 16px rgba(67, 56, 202, 0.35);
     }
 
     .btn-row-action:active {
-        transform: scale(0.96) translateY(0);
+        transform: translateY(0) scale(0.97);
         transition: none;
-        box-shadow: 0 2px 8px rgba(67, 56, 202, 0.2);
     }
 
-    /* Tooltip sederhana pakai CSS */
-    .btn-row-action[data-tooltip]:hover::before {
-        content: attr(data-tooltip);
-        position: absolute;
-        bottom: 100%;
-        left: 50%;
-        transform: translateX(-50%) translateY(-6px);
-        background: #1e293b;
-        color: white;
-        font-size: 11px;
-        font-weight: 500;
-        padding: 5px 10px;
-        border-radius: 6px;
-        white-space: nowrap;
-        z-index: 10;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    }
-
-    .btn-row-action[data-tooltip]:hover::after {
-        content: '';
-        position: absolute;
-        bottom: 100%;
-        left: 50%;
-        transform: translateX(-50%) translateY(1px);
-        border: 5px solid transparent;
-        border-top-color: #1e293b;
-        z-index: 10;
+    .btn-row-action i {
+        font-size: 14px;
     }
 
     /* ── Empty state ── */
@@ -413,6 +407,15 @@
 
     /* ── Responsive ── */
     @media (max-width: 768px) {
+        .page-header-wrapper {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .page-header-actions {
+            justify-content: flex-start;
+        }
+
         .table-premium th:nth-child(3),
         .table-premium td:nth-child(3),
         .table-premium th:nth-child(6),
@@ -421,12 +424,12 @@
         .stats-grid { grid-template-columns: 1fr; }
 
         .btn-row-action {
-            width: 38px; height: 38px;
-            font-size: 14px;
+            padding: 8px 14px;
+            font-size: 12px;
         }
     }
 
-    /* ── Accessibility: Focus states ── */
+    /* ── Accessibility ─ */
     .btn-row-action:focus-visible,
     .link-golongan:focus-visible {
         outline: 2px solid var(--primary);
@@ -442,8 +445,19 @@
     $totalBelumTerbayar = $totalSemuaTagihan - $totalSudahTerbayar;
 @endphp
 
-{{-- Subtitle --}}
-<p class="page-meta">Kelola dan pantau pembayaran Uang Kuliah Tunggal (UKT) Anda. <br class="d-none d-md-inline">Klik pada baris untuk melihat detail tagihan.</p>
+{{-- 🔥 Page Header dengan Button di Kanan --}}
+<div class="page-header-wrapper">
+    <p class="page-meta">
+        Kelola dan pantau pembayaran Uang Kuliah Tunggal (UKT) Anda.<br class="d-none d-md-inline">
+        Klik pada baris atau tombol detail untuk melihat informasi lengkap.
+    </p>
+    <div class="page-header-actions">
+        <a href="{{ route('golongan-ukt') }}" class="link-golongan">
+            <i class="fas fa-layer-group"></i>
+            Golongan UKT
+        </a>
+    </div>
+</div>
 
 {{-- ══ Stat Cards ══ --}}
 <div class="stats-grid">
@@ -486,10 +500,6 @@
         </h5>
         <div class="table-header-actions">
             <span class="badge-count">{{ count($dataTagihan) }} invoice</span>
-            <a href="{{ route('golongan-ukt') }}" class="link-golongan">
-                <i class="fas fa-layer-group"></i>
-                Golongan UKT
-            </a>
         </div>
     </div>
 
@@ -499,12 +509,12 @@
                 <tr>
                     <th class="text-center" width="4%">No</th>
                     <th width="14%">No. Invoice</th>
-                    <th width="18%">Semester</th>
-                    <th width="18%">Tagihan</th>
-                    <th width="18%">Terbayar</th>
-                    <th width="12%">Jenis</th>
-                    <th width="10%">Status</th>
-                    <th class="text-center" width="6%">Aksi</th>
+                    <th width="17%">Semester</th>
+                    <th width="16%">Tagihan</th>
+                    <th width="16%">Terbayar</th>
+                    <th width="11%">Jenis</th>
+                    <th width="12%">Status</th>
+                    <th width="14%" class="text-center">Aksi</th>
                 </tr>
             </thead>
             <tbody>
@@ -524,8 +534,7 @@
                             default       => 'badge-warning',
                         };
                     @endphp
-                    {{-- 🔥 Row clickable: onclick redirect, tapi tombol aksi tetap prioritas --}}
-                    <tr onclick="window.location.href='{{ $detailUrl }}'" style="cursor: pointer;">
+                    <tr onclick="window.location.href='{{ $detailUrl }}'">
                         <td class="text-center td-no">{{ $index + 1 }}</td>
 
                         <td class="td-invoice">
@@ -554,13 +563,12 @@
                         </td>
 
                         <td class="text-center">
-                            {{-- 🔥 Tombol aksi: stopPropagation biar nggak double redirect --}}
                             <a href="{{ $detailUrl }}"
                                class="btn-row-action"
-                               data-tooltip="Lihat Detail"
                                title="Lihat Detail Tagihan"
                                onclick="event.stopPropagation();">
                                 <i class="fas fa-eye"></i>
+                                <span>Detail</span>
                             </a>
                         </td>
                     </tr>
@@ -581,23 +589,4 @@
         </table>
     </div>
 </div>
-
-{{-- 🔥 Optional: Simple JS untuk tooltip kalau mau lebih smooth --}}
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Kalau mau tooltip Bootstrap, aktifin ini:
-        // $('[data-toggle="tooltip"]').tooltip();
-
-        // Efek ripple sederhana untuk tombol aksi (opsional)
-        document.querySelectorAll('.btn-row-action').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                // Biarkan link bekerja normal, cuma buat feedback visual
-                this.style.transform = 'scale(0.94)';
-                setTimeout(() => {
-                    this.style.transform = '';
-                }, 100);
-            });
-        });
-    });
-</script>
 @endsection
