@@ -52,16 +52,29 @@
             box-shadow: none !important;
         }
 
-        /* Brand */
+        /* 🔥 Brand - Updated with gradient & accent */
         .brand-link {
             height: 64px;
             padding: 0 18px !important;
             display: flex !important;
             align-items: center;
             gap: 10px;
-            border-bottom: 1px solid var(--border) !important;
-            background: var(--surface) !important;
+            border-bottom: 2px solid var(--primary-soft) !important;
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%) !important;
             text-decoration: none !important;
+            position: relative;
+            overflow: hidden;
+            transition: background 0.2s ease;
+        }
+
+        /* Accent bar di kiri brand */
+        .brand-link::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, var(--primary), var(--primary-soft));
+            opacity: 0.8;
         }
 
         .brand-logo-wrap {
@@ -69,6 +82,13 @@
             background: var(--primary-soft);
             border-radius: 9px;
             display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 2px 6px rgba(67, 56, 202, 0.15);
+            transition: transform 0.2s ease;
+            z-index: 1;
+        }
+
+        .brand-link:hover .brand-logo-wrap {
+            transform: scale(1.05);
         }
 
         .brand-logo-wrap img { width: 22px; height: 22px; object-fit: contain; }
@@ -76,9 +96,13 @@
         .brand-name {
             font-size: 16px;
             font-weight: 700;
-            color: var(--text);
+            background: linear-gradient(135deg, var(--primary-text), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             letter-spacing: -0.02em;
             line-height: 1;
+            z-index: 1;
         }
 
         .brand-sub {
@@ -86,6 +110,7 @@
             font-weight: 500;
             color: var(--text-hint);
             margin-top: 2px;
+            z-index: 1;
         }
 
         /* Mini user profile in sidebar */
@@ -395,6 +420,25 @@
 
         .btn-danger-soft:hover { background: #ffe4e6 !important; }
 
+        /* 🔥 NEW: Button Primary Soft (for secondary confirmations) */
+        .btn-primary-soft {
+            background: var(--primary-soft) !important;
+            color: var(--primary-text) !important;
+            border: 1.5px solid #c7d2fe !important;
+            font-weight: 600 !important;
+        }
+
+        .btn-primary-soft:hover {
+            background: #c7d2fe !important;
+            border-color: var(--primary) !important;
+            color: var(--primary) !important;
+            transform: translateY(-1px);
+        }
+
+        .btn-primary-soft:active {
+            transform: translateY(0) scale(0.98);
+        }
+
         /* ========================================= */
         /* RESPONSIVE                                */
         /* ========================================= */
@@ -522,7 +566,7 @@
         ══════════════════════════════ -->
         <aside class="main-sidebar sidebar-light-primary elevation-0">
 
-            <!-- Brand -->
+            <!-- 🔥 Brand - Updated -->
             <a href="/tagihan-ukt" class="brand-link">
                 <div class="brand-logo-wrap">
                     <img src="{{ asset('assets/Logo universitas.png') }}" alt="Logo Polines">
@@ -540,7 +584,6 @@
                     <div class="sidebar-user-avatar">
                         <img src="{{ asset('assets/Profile.jpeg') }}" alt="Avatar"
                              onerror="this.style.display='none'">
-                        {{-- Fallback initials jika gambar gagal load --}}
                     </div>
                     <div style="overflow:hidden;">
                         <div class="sidebar-user-name">{{ Session::get('username', 'Username') }}</div>
@@ -633,20 +676,21 @@
     </div>{{-- /.wrapper --}}
 
     <!-- ══════════════════════════════
-         MODAL LOGOUT
+         🔥 MODAL LOGOUT - UPDATED
     ══════════════════════════════ -->
     <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
             <div class="modal-content">
                 <div class="modal-body text-center">
 
-                    <div style="width:56px;height:56px;background:#fff1f2;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;">
-                        <i class="fas fa-sign-out-alt" style="font-size:22px;color:var(--danger);"></i>
+                    {{-- Icon dengan background soft primary --}}
+                    <div style="width:56px;height:56px;background:var(--primary-soft);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;">
+                        <i class="fas fa-sign-out-alt" style="font-size:22px;color:var(--primary);"></i>
                     </div>
 
-                    <h5 style="font-weight:700;color:var(--text);margin-bottom:8px;">Keluar dari akun?</h5>
+                    <h5 style="font-weight:700;color:var(--text);margin-bottom:8px;">Konfirmasi Keluar</h5>
                     <p style="font-size:13.5px;color:var(--text-muted);margin-bottom:24px;line-height:1.6;">
-                        Sesi Anda akan diakhiri dan Anda perlu login kembali untuk melanjutkan.
+                        Anda akan keluar dari sesi ini. Login kembali untuk melanjutkan.
                     </p>
 
                     <div style="display:flex;gap:10px;">
@@ -655,8 +699,9 @@
                         </button>
                         <form action="{{ route('logout') }}" method="POST" style="flex:1;">
                             @csrf
-                            <button type="submit" class="btn btn-danger-soft w-100">
-                                Ya, Keluar
+                            {{-- Tombol primary soft, konsisten dengan tema --}}
+                            <button type="submit" class="btn btn-primary-soft w-100">
+                                Keluar
                             </button>
                         </form>
                     </div>
