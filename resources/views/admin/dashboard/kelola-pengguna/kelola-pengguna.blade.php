@@ -4,52 +4,44 @@
 
 @section('styles')
 <style>
-    /* Filter Row Styling */
-    .filter-row {
+    .table-container .card-header {
+        padding: 12px 20px;
+    }
+
+    .header-container {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 20px;
-        gap: 15px;
+        width: 100%;
     }
 
-    .filter-left {
-        display: flex;
-        gap: 10px;
-        align-items: center;
+    .table-container .card-title {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 600;
+        color: #5a5c69;
     }
 
-    .select-wrapper {
-        background-color: white;
+    /* Filter Dropdown */
+    .filter-select {
         border: 1px solid #ddd;
         border-radius: 5px;
-        padding: 6px 12px;
-        display: flex;
-        align-items: center;
-        min-width: 150px;
-    }
-
-    .select-wrapper select {
-        border: none;
-        background: transparent;
-        width: 100%;
+        padding: 8px 30px 8px 15px;
+        font-size: 14px;
         outline: none;
-        font-size: 14px;
-    }
-
-    .filter-btn {
-        background-color: #4e73df;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        padding: 8px 20px;
+        background-color: white;
+        color: #5a5c69;
         cursor: pointer;
-        font-size: 14px;
-        transition: background-color 0.2s;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+        background-position: right 10px center;
+        background-repeat: no-repeat;
+        background-size: 14px 10px;
+        transition: border-color 0.2s;
     }
 
-    .filter-btn:hover {
-        background-color: #2e59d9;
+    .filter-select:focus {
+        border-color: #4e73df;
     }
 
     /* Search Box */
@@ -60,23 +52,25 @@
         width: 250px;
         font-size: 14px;
         outline: none;
+        transition: all 0.3s ease;
     }
 
     .search-box:focus {
         border-color: #4e73df;
+        width: 280px;
+        box-shadow: 0 0 0 3px rgba(78, 115, 223, 0.1);
     }
 
-    /* Role Badge Styling - Updated */
+    /* Role Badge Styling */
     .role-badge {
-        padding: 4px 10px;
-        border-radius: 12px;
-        font-size: 11px;
-        font-weight: 500;
-        text-align: center;
         display: inline-block;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 600;
         white-space: nowrap;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
+        letter-spacing: 0.03em;
     }
 
     .role-admin {
@@ -86,9 +80,9 @@
     }
 
     .role-staff {
-        background-color: #f0fff4;
-        color: #38a169;
-        border: 1px solid #c6f6d5;
+        background-color: #fff3cd;
+        color: #664d03;
+        border: 1px solid #ffecb5;
     }
 
     .role-mahasiswa {
@@ -97,29 +91,28 @@
         border: 1px solid #bee3f8;
     }
 
-    /* Status Badge Styling - Updated (Less Bold) */
+    /* Status Badge Styling */
     .status-badge {
-        padding: 4px 10px;
-        border-radius: 12px;
-        font-size: 11px;
-        font-weight: 500;
-        text-align: center;
         display: inline-block;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 600;
         white-space: nowrap;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
+        letter-spacing: 0.03em;
     }
 
     .status-active {
-        background-color: #f0fff4;
-        color: #38a169;
-        border: 1px solid #c6f6d5;
+        background-color: #d1f2eb;
+        color: #0f5132;
+        border: 1px solid #a3e3d0;
     }
 
     .status-inactive {
-        background-color: #fff5f5;
-        color: #e53e3e;
-        border: 1px solid #fed7d7;
+        background-color: #f8d7da;
+        color: #842029;
+        border: 1px solid #f5c2c7;
     }
 
     /* Table Custom Styling */
@@ -130,13 +123,15 @@
         font-size: 14px;
         padding: 12px 15px;
         border-bottom: 2px solid #e3e6f0;
+        white-space: nowrap;
+        vertical-align: middle !important;
     }
 
     .table tbody td {
         padding: 12px 15px;
         font-size: 14px;
         color: #5a5c69;
-        vertical-align: middle;
+        vertical-align: middle !important;
     }
 
     .table tbody tr:hover {
@@ -226,19 +221,60 @@
         margin-top: 2px;
     }
 
+    /* Action buttons */
+    .action-buttons {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+        flex-wrap: nowrap;
+    }
+
+    .btn-action-edit {
+        width: 32px;
+        height: 32px;
+        border-radius: 6px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #e5e7eb;
+        background-color: white;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-size: 14px;
+        outline: none;
+        color: #4b5563; /* Abu-abu gelap */
+    }
+
+    .btn-action-edit:hover {
+        color: white;
+        background-color: #4e73df; /* Biru */
+        border-color: #4e73df;
+    }
+
     @media (max-width: 768px) {
-        .filter-row {
+        .header-container {
             flex-direction: column;
-            align-items: stretch;
+            align-items: flex-start;
+            gap: 10px;
         }
 
-        .filter-left {
-            margin-bottom: 10px;
-            flex-wrap: wrap;
-        }
-
-        .search-box {
+        .header-container form {
             width: 100%;
+        }
+
+        .header-container form > div {
+            flex-direction: column;
+            align-items: stretch !important;
+            gap: 8px !important;
+        }
+
+        .search-box, .filter-select {
+            width: 100% !important;
+        }
+
+        .action-buttons {
+            flex-direction: column;
+            gap: 4px;
         }
     }
 </style>
@@ -254,61 +290,53 @@
 @endsection
 
 @section('content')
-<form method="GET" action="{{ route('admin.kelola-pengguna') }}" id="filterForm">
-    <div class="filter-row">
-        <div class="filter-left">
-            <div class="select-wrapper">
-                <select name="role_filter" id="userRoleFilter">
-                    <option value="">Semua Role</option>
-                    <option value="admin" {{ request('role_filter') == 'admin' ? 'selected' : '' }}>Admin</option>
-                    <option value="staff" {{ request('role_filter') == 'staff' ? 'selected' : '' }}>Staff</option>
-                    <option value="mahasiswa" {{ request('role_filter') == 'mahasiswa' ? 'selected' : '' }}>Mahasiswa</option>
-                </select>
-            </div>
-
-            <div class="select-wrapper">
-                <select name="status_filter" id="userStatusFilter">
-                    <option value="">Semua Status</option>
-                    <option value="active" {{ request('status_filter') == 'active' ? 'selected' : '' }}>Aktif</option>
-                    <option value="inactive" {{ request('status_filter') == 'inactive' ? 'selected' : '' }}>Tidak Aktif</option>
-                </select>
-            </div>
-
-            <button type="submit" class="filter-btn">Filter</button>
-            @if(request('role_filter') || request('status_filter') || request('search'))
-                <a href="{{ route('admin.kelola-pengguna') }}" class="btn btn-secondary" style="padding: 8px 15px; margin-left: 10px; text-decoration: none; background-color: #6c757d; color: white; border-radius: 5px; font-size: 14px;">
-                    Reset
-                </a>
-            @endif
-        </div>
-
-        <div class="search-wrapper">
-            <input type="text" name="search" placeholder="Search username, email..." class="search-box" id="searchInput" value="{{ request('search') }}">
-        </div>
-    </div>
-</form>
-
 <div class="table-container">
     <div class="card-header">
-        <h3 class="card-title">Semua Pengguna</h3>
+        <div class="header-container">
+            <h3 class="card-title">Semua Pengguna</h3>
+            <form method="GET" action="{{ route('admin.kelola-pengguna') }}" id="filterForm" style="margin: 0;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    @if(request('role_filter') || request('status_filter') || request('search'))
+                        <a href="{{ route('admin.kelola-pengguna') }}" class="btn btn-secondary" style="padding: 8px 15px; text-decoration: none; background-color: #6c757d; color: white; border-radius: 5px; font-size: 14px; margin: 0; white-space: nowrap;">
+                            Reset
+                        </a>
+                    @endif
+
+                    <select name="role_filter" class="filter-select" id="userRoleFilter" style="margin: 0;">
+                        <option value="">Semua Role</option>
+                        <option value="admin" {{ request('role_filter') == 'admin' ? 'selected' : '' }}>Admin</option>
+                        <option value="staff" {{ request('role_filter') == 'staff' ? 'selected' : '' }}>Staff</option>
+                        <option value="mahasiswa" {{ request('role_filter') == 'mahasiswa' ? 'selected' : '' }}>Mahasiswa</option>
+                    </select>
+
+                    <select name="status_filter" class="filter-select" id="userStatusFilter" style="margin: 0;">
+                        <option value="">Semua Status</option>
+                        <option value="active" {{ request('status_filter') == 'active' ? 'selected' : '' }}>Aktif</option>
+                        <option value="inactive" {{ request('status_filter') == 'inactive' ? 'selected' : '' }}>Tidak Aktif</option>
+                    </select>
+
+                    <input type="text" name="search" placeholder="Cari username, email..." class="search-box" id="searchInput" value="{{ request('search') }}" style="margin: 0;">
+                </div>
+            </form>
+        </div>
     </div>
 
     <div class="card-body p-0">
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>No</th>
+                    <th style="width: 70px; text-align: center;">No</th>
                     <th>Nama Pengguna</th>
                     <th>Email</th>
-                    <th>Role Pengguna</th>
-                    <th>Status Akun</th>
-                    <th>Aksi</th>
+                    <th style="width: 180px; text-align: center;">Role Pengguna</th>
+                    <th style="width: 150px; text-align: center;">Status Akun</th>
+                    <th style="width: 120px; text-align: center;">Aksi</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse($users as $index => $user)
                     <tr>
-                        <td>{{ ($users->firstItem() ?? 0) + $index }}</td>
+                        <td style="text-align: center;">{{ ($users->firstItem() ?? 0) + $index }}</td>
                         <td>
                             <div class="user-info">
                                 <span class="username">{{ $user['username'] }}</span>
@@ -328,7 +356,7 @@
                         <td>{{ $user['email'] }}</td>
 
                         <!-- Role badge -->
-                        <td>
+                        <td style="text-align: center;">
                             @switch($user['role'])
                                 @case('admin')
                                     <span class="role-badge role-admin">Admin</span>
@@ -345,7 +373,7 @@
                         </td>
 
                         <!-- Status badge -->
-                        <td>
+                        <td style="text-align: center;">
                             @if($user['is_active'])
                                 <span class="status-badge status-active">Aktif</span>
                             @else
@@ -354,7 +382,11 @@
                         </td>
 
                         <td>
-                            <a href="{{ route('admin.kelola-pengguna.edit', $user['id']) }}" class="btn-edit">Edit</a>
+                            <div class="action-buttons">
+                                <a href="{{ route('admin.kelola-pengguna.edit', $user['id']) }}" class="btn-action-edit" title="Edit">
+                                    <i class="fas fa-pencil-alt"></i>
+                                </a>
+                            </div>
                         </td>
                     </tr>
                 @empty

@@ -16,19 +16,64 @@
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
 
     <style>
-        /* Override langsung untuk menu aktif */
-        .sidebar-light-primary .nav-sidebar > .nav-item > .nav-link.active {
+        /* Override langsung untuk menu aktif dan sub-menu aktif */
+        .sidebar-light-primary .nav-sidebar .nav-link.active,
+        .nav-sidebar .nav-link.active,
+        .nav-treeview > .nav-item > .nav-link.active {
+            background-color: rgba(78, 115, 223, 0.1) !important;
+            color: #4e73df !important;
             border-left: 4px solid #4e73df !important;
             padding-left: calc(1rem - 4px) !important;
-            background-color: #4e73df !important;
-            color: #ffffff !important;
+            font-weight: 600 !important;
         }
 
-        .nav-treeview > .nav-item > .nav-link.active {
+        .sidebar-light-primary .nav-sidebar .nav-link.active .nav-icon,
+        .nav-sidebar .nav-link.active .nav-icon {
+            color: #4e73df !important;
+        }
+
+        /* Hover state untuk menu aktif */
+        .sidebar-light-primary .nav-sidebar .nav-link.active:hover,
+        .nav-sidebar .nav-link.active:hover {
             background-color: rgba(78, 115, 223, 0.15) !important;
             color: #4e73df !important;
-            border-left: 2px solid #4e73df !important;
-            padding-left: calc(1rem - 2px) !important;
+        }
+
+        /* Styling untuk menu tidak aktif (High Legibility & Contrast) */
+        .nav-sidebar .nav-item > .nav-link:not(.active) {
+            color: #4b5563 !important;
+            font-weight: 500 !important;
+            border-left: 4px solid transparent !important;
+            padding-left: calc(1rem - 4px) !important;
+            transition: all 0.2s ease;
+        }
+
+        .nav-sidebar .nav-item > .nav-link:not(.active) .nav-icon {
+            color: #4b5563 !important;
+            transition: color 0.2s ease;
+        }
+
+        /* Hover state untuk menu tidak aktif */
+        .nav-sidebar .nav-item > .nav-link:not(.active):hover {
+            color: #1a202c !important;
+            background-color: #f3f4f6 !important;
+        }
+
+        .nav-sidebar .nav-item > .nav-link:not(.active):hover .nav-icon {
+            color: #1a202c !important;
+        }
+
+        /* Brand Image / Logo Styling (Flat Modern) */
+        .brand-link .brand-image {
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important;
+            border: 1px solid #e2e8f0;
+            float: left;
+            line-height: .8;
+            margin-left: .8rem;
+            margin-right: .5rem;
+            margin-top: -3px;
+            max-height: 33px;
+            width: auto;
         }
 
         /* Force menu to display when parent is open */
@@ -235,7 +280,7 @@
         <aside class="main-sidebar sidebar-light-primary elevation-2">
             <!-- Brand Logo -->
             <a href="/admin/dashboard" class="brand-link">
-                <img src="{{ asset('assets/Logo universitas.png') }}" alt="Logo" class="brand-image img-circle elevation-3">
+                <img src="{{ asset('assets/Logo universitas.png') }}" alt="Logo" class="brand-image img-circle">
                 <span class="brand-text font-weight-light">SIMAKU</span>
             </a>
 
@@ -247,7 +292,7 @@
                         <!-- Dashboard Menu dengan dropdown -->
                         <li class="nav-item {{ request()->is('admin/dashboard*') || request()->is('admin/kelola-pengguna*') || request()->is('admin/mahasiswa*') || request()->is('admin/enrollment-mahasiswa*') || request()->is('admin/fakultas*') || request()->is('admin/program-studi*') || request()->is('admin/kelas*') || request()->is('admin/tingkat*') || request()->is('admin/tahun-akademik*') || request()->is('admin/staff*') ? 'menu-open' : '' }}">
                             <a href="#" class="nav-link {{ request()->is('admin/dashboard*') || request()->is('admin/kelola-pengguna*') || request()->is('admin/mahasiswa*') || request()->is('admin/enrollment-mahasiswa*') || request()->is('admin/fakultas*') || request()->is('admin/program-studi*') || request()->is('admin/kelas*') || request()->is('admin/tingkat*') || request()->is('admin/tahun-akademik*') || request()->is('admin/staff*') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-th"></i>
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
                                     Dashboard
                                     <i class="right fas fa-angle-left"></i>
@@ -256,6 +301,7 @@
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
                                     <a href="{{ route('admin.kelola-pengguna') }}" class="nav-link {{ request()->is('admin/kelola-pengguna*') ? 'active' : '' }}">
+                                        <i class="fas fa-users-cog nav-icon"></i>
                                         <p>Kelola Pengguna</p>
                                     </a>
                                 </li>
@@ -324,7 +370,7 @@
                                 <!-- Staff submenu dalam Dashboard -->
                                 <li class="nav-item">
                                     <a href="/admin/staff" class="nav-link {{ request()->is('admin/staff*') ? 'active' : '' }}">
-                                        <i class="fas fa-users nav-icon"></i>
+                                        <i class="fas fa-user-tie nav-icon"></i>
                                         <p>Staff</p>
                                     </a>
                                 </li>
