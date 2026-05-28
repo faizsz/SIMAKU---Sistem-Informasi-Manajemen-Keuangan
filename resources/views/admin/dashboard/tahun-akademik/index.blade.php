@@ -4,34 +4,22 @@
 
 @section('styles')
 <style>
-    /* Filter Row Styling */
-    .filter-row {
+    .table-container .card-header {
+        padding: 12px 20px;
+    }
+
+    .header-container {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 20px;
-        gap: 15px;
+        width: 100%;
     }
 
-    .filter-left {
-        display: flex;
-        gap: 10px;
-        align-items: center;
-    }
-
-    .filter-btn {
-        background-color: #4e73df;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        padding: 8px 20px;
-        cursor: pointer;
-        font-size: 14px;
-        transition: background-color 0.2s;
-    }
-
-    .filter-btn:hover {
-        background-color: #2e59d9;
+    .table-container .card-title {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 600;
+        color: #5a5c69;
     }
 
     /* Search Box */
@@ -165,6 +153,8 @@
         font-size: 12px;
         font-weight: 600;
         white-space: nowrap;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
     }
 
     .status-aktif {
@@ -174,27 +164,39 @@
     }
 
     .status-non-aktif {
-        background-color: #f8d7da;
-        color: #721c24;
-        border: 1px solid #f1a2a8;
+        background-color: #f3f4f6;
+        color: #4b5563;
+        border: 1px solid #e5e7eb;
     }
 
-    /* Date info styling */
-    .date-info {
-        display: flex;
-        flex-direction: column;
-        font-size: 13px;
-        gap: 3px;
-    }
-
-    .date-mulai {
-        color: #28a745;
+    /* Periode Text */
+    .periode-text {
+        font-size: 14px;
+        color: #4a5568;
         font-weight: 500;
+        white-space: nowrap;
     }
 
-    .date-selesai {
-        color: #dc3545;
-        font-weight: 500;
+    /* Filter Dropdown */
+    .filter-select {
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 8px 30px 8px 15px;
+        font-size: 14px;
+        outline: none;
+        background-color: white;
+        color: #5a5c69;
+        cursor: pointer;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+        background-position: right 10px center;
+        background-repeat: no-repeat;
+        background-size: 14px 10px;
+        transition: border-color 0.2s;
+    }
+
+    .filter-select:focus {
+        border-color: #4e73df;
     }
 
     /* Action buttons */
@@ -205,44 +207,39 @@
         flex-wrap: nowrap;
     }
 
-    .btn-edit, .btn-delete {
+    .btn-action-edit, .btn-action-delete {
+        width: 32px;
+        height: 32px;
+        border-radius: 6px;
         display: inline-flex;
         align-items: center;
-        gap: 6px;
-        white-space: nowrap;
-    }
-
-    .btn-edit {
-        background-color: #f6c23e;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        padding: 6px 12px;
-        font-size: 12px;
-        text-decoration: none;
+        justify-content: center;
+        border: 1px solid #e5e7eb;
+        background-color: white;
         cursor: pointer;
-        transition: background-color 0.2s;
+        transition: all 0.2s ease;
+        font-size: 14px;
+        outline: none;
     }
 
-    .btn-edit:hover {
-        background-color: #dda20a;
-        text-decoration: none;
+    .btn-action-edit {
+        color: #4b5563; /* Abu-abu gelap */
+    }
+
+    .btn-action-edit:hover {
         color: white;
+        background-color: #4e73df; /* Biru */
+        border-color: #4e73df;
     }
 
-    .btn-delete {
-        background-color: #e74a3b;
+    .btn-action-delete {
+        color: #9ca3af; /* Abu-abu terang */
+    }
+
+    .btn-action-delete:hover {
         color: white;
-        border: none;
-        border-radius: 4px;
-        padding: 6px 12px;
-        font-size: 12px;
-        cursor: pointer;
-        transition: background-color 0.2s;
-    }
-
-    .btn-delete:hover {
-        background-color: #c0392b;
+        background-color: #e74a3b; /* Merah */
+        border-color: #e74a3b;
     }
 
     @media (max-width: 768px) {
@@ -282,25 +279,36 @@
 @endsection
 
 @section('content')
-<form method="GET" action="{{ route('admin.tahun-akademik') }}" id="filterForm">
-    <div class="filter-row">
-        <div class="filter-left">
-            @if(request('search'))
-                <a href="{{ route('admin.tahun-akademik') }}" class="btn btn-secondary" style="padding: 8px 15px; text-decoration: none; background-color: #6c757d; color: white; border-radius: 5px; font-size: 14px;">
-                    Reset
-                </a>
-            @endif
-        </div>
-
-        <div class="search-wrapper">
-            <input type="text" name="search" placeholder="Cari tahun akademik, semester, atau status..." class="search-box" id="searchInput" value="{{ request('search') }}">
-        </div>
-    </div>
-</form>
-
 <div class="table-container">
     <div class="card-header">
-        <h3 class="card-title">Semua Tahun Akademik</h3>
+        <div class="header-container">
+            <h3 class="card-title">Semua Tahun Akademik</h3>
+            <form method="GET" action="{{ route('admin.tahun-akademik') }}" id="filterForm" style="margin: 0;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    @if(request('search') || (request('status') && request('status') !== 'all') || (request('semester') && request('semester') !== 'all'))
+                        <a href="{{ route('admin.tahun-akademik') }}" class="btn btn-secondary" style="padding: 8px 15px; text-decoration: none; background-color: #6c757d; color: white; border-radius: 5px; font-size: 14px; margin: 0; white-space: nowrap;">
+                            Reset
+                        </a>
+                    @endif
+
+                    <!-- Filter Semester -->
+                    <select name="semester" class="filter-select" onchange="this.form.submit()">
+                        <option value="all" {{ request('semester') == 'all' ? 'selected' : '' }}>Semua Semester</option>
+                        <option value="Ganjil" {{ request('semester') == 'Ganjil' ? 'selected' : '' }}>Ganjil</option>
+                        <option value="Genap" {{ request('semester') == 'Genap' ? 'selected' : '' }}>Genap</option>
+                    </select>
+
+                    <!-- Filter Status -->
+                    <select name="status" class="filter-select" onchange="this.form.submit()">
+                        <option value="all" {{ request('status') == 'all' ? 'selected' : '' }}>Semua Status</option>
+                        <option value="aktif" {{ request('status') == 'aktif' ? 'selected' : '' }}>Aktif</option>
+                        <option value="non-aktif" {{ request('status') == 'non-aktif' ? 'selected' : '' }}>Non-Aktif</option>
+                    </select>
+
+                    <input type="text" name="search" placeholder="Cari tahun akademik..." class="search-box" id="searchInput" value="{{ request('search') }}" style="margin: 0;">
+                </div>
+            </form>
+        </div>
     </div>
 
     <div class="card-body p-0">
@@ -329,16 +337,9 @@
                             <span class="tahun-akademik-semester">{{ $item['semester'] }}</span>
                         </td>
                         <td>
-                            <div class="date-info">
-                                <span class="date-mulai">
-                                    <i class="fas fa-play" style="font-size: 10px;"></i>
-                                    {{ \Carbon\Carbon::parse($item['tanggal_mulai'])->format('d/m/Y') }}
-                                </span>
-                                <span class="date-selesai">
-                                    <i class="fas fa-stop" style="font-size: 10px;"></i>
-                                    {{ \Carbon\Carbon::parse($item['tanggal_selesai'])->format('d/m/Y') }}
-                                </span>
-                            </div>
+                            <span class="periode-text">
+                                {{ \Carbon\Carbon::parse($item['tanggal_mulai'])->translatedFormat('d M Y') }} - {{ \Carbon\Carbon::parse($item['tanggal_selesai'])->translatedFormat('d M Y') }}
+                            </span>
                         </td>
                         <td style="text-align: center;">
                             <span class="status-badge status-{{ $item['status'] }}">
@@ -352,11 +353,11 @@
                         </td>
                         <td>
                             <div class="action-buttons">
-                                <a href="{{ route('admin.tahun-akademik.edit', $item['id']) }}" class="btn-edit">
-                                    <i class="fas fa-edit"></i> Edit
+                                <a href="{{ route('admin.tahun-akademik.edit', $item['id']) }}" class="btn-action-edit" title="Edit">
+                                    <i class="fas fa-pencil-alt"></i>
                                 </a>
-                                <button type="button" class="btn-delete" onclick="confirmDelete({{ $item['id'] }}, '{{ $item['tahun_akademik'] }} - {{ $item['semester'] }}')">
-                                    <i class="fas fa-trash"></i> Hapus
+                                <button type="button" class="btn-action-delete" onclick="confirmDelete({{ $item['id'] }}, '{{ $item['tahun_akademik'] }} - {{ $item['semester'] }}')" title="Hapus">
+                                    <i class="fas fa-trash-alt"></i>
                                 </button>
                             </div>
                         </td>
@@ -467,21 +468,11 @@ $(document).ready(function() {
         }
     });
 
-    // Edit button functionality
-    $('.btn-edit').on('click', function(e) {
-        var row = $(this).closest('tr');
-        var tahunAkademikName = row.find('.tahun-akademik-name').text();
-        console.log('Editing tahun akademik:', tahunAkademikName);
-    });
-
-    // Add tahun akademik button functionality
-    $('.btn-add').on('click', function() {
-        console.log('Adding new tahun akademik');
-    });
-
-    // Clear search when clicking reset
+    // Clear search and filters when clicking reset
     $('a[href*="admin.tahun-akademik"]:contains("Reset")').on('click', function() {
         $('#searchInput').val('');
+        $('select[name="status"]').val('all');
+        $('select[name="semester"]').val('all');
     });
 });
 

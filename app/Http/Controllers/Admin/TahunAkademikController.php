@@ -225,6 +225,20 @@ class TahunAkademikController extends Controller
             });
         }
 
+        if ($request->filled('status') && $request->status !== 'all') {
+            $statusFilter = strtolower($request->status);
+            $allTahunAkademik = array_filter($allTahunAkademik, function ($item) use ($statusFilter) {
+                return strtolower($item['status']) === $statusFilter;
+            });
+        }
+
+        if ($request->filled('semester') && $request->semester !== 'all') {
+            $semesterFilter = strtolower($request->semester);
+            $allTahunAkademik = array_filter($allTahunAkademik, function ($item) use ($semesterFilter) {
+                return strtolower($item['semester']) === $semesterFilter;
+            });
+        }
+
         $total = count($allTahunAkademik);
         $offset = ($currentPage - 1) * $perPage;
         $items = array_slice($allTahunAkademik, $offset, $perPage);
