@@ -39,13 +39,16 @@
         border: 1px solid #ddd;
         border-radius: 5px;
         padding: 8px 15px;
-        width: 250px;
+        width: 350px;
         font-size: 14px;
         outline: none;
+        transition: all 0.3s ease;
     }
 
     .search-box:focus {
         border-color: #4e73df;
+        width: 400px;
+        box-shadow: 0 0 0 3px rgba(78, 115, 223, 0.1);
     }
 
     /* Table Custom Styling */
@@ -56,13 +59,15 @@
         font-size: 14px;
         padding: 12px 15px;
         border-bottom: 2px solid #e3e6f0;
+        white-space: nowrap;
+        vertical-align: middle !important;
     }
 
     .table tbody td {
         padding: 12px 15px;
         font-size: 14px;
         color: #5a5c69;
-        vertical-align: middle;
+        vertical-align: middle !important;
     }
 
     .table tbody tr:hover {
@@ -307,7 +312,7 @@
                     <th style="width: 120px; text-align: center;">Semester</th>
                     <th style="width: 180px;">Periode</th>
                     <th style="width: 130px; text-align: center;">Status</th>
-                    <th style="width: 140px; text-align: center;">Tanggal Dibuat</th>
+                    <th style="width: 150px; text-align: center;">Tanggal Dibuat</th>
                     <th style="width: 180px; text-align: center;">Aksi</th>
                 </tr>
             </thead>
