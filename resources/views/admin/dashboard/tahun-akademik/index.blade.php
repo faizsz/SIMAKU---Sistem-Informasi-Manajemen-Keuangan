@@ -147,34 +147,39 @@
     }
 
     .tahun-akademik-semester {
-        font-size: 12px;
-        color: #718096;
-        margin-top: 2px;
+        font-size: 14px;
+        color: #5a5c69;
+        font-weight: 500;
     }
 
     /* Status Badge */
     .status-badge {
-        padding: 4px 10px;
-        border-radius: 12px;
+        display: inline-block;
+        padding: 5px 12px;
+        border-radius: 20px;
         font-size: 12px;
-        font-weight: 500;
+        font-weight: 600;
+        white-space: nowrap;
     }
 
     .status-aktif {
-        background-color: #d4edda;
-        color: #155724;
+        background-color: #d1f2eb;
+        color: #0f5132;
+        border: 1px solid #a3e3d0;
     }
 
     .status-non-aktif {
         background-color: #f8d7da;
         color: #721c24;
+        border: 1px solid #f1a2a8;
     }
 
     /* Date info styling */
     .date-info {
         display: flex;
         flex-direction: column;
-        font-size: 12px;
+        font-size: 13px;
+        gap: 3px;
     }
 
     .date-mulai {
@@ -185,13 +190,21 @@
     .date-selesai {
         color: #dc3545;
         font-weight: 500;
-        margin-top: 2px;
     }
 
     /* Action buttons */
     .action-buttons {
         display: flex;
         gap: 8px;
+        justify-content: center;
+        flex-wrap: nowrap;
+    }
+
+    .btn-edit, .btn-delete {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        white-space: nowrap;
     }
 
     .btn-edit {
@@ -289,25 +302,25 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th style="width: 60px;">No</th>
+                    <th style="width: 70px; text-align: center;">No</th>
                     <th>Tahun Akademik</th>
-                    <th style="width: 100px;">Semester</th>
-                    <th style="width: 160px;">Periode</th>
-                    <th style="width: 100px;">Status</th>
-                    <th style="width: 120px;">Tanggal Dibuat</th>
-                    <th style="width: 120px;">Aksi</th>
+                    <th style="width: 120px; text-align: center;">Semester</th>
+                    <th style="width: 180px;">Periode</th>
+                    <th style="width: 130px; text-align: center;">Status</th>
+                    <th style="width: 140px; text-align: center;">Tanggal Dibuat</th>
+                    <th style="width: 180px; text-align: center;">Aksi</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse($tahunAkademik as $index => $item)
                     <tr>
-                        <td>{{ ($tahunAkademik->firstItem() ?? 0) + $index }}</td>
+                        <td style="text-align: center;">{{ ($tahunAkademik->firstItem() ?? 0) + $index }}</td>
                         <td>
                             <div class="tahun-akademik-info">
                                 <span class="tahun-akademik-name">{{ $item['tahun_akademik'] }}</span>
                             </div>
                         </td>
-                        <td>
+                        <td style="text-align: center;">
                             <span class="tahun-akademik-semester">{{ $item['semester'] }}</span>
                         </td>
                         <td>
@@ -322,12 +335,12 @@
                                 </span>
                             </div>
                         </td>
-                        <td>
+                        <td style="text-align: center;">
                             <span class="status-badge status-{{ $item['status'] }}">
                                 {{ ucfirst($item['status']) }}
                             </span>
                         </td>
-                        <td>
+                        <td style="text-align: center;">
                             <small class="text-muted">
                                 {{ \Carbon\Carbon::parse($item['created_at'])->format('d/m/Y') }}
                             </small>
