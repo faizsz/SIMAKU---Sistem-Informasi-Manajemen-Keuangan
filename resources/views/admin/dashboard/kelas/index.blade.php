@@ -4,45 +4,40 @@
 
 @section('styles')
 <style>
-    /* Filter Row Styling */
-    .filter-row {
+    .table-container .card-header {
+        padding: 12px 20px;
+    }
+
+    .header-container {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 20px;
-        gap: 15px;
+        width: 100%;
     }
 
-    .filter-left {
-        display: flex;
-        gap: 10px;
-        align-items: center;
-    }
-
-    .filter-btn {
-        background-color: #4e73df;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        padding: 8px 20px;
-        cursor: pointer;
-        font-size: 14px;
-        transition: background-color 0.2s;
-    }
-
-    .filter-btn:hover {
-        background-color: #2e59d9;
+    .table-container .card-title {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 600;
+        color: #5a5c69;
     }
 
     /* Filter Dropdown */
     .filter-select {
         border: 1px solid #ddd;
         border-radius: 5px;
-        padding: 8px 15px;
+        padding: 8px 30px 8px 15px;
         font-size: 14px;
         outline: none;
         background-color: white;
-        min-width: 180px;
+        color: #5a5c69;
+        cursor: pointer;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+        background-position: right 10px center;
+        background-repeat: no-repeat;
+        background-size: 14px 10px;
+        transition: border-color 0.2s;
     }
 
     .filter-select:focus {
@@ -57,10 +52,13 @@
         width: 250px;
         font-size: 14px;
         outline: none;
+        transition: all 0.3s ease;
     }
 
     .search-box:focus {
         border-color: #4e73df;
+        width: 280px;
+        box-shadow: 0 0 0 3px rgba(78, 115, 223, 0.1);
     }
 
     /* Table Custom Styling */
@@ -71,13 +69,15 @@
         font-size: 14px;
         padding: 12px 15px;
         border-bottom: 2px solid #e3e6f0;
+        white-space: nowrap;
+        vertical-align: middle !important;
     }
 
     .table tbody td {
         padding: 12px 15px;
         font-size: 14px;
         color: #5a5c69;
-        vertical-align: middle;
+        vertical-align: middle !important;
     }
 
     .table tbody tr:hover {
@@ -162,9 +162,9 @@
     }
 
     .prodi-name {
-        font-size: 12px;
-        color: #718096;
-        margin-top: 2px;
+        font-size: 14px;
+        color: #5a5c69;
+        font-weight: 500;
     }
 
     /* Tahun angkatan badge */
@@ -172,10 +172,10 @@
         display: inline-block;
         background-color: #e3f2fd;
         color: #1976d2;
-        padding: 4px 8px;
+        padding: 4px 10px;
         border-radius: 12px;
         font-size: 12px;
-        font-weight: 500;
+        font-weight: 600;
         border: 1px solid #bbdefb;
     }
 
@@ -183,54 +183,64 @@
     .action-buttons {
         display: flex;
         gap: 8px;
+        justify-content: center;
+        flex-wrap: nowrap;
     }
 
-    .btn-edit {
-        background-color: #f6c23e;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        padding: 6px 12px;
-        font-size: 12px;
-        text-decoration: none;
+    .btn-action-edit, .btn-action-delete {
+        width: 32px;
+        height: 32px;
+        border-radius: 6px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #e5e7eb;
+        background-color: white;
         cursor: pointer;
-        transition: background-color 0.2s;
+        transition: all 0.2s ease;
+        font-size: 14px;
+        outline: none;
     }
 
-    .btn-edit:hover {
-        background-color: #dda20a;
-        text-decoration: none;
+    .btn-action-edit {
+        color: #4b5563; /* Abu-abu gelap */
+    }
+
+    .btn-action-edit:hover {
         color: white;
+        background-color: #4e73df; /* Biru */
+        border-color: #4e73df;
     }
 
-    .btn-delete {
-        background-color: #e74a3b;
+    .btn-action-delete {
+        color: #9ca3af; /* Abu-abu terang */
+    }
+
+    .btn-action-delete:hover {
         color: white;
-        border: none;
-        border-radius: 4px;
-        padding: 6px 12px;
-        font-size: 12px;
-        cursor: pointer;
-        transition: background-color 0.2s;
-    }
-
-    .btn-delete:hover {
-        background-color: #c0392b;
+        background-color: #e74a3b; /* Merah */
+        border-color: #e74a3b;
     }
 
     @media (max-width: 768px) {
-        .filter-row {
+        .header-container {
             flex-direction: column;
-            align-items: stretch;
+            align-items: flex-start;
+            gap: 10px;
         }
 
-        .filter-left {
-            margin-bottom: 10px;
-            flex-wrap: wrap;
+        .header-container form {
+            width: 100%;
+        }
+
+        .header-container form > div {
+            flex-direction: column;
+            align-items: stretch !important;
+            gap: 8px !important;
         }
 
         .search-box, .filter-select {
-            width: 100%;
+            width: 100% !important;
         }
 
         .action-buttons {
@@ -251,67 +261,64 @@
 @endsection
 
 @section('content')
-<form method="GET" action="{{ route('admin.kelas') }}" id="filterForm">
-    <div class="filter-row">
-        <div class="filter-left">
-            @if(request('search') || request('prodi_filter') || request('tahun_filter'))
-                <a href="{{ route('admin.kelas') }}" class="btn btn-secondary" style="padding: 8px 15px; text-decoration: none; background-color: #6c757d; color: white; border-radius: 5px; font-size: 14px;">
-                    Reset
-                </a>
-            @endif
-
-            <select name="prodi_filter" class="filter-select" id="prodiFilter">
-                <option value="">Semua Program Studi</option>
-                @foreach($prodiList as $prodi)
-                    <option value="{{ $prodi['id'] }}" {{ request('prodi_filter') == $prodi['id'] ? 'selected' : '' }}>
-                        {{ $prodi['nama_prodi'] }}
-                    </option>
-                @endforeach
-            </select>
-
-            <select name="tahun_filter" class="filter-select" id="tahunFilter">
-                <option value="">Semua Tahun Angkatan</option>
-                @php
-                    $currentYear = date('Y');
-                    $startYear = $currentYear - 10;
-                    $endYear = $currentYear + 5;
-                @endphp
-                @for($year = $endYear; $year >= $startYear; $year--)
-                    <option value="{{ $year }}" {{ request('tahun_filter') == $year ? 'selected' : '' }}>
-                        {{ $year }}
-                    </option>
-                @endfor
-            </select>
-        </div>
-
-        <div class="search-wrapper">
-            <input type="text" name="search" placeholder="Cari nama kelas..." class="search-box" id="searchInput" value="{{ request('search') }}">
-        </div>
-    </div>
-</form>
-
 <div class="table-container">
     <div class="card-header">
-        <h3 class="card-title">Semua Kelas</h3>
+        <div class="header-container">
+            <h3 class="card-title">Semua Kelas</h3>
+            <form method="GET" action="{{ route('admin.kelas') }}" id="filterForm" style="margin: 0;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    @if(request('search') || request('prodi_filter') || request('tahun_filter'))
+                        <a href="{{ route('admin.kelas') }}" class="btn btn-secondary" style="padding: 8px 15px; text-decoration: none; background-color: #6c757d; color: white; border-radius: 5px; font-size: 14px; margin: 0; white-space: nowrap;">
+                            Reset
+                        </a>
+                    @endif
+
+                    <select name="prodi_filter" class="filter-select" id="prodiFilter" style="margin: 0;">
+                        <option value="">Semua Program Studi</option>
+                        @foreach($prodiList as $prodi)
+                            <option value="{{ $prodi['id'] }}" {{ request('prodi_filter') == $prodi['id'] ? 'selected' : '' }}>
+                                {{ $prodi['nama_prodi'] }}
+                            </option>
+                        @endforeach
+                    </select>
+
+                    <select name="tahun_filter" class="filter-select" id="tahunFilter" style="margin: 0;">
+                        <option value="">Semua Tahun Angkatan</option>
+                        @php
+                            $currentYear = date('Y');
+                            $startYear = $currentYear - 10;
+                            $endYear = $currentYear + 5;
+                        @endphp
+                        @for($year = $endYear; $year >= $startYear; $year--)
+                            <option value="{{ $year }}" {{ request('tahun_filter') == $year ? 'selected' : '' }}>
+                                {{ $year }}
+                            </option>
+                        @endfor
+                    </select>
+
+                    <input type="text" name="search" placeholder="Cari nama kelas..." class="search-box" id="searchInput" value="{{ request('search') }}" style="margin: 0;">
+                </div>
+            </form>
+        </div>
     </div>
 
     <div class="card-body p-0">
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th style="width: 60px;">No</th>
+                    <th style="width: 70px; text-align: center;">No</th>
                     <th>Nama Kelas</th>
                     <th>Program Studi</th>
-                    <th style="width: 120px;">Tahun Angkatan</th>
-                    <th style="width: 120px;">Tanggal Dibuat</th>
-                    <th style="width: 120px;">Terakhir Diubah</th>
-                    <th style="width: 120px;">Aksi</th>
+                    <th style="width: 150px; text-align: center;">Tahun Angkatan</th>
+                    <th style="width: 150px; text-align: center;">Tanggal Dibuat</th>
+                    <th style="width: 150px; text-align: center;">Terakhir Diubah</th>
+                    <th style="width: 180px; text-align: center;">Aksi</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse($kelas as $index => $item)
                     <tr>
-                        <td>{{ ($kelas->firstItem() ?? 0) + $index }}</td>
+                        <td style="text-align: center;">{{ ($kelas->firstItem() ?? 0) + $index }}</td>
                         <td>
                             <div class="kelas-info">
                                 <span class="kelas-name">{{ $item['nama_kelas'] }}</span>
@@ -320,26 +327,26 @@
                         <td>
                             <span class="prodi-name">{{ $item['program_studi']['nama_prodi'] ?? 'Program Studi Tidak Ditemukan' }}</span>
                         </td>
-                        <td>
+                        <td style="text-align: center;">
                             <span class="tahun-badge">{{ $item['tahun_angkatan'] }}</span>
                         </td>
-                        <td>
+                        <td style="text-align: center;">
                             <small class="text-muted">
                                 {{ \Carbon\Carbon::parse($item['created_at'])->format('d/m/Y') }}
                             </small>
                         </td>
-                        <td>
+                        <td style="text-align: center;">
                             <small class="text-muted">
                                 {{ \Carbon\Carbon::parse($item['updated_at'])->format('d/m/Y') }}
                             </small>
                         </td>
                         <td>
                             <div class="action-buttons">
-                                <a href="{{ route('admin.kelas.edit', $item['id']) }}" class="btn-edit">
-                                    <i class="fas fa-edit"></i> Edit
+                                <a href="{{ route('admin.kelas.edit', $item['id']) }}" class="btn-action-edit" title="Edit">
+                                    <i class="fas fa-pencil-alt"></i>
                                 </a>
-                                <button type="button" class="btn-delete" onclick="confirmDelete({{ $item['id'] }}, '{{ $item['nama_kelas'] }}')">
-                                    <i class="fas fa-trash"></i> Hapus
+                                <button type="button" class="btn-action-delete" onclick="confirmDelete({{ $item['id'] }}, '{{ $item['nama_kelas'] }}')" title="Hapus">
+                                    <i class="fas fa-trash-alt"></i>
                                 </button>
                             </div>
                         </td>
@@ -464,18 +471,6 @@ $(document).ready(function() {
     // Tahun Angkatan filter change
     $('#tahunFilter').on('change', function() {
         $('#filterForm').submit();
-    });
-
-    // Edit button functionality
-    $('.btn-edit').on('click', function(e) {
-        var row = $(this).closest('tr');
-        var kelasName = row.find('.kelas-name').text();
-        console.log('Editing kelas:', kelasName);
-    });
-
-    // Add kelas button functionality
-    $('.btn-add').on('click', function() {
-        console.log('Adding new kelas');
     });
 
     // Clear search when clicking reset

@@ -4,34 +4,22 @@
 
 @section('styles')
 <style>
-    /* Filter Row Styling */
-    .filter-row {
+    .table-container .card-header {
+        padding: 12px 20px;
+    }
+
+    .header-container {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 20px;
-        gap: 15px;
+        width: 100%;
     }
 
-    .filter-left {
-        display: flex;
-        gap: 10px;
-        align-items: center;
-    }
-
-    .filter-btn {
-        background-color: #4e73df;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        padding: 8px 20px;
-        cursor: pointer;
-        font-size: 14px;
-        transition: background-color 0.2s;
-    }
-
-    .filter-btn:hover {
-        background-color: #2e59d9;
+    .table-container .card-title {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 600;
+        color: #5a5c69;
     }
 
     /* Search Box */
@@ -39,13 +27,16 @@
         border: 1px solid #ddd;
         border-radius: 5px;
         padding: 8px 15px;
-        width: 250px;
+        width: 350px;
         font-size: 14px;
         outline: none;
+        transition: all 0.3s ease;
     }
 
     .search-box:focus {
         border-color: #4e73df;
+        width: 400px;
+        box-shadow: 0 0 0 3px rgba(78, 115, 223, 0.1);
     }
 
     /* Table Custom Styling */
@@ -56,13 +47,15 @@
         font-size: 14px;
         padding: 12px 15px;
         border-bottom: 2px solid #e3e6f0;
+        white-space: nowrap;
+        vertical-align: middle !important;
     }
 
     .table tbody td {
         padding: 12px 15px;
         font-size: 14px;
         color: #5a5c69;
-        vertical-align: middle;
+        vertical-align: middle !important;
     }
 
     .table tbody tr:hover {
@@ -147,10 +140,9 @@
     }
 
     .tingkat-desc {
-        font-size: 12px;
-        color: #718096;
-        margin-top: 2px;
-        max-width: 300px;
+        font-size: 14px;
+        color: #5a5c69;
+        max-width: 350px;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -160,52 +152,46 @@
     .action-buttons {
         display: flex;
         gap: 8px;
+        justify-content: center;
+        flex-wrap: nowrap;
     }
 
-    .btn-edit {
-        background-color: #f6c23e;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        padding: 6px 12px;
-        font-size: 12px;
-        text-decoration: none;
+    .btn-action-edit, .btn-action-delete {
+        width: 32px;
+        height: 32px;
+        border-radius: 6px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #e5e7eb;
+        background-color: white;
         cursor: pointer;
-        transition: background-color 0.2s;
+        transition: all 0.2s ease;
+        font-size: 14px;
+        outline: none;
     }
 
-    .btn-edit:hover {
-        background-color: #dda20a;
-        text-decoration: none;
+    .btn-action-edit {
+        color: #4b5563; /* Abu-abu gelap */
+    }
+
+    .btn-action-edit:hover {
         color: white;
+        background-color: #4e73df; /* Biru */
+        border-color: #4e73df;
     }
 
-    .btn-delete {
-        background-color: #e74a3b;
+    .btn-action-delete {
+        color: #9ca3af; /* Abu-abu terang */
+    }
+
+    .btn-action-delete:hover {
         color: white;
-        border: none;
-        border-radius: 4px;
-        padding: 6px 12px;
-        font-size: 12px;
-        cursor: pointer;
-        transition: background-color 0.2s;
-    }
-
-    .btn-delete:hover {
-        background-color: #c0392b;
+        background-color: #e74a3b; /* Merah */
+        border-color: #e74a3b;
     }
 
     @media (max-width: 768px) {
-        .filter-row {
-            flex-direction: column;
-            align-items: stretch;
-        }
-
-        .filter-left {
-            margin-bottom: 10px;
-            flex-wrap: wrap;
-        }
-
         .search-box {
             width: 100%;
         }
@@ -232,43 +218,39 @@
 @endsection
 
 @section('content')
-<form method="GET" action="{{ route('admin.tingkat') }}" id="filterForm">
-    <div class="filter-row">
-        <div class="filter-left">
-            @if(request('search'))
-                <a href="{{ route('admin.tingkat') }}" class="btn btn-secondary" style="padding: 8px 15px; text-decoration: none; background-color: #6c757d; color: white; border-radius: 5px; font-size: 14px;">
-                    Reset
-                </a>
-            @endif
-        </div>
-
-        <div class="search-wrapper">
-            <input type="text" name="search" placeholder="Cari nama tingkat..." class="search-box" id="searchInput" value="{{ request('search') }}">
-        </div>
-    </div>
-</form>
-
 <div class="table-container">
     <div class="card-header">
-        <h3 class="card-title">Semua Tingkat</h3>
+        <div class="header-container">
+            <h3 class="card-title">Semua Tingkat</h3>
+            <form method="GET" action="{{ route('admin.tingkat') }}" id="filterForm" style="margin: 0;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    @if(request('search'))
+                        <a href="{{ route('admin.tingkat') }}" class="btn btn-secondary" style="padding: 8px 15px; text-decoration: none; background-color: #6c757d; color: white; border-radius: 5px; font-size: 14px; margin: 0; white-space: nowrap;">
+                            Reset
+                        </a>
+                    @endif
+                    <input type="text" name="search" placeholder="Cari nama tingkat..." class="search-box" id="searchInput" value="{{ request('search') }}" style="margin: 0;">
+                </div>
+            </form>
+        </div>
     </div>
 
     <div class="card-body p-0">
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th style="width: 60px;">No</th>
+                    <th style="width: 70px; text-align: center;">No</th>
                     <th>Nama Tingkat</th>
                     <th>Deskripsi</th>
-                    <th style="width: 120px;">Tanggal Dibuat</th>
-                    <th style="width: 120px;">Terakhir Diubah</th>
-                    <th style="width: 120px;">Aksi</th>
+                    <th style="width: 150px; text-align: center;">Tanggal Dibuat</th>
+                    <th style="width: 150px; text-align: center;">Terakhir Diubah</th>
+                    <th style="width: 180px; text-align: center;">Aksi</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse($tingkat as $index => $item)
                     <tr>
-                        <td>{{ ($tingkat->firstItem() ?? 0) + $index }}</td>
+                        <td style="text-align: center;">{{ ($tingkat->firstItem() ?? 0) + $index }}</td>
                         <td>
                             <div class="tingkat-info">
                                 <span class="tingkat-name">{{ $item['nama_tingkat'] }}</span>
@@ -279,23 +261,23 @@
                                 {{ $item['deskripsi'] }}
                             </div>
                         </td>
-                        <td>
+                        <td style="text-align: center;">
                             <small class="text-muted">
                                 {{ \Carbon\Carbon::parse($item['created_at'])->format('d/m/Y') }}
                             </small>
                         </td>
-                        <td>
+                        <td style="text-align: center;">
                             <small class="text-muted">
                                 {{ \Carbon\Carbon::parse($item['updated_at'])->format('d/m/Y') }}
                             </small>
                         </td>
                         <td>
                             <div class="action-buttons">
-                                <a href="{{ route('admin.tingkat.edit', $item['id']) }}" class="btn-edit">
-                                    <i class="fas fa-edit"></i> Edit
+                                <a href="{{ route('admin.tingkat.edit', $item['id']) }}" class="btn-action-edit" title="Edit">
+                                    <i class="fas fa-pencil-alt"></i>
                                 </a>
-                                <button type="button" class="btn-delete" onclick="confirmDelete({{ $item['id'] }}, '{{ $item['nama_tingkat'] }}')">
-                                    <i class="fas fa-trash"></i> Hapus
+                                <button type="button" class="btn-action-delete" onclick="confirmDelete({{ $item['id'] }}, '{{ $item['nama_tingkat'] }}')" title="Hapus">
+                                    <i class="fas fa-trash-alt"></i>
                                 </button>
                             </div>
                         </td>
@@ -404,18 +386,6 @@ $(document).ready(function() {
         if (e.which === 13) { // Enter key
             $('#filterForm').submit();
         }
-    });
-
-    // Edit button functionality
-    $('.btn-edit').on('click', function(e) {
-        var row = $(this).closest('tr');
-        var tingkatName = row.find('.tingkat-name').text();
-        console.log('Editing tingkat:', tingkatName);
-    });
-
-    // Add tingkat button functionality
-    $('.btn-add').on('click', function() {
-        console.log('Adding new tingkat');
     });
 
     // Clear search when clicking reset
