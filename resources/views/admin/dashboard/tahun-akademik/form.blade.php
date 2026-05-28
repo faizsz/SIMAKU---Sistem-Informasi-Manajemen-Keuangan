@@ -50,6 +50,8 @@
 
     .form-control {
         width: 100%;
+        height: auto !important;
+        line-height: 1.5;
         padding: 12px 15px;
         border: 1px solid #d1d5db;
         border-radius: 6px;
@@ -346,7 +348,7 @@
                                     class="form-control @error('tanggal_mulai') is-invalid @enderror"
                                     id="tanggal_mulai"
                                     name="tanggal_mulai"
-                                    value="{{ old('tanggal_mulai', isset($tahunAkademik) ? $tahunAkademik['tanggal_mulai'] : '') }}"
+                                    value="{{ old('tanggal_mulai', isset($tahunAkademik) && $tahunAkademik['tanggal_mulai'] ? \Carbon\Carbon::parse($tahunAkademik['tanggal_mulai'])->format('Y-m-d') : '') }}"
                                     required
                                 >
                                 @error('tanggal_mulai')
@@ -362,7 +364,7 @@
                                     class="form-control @error('tanggal_selesai') is-invalid @enderror"
                                     id="tanggal_selesai"
                                     name="tanggal_selesai"
-                                    value="{{ old('tanggal_selesai', isset($tahunAkademik) ? $tahunAkademik['tanggal_selesai'] : '') }}"
+                                    value="{{ old('tanggal_selesai', isset($tahunAkademik) && $tahunAkademik['tanggal_selesai'] ? \Carbon\Carbon::parse($tahunAkademik['tanggal_selesai'])->format('Y-m-d') : '') }}"
                                     required
                                 >
                                 @error('tanggal_selesai')
@@ -658,8 +660,8 @@ $(document).ready(function() {
 $(window).on('beforeunload', function(e) {
     var originalTahun = '{{ old('tahun_akademik', isset($tahunAkademik) ? $tahunAkademik['tahun_akademik'] : '') }}';
     var originalSemester = '{{ old('semester', isset($tahunAkademik) ? $tahunAkademik['semester'] : '') }}';
-    var originalTanggalMulai = '{{ old('tanggal_mulai', isset($tahunAkademik) ? $tahunAkademik['tanggal_mulai'] : '') }}';
-    var originalTanggalSelesai = '{{ old('tanggal_selesai', isset($tahunAkademik) ? $tahunAkademik['tanggal_selesai'] : '') }}';
+    var originalTanggalMulai = '{{ old('tanggal_mulai', isset($tahunAkademik) && $tahunAkademik['tanggal_mulai'] ? \Carbon\Carbon::parse($tahunAkademik['tanggal_mulai'])->format('Y-m-d') : '') }}';
+    var originalTanggalSelesai = '{{ old('tanggal_selesai', isset($tahunAkademik) && $tahunAkademik['tanggal_selesai'] ? \Carbon\Carbon::parse($tahunAkademik['tanggal_selesai'])->format('Y-m-d') : '') }}';
     var originalStatus = '{{ old('status', isset($tahunAkademik) ? $tahunAkademik['status'] : '') }}';
 
     var currentTahun = $('#tahun_akademik').val();
