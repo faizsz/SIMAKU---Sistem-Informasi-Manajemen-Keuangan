@@ -6,34 +6,29 @@
 
 @section('styles')
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&display=swap');
 
     :root {
-        --primary:       #4338ca;
-        --primary-soft:  #e0e7ff;
-        --primary-text:  #3730a3;
-        --success:       #059669;
-        --success-soft:  #d1fae5;
-        --danger:        #e11d48;
-        --danger-soft:   #ffe4e6;
-        --warning:       #d97706;
-        --warning-soft:  #fef3c7;
+        --primary:       #4e73df;
+        --primary-soft:  rgba(78, 115, 223, 0.1);
+        --primary-text:  #4e73df;
+        --success:       #1cc88a;
+        --success-soft:  rgba(28, 200, 138, 0.1);
+        --danger:        #e74a3b;
+        --danger-soft:   rgba(231, 74, 59, 0.1);
+        --warning:       #f6c23e;
+        --warning-soft:  rgba(246, 194, 62, 0.1);
         --surface:       #ffffff;
-        --bg:            #f1f5f9;
-        --text:          #0f172a;
-        --text-muted:    #64748b;
-        --text-hint:     #94a3b8;
-        --border:        #e2e8f0;
-        --radius:        12px;
-        --radius-lg:     16px;
-        --shadow-sm:     0 1px 2px rgba(0,0,0,0.04);
-        --shadow-md:     0 4px 12px rgba(0,0,0,0.08);
-        --shadow-lg:     0 8px 24px rgba(0,0,0,0.12);
-    }
-
-    .content-wrapper {
-        background-color: var(--bg) !important;
-        font-family: 'Plus Jakarta Sans', sans-serif !important;
+        --bg:            #f8f9fc;
+        --text:          #5a5c69;
+        --text-muted:    #858796;
+        --text-hint:     #b7b9cc;
+        --border:        #e3e6f0;
+        --radius:        8px;
+        --radius-lg:     10px;
+        --shadow-sm:     0 2px 4px rgba(0,0,0,0.02);
+        --shadow-md:     0 4px 12px rgba(58,59,69,0.06);
+        --shadow-lg:     0 8px 24px rgba(58,59,69,0.1);
     }
 
     /* ── 🔥 Page Header dengan Button ── */
@@ -70,19 +65,19 @@
         color: var(--primary-text);
         text-decoration: none;
         padding: 10px 18px;
-        border-radius: 12px;
-        border: 1.5px solid #c7d2fe;
-        background: linear-gradient(135deg, #e0e7ff 0%, #f5f3ff 100%);
+        border-radius: 8px;
+        border: 1.5px solid #bac8f3;
+        background: linear-gradient(135deg, rgba(78, 115, 223, 0.05) 0%, rgba(78, 115, 223, 0.01) 100%);
         transition: all 0.2s ease;
-        box-shadow: 0 2px 6px rgba(67, 56, 202, 0.1);
+        box-shadow: 0 2px 6px rgba(78, 115, 223, 0.05);
     }
 
     .link-golongan:hover {
-        background: linear-gradient(135deg, #c7d2fe 0%, #e0e7ff 100%);
+        background: linear-gradient(135deg, rgba(78, 115, 223, 0.1) 0%, rgba(78, 115, 223, 0.05) 100%);
         border-color: var(--primary);
         color: var(--primary);
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(67, 56, 202, 0.2);
+        box-shadow: 0 4px 12px rgba(78, 115, 223, 0.15);
     }
 
     .link-golongan:active {
@@ -121,7 +116,7 @@
     .stat-card:hover {
         box-shadow: var(--shadow-lg);
         transform: translateY(-3px);
-        border-color: #c7d2fe;
+        border-color: #bac8f3;
     }
 
     .stat-card:active {
@@ -130,7 +125,7 @@
     }
 
     .stat-label {
-        font-size: 12px;
+        font-size: 11px;
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.08em;
@@ -140,7 +135,7 @@
 
     .stat-value {
         font-family: 'JetBrains Mono', monospace;
-        font-size: 26px;
+        font-size: 24px;
         font-weight: 700;
         letter-spacing: -0.02em;
         line-height: 1.1;
@@ -155,7 +150,7 @@
 
     .stat-icon {
         width: 52px; height: 52px; flex-shrink: 0;
-        border-radius: 14px;
+        border-radius: 50%;
         display: flex; align-items: center; justify-content: center;
         font-size: 20px;
         transition: transform 0.25s ease;
@@ -191,7 +186,7 @@
         align-items: center;
         justify-content: space-between;
         gap: 12px;
-        background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+        background-color: #f8f9fc;
     }
 
     .table-card-title {
@@ -349,7 +344,7 @@
         letter-spacing: 0.02em;
         cursor: pointer;
         transition: all 0.2s ease;
-        box-shadow: 0 3px 10px rgba(67, 56, 202, 0.25);
+        box-shadow: 0 3px 10px rgba(78, 115, 223, 0.2);
         white-space: nowrap;
         position: relative;
         z-index: 2;
@@ -357,9 +352,9 @@
     }
 
     .btn-row-action:hover {
-        background: var(--primary-text);
+        background: #2e59d9;
         transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(67, 56, 202, 0.35);
+        box-shadow: 0 6px 16px rgba(78, 115, 223, 0.3);
     }
 
     .btn-row-action:active {
