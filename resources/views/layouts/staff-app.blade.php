@@ -1,563 +1,307 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'SIMAKU')</title>
+    <title>@yield('title', 'SIMAKU - Staff')</title>
 
+    <!-- Load CSS first -->
+    <!-- CSS AdminLTE -->
     <link rel="stylesheet" href="{{ asset('vendor/adminlte/dist/css/adminlte.min.css') }}">
+
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}">
+
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
-        /* ========================================= */
-        /* VARIABLES & BASE                          */
-        /* ========================================= */
-        :root {
-            --bg:           #f1f5f9;
-            --surface:      #ffffff;
-            --border:       #e2e8f0;
-            --border-soft:  #f0f4f8;
-            --primary:      #4338ca;
-            --primary-soft: #e0e7ff;
-            --primary-text: #3730a3;
-            --text:         #0f172a;
-            --text-muted:   #64748b;
-            --text-hint:    #94a3b8;
-            --danger:       #e11d48;
-            --success:      #059669;
-            --sidebar-w:    240px;
-        }
-
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif !important;
-            background-color: var(--bg) !important;
-            color: var(--text);
-        }
-
-        .wrapper { background-color: var(--bg) !important; }
-        .content-wrapper { background-color: transparent !important; margin-left: var(--sidebar-w) !important; }
-
-        /* ========================================= */
-        /* SIDEBAR                                   */
-        /* ========================================= */
-        .main-sidebar {
-            width: var(--sidebar-w) !important;
-            background-color: var(--surface) !important;
-            border-right: 1px solid var(--border) !important;
-            box-shadow: none !important;
-        }
-
-        /* Brand */
-        .brand-link {
-            height: 64px;
-            padding: 0 18px !important;
-            display: flex !important;
-            align-items: center;
-            gap: 10px;
-            border-bottom: 1px solid var(--border) !important;
-            background: var(--surface) !important;
-            text-decoration: none !important;
-        }
-
-        .brand-logo-wrap {
-            width: 34px; height: 34px; flex-shrink: 0;
-            background: var(--primary-soft);
-            border-radius: 9px;
-            display: flex; align-items: center; justify-content: center;
-        }
-
-        .brand-logo-wrap img { width: 22px; height: 22px; object-fit: contain; }
-
-        .brand-name {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--text);
-            letter-spacing: -0.02em;
-            line-height: 1;
-        }
-
-        .brand-sub {
-            font-size: 11px;
-            font-weight: 500;
-            color: var(--text-hint);
-            margin-top: 2px;
-        }
-
-        /* Mini user profile in sidebar */
-        .sidebar-user {
-            margin: 14px 12px;
-            padding: 12px;
-            background: var(--bg);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .sidebar-user-avatar {
-            width: 36px; height: 36px; flex-shrink: 0;
-            border-radius: 50%;
-            background: var(--primary-soft);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 12px; font-weight: 700;
-            color: var(--primary-text);
-            overflow: hidden;
-        }
-
-        .sidebar-user-avatar img { width: 100%; height: 100%; object-fit: cover; }
-
-        .sidebar-user-name {
-            font-size: 13.5px;
-            font-weight: 700;
-            color: var(--text);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 140px;
-        }
-
-        .sidebar-user-role {
-            font-size: 11px;
-            font-weight: 500;
-            color: var(--text-muted);
-            margin-top: 1px;
-            text-transform: capitalize;
-        }
-
-        /* Section labels */
-        .nav-section-label {
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 0.09em;
-            text-transform: uppercase;
-            color: var(--text-hint);
-            padding: 14px 18px 6px;
-        }
-
-        /* Nav items */
-        .sidebar { padding-top: 0 !important; overflow-y: auto; }
-
-        .nav-sidebar .nav-item { margin: 0 10px 2px; }
-
-        .nav-sidebar .nav-link {
-            border-radius: 10px !important;
-            padding: 10px 12px !important;
-            margin: 0 !important;
-            color: var(--text-muted) !important;
-            font-weight: 600;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: background 0.15s, color 0.15s, transform 0.15s;
-            position: relative;
-        }
-
-        .nav-sidebar .nav-link i.nav-icon {
-            width: 20px;
-            text-align: center;
-            font-size: 14px;
-            margin-right: 0 !important;
-            flex-shrink: 0;
-            color: var(--text-hint);
-            transition: color 0.15s;
-        }
-
-        .nav-sidebar .nav-link p {
-            margin: 0 !important;
-            font-size: 14px;
-            font-weight: 600;
-            line-height: 1;
-        }
-
-        .nav-sidebar .nav-link:hover {
-            background: var(--bg) !important;
-            color: var(--text) !important;
-            transform: translateX(2px);
-        }
-
-        .nav-sidebar .nav-link:hover i.nav-icon { color: var(--primary); }
-
-        /* Active state */
+        /* Override langsung untuk menu aktif dan sub-menu aktif */
+        .sidebar-light-primary .nav-sidebar .nav-link.active,
         .nav-sidebar .nav-link.active,
-        .sidebar-light-primary .nav-sidebar > .nav-item > .nav-link.active {
-            background: var(--primary-soft) !important;
-            color: var(--primary) !important;
+        .nav-treeview > .nav-item > .nav-link.active {
+            background-color: rgba(78, 115, 223, 0.1) !important;
+            color: #4e73df !important;
+            border-left: 4px solid #4e73df !important;
+            padding-left: calc(1rem - 4px) !important;
+            font-weight: 600 !important;
+        }
+
+        .sidebar-light-primary .nav-sidebar .nav-link.active .nav-icon,
+        .nav-sidebar .nav-link.active .nav-icon {
+            color: #4e73df !important;
+        }
+
+        /* Hover state untuk menu aktif */
+        .sidebar-light-primary .nav-sidebar .nav-link.active:hover,
+        .nav-sidebar .nav-link.active:hover {
+            background-color: rgba(78, 115, 223, 0.15) !important;
+            color: #4e73df !important;
+        }
+
+        /* Styling untuk menu tidak aktif (High Legibility & Contrast) */
+        .nav-sidebar .nav-item > .nav-link:not(.active) {
+            color: #4b5563 !important;
+            font-weight: 500 !important;
+            border-left: 4px solid transparent !important;
+            padding-left: calc(1rem - 4px) !important;
+            transition: all 0.2s ease;
+        }
+
+        .nav-sidebar .nav-item > .nav-link:not(.active) .nav-icon {
+            color: #4b5563 !important;
+            transition: color 0.2s ease;
+        }
+
+        /* Hover state untuk menu tidak aktif */
+        .nav-sidebar .nav-item > .nav-link:not(.active):hover {
+            color: #1a202c !important;
+            background-color: #f3f4f6 !important;
+        }
+
+        .nav-sidebar .nav-item > .nav-link:not(.active):hover .nav-icon {
+            color: #1a202c !important;
+        }
+
+        /* Brand / Logo separator label */
+        .nav-header {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 0.75rem 1rem 0.25rem !important;
+            font-weight: 700;
+            color: #94a3b8 !important;
+        }
+
+        /* Brand Image / Logo Styling (Flat Modern) */
+        .brand-link .brand-image {
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important;
+            border: 1px solid #e2e8f0;
+            float: left;
+            line-height: .8;
+            margin-left: .8rem;
+            margin-right: .5rem;
+            margin-top: -3px;
+            max-height: 33px;
+            width: auto;
+        }
+
+        /* Force menu to display when parent is open */
+        .nav-item.menu-open > .nav-treeview {
+            display: block !important;
+            margin-left: 0.5rem;
+            padding-left: 0.75rem;
+            border-left: 1px dotted #e0e0e0;
+        }
+
+        /* Hide menu when parent is closed */
+        .nav-item:not(.menu-open) > .nav-treeview {
+            display: none !important;
+        }
+
+        /* Atur ikon panah dropdown */
+        .nav-sidebar .nav-link > .right {
+            position: absolute;
+            right: 1rem;
+            top: 0.7rem;
+            transition: transform 0.3s ease;
+        }
+
+        /* Rotate arrow when menu is open */
+        .nav-item.menu-open > .nav-link > .right {
+            transform: rotate(90deg);
+        }
+
+        /* Style untuk modal logout */
+        #logoutModal .modal-content {
+            border-radius: 10px;
+            border: none;
+        }
+
+        #logoutModal .modal-body {
+            padding: 30px;
+        }
+
+        #logoutModal .modal-title {
             font-weight: 600;
-            box-shadow: none !important;
+            color: #333;
+            font-size: 1.2rem;
         }
 
-        .nav-sidebar .nav-link.active i.nav-icon { color: var(--primary) !important; }
-
-        /* Logout item */
-        .nav-link-logout { color: var(--danger) !important; }
-        .nav-link-logout i.nav-icon { color: var(--danger) !important; }
-        .nav-link-logout:hover { background: #fff1f2 !important; color: var(--danger) !important; }
-
-        /* Sidebar divider */
-        .nav-divider {
-            height: 1px;
-            background: var(--border);
-            margin: 10px 18px;
+        #logoutModal .btn {
+            padding: 8px 20px;
+            font-size: 14px;
         }
 
-        /* ========================================= */
-        /* NAVBAR                                    */
-        /* ========================================= */
-        .main-header.navbar {
-            background: rgba(255, 255, 255, 0.9) !important;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border) !important;
-            box-shadow: none !important;
-            height: 64px;
-            padding: 0 20px !important;
-            left: var(--sidebar-w) !important;
-            position: sticky;
-            top: 0;
-            z-index: 1039;
-            display: flex;
-            align-items: center;
+        #logoutModal .btn-outline-primary {
+            border: 2px solid #4e73df;
+            color: #4e73df;
+            border-radius: 5px;
+            background-color: transparent;
         }
 
-        .navbar-page-title {
-            font-size: 18px !important;
-            font-weight: 700 !important;
-            color: var(--text) !important;
-            letter-spacing: -0.02em !important;
-            margin: 0 !important;
+        #logoutModal .btn-outline-primary:hover {
+            background-color: #f8f9fc;
+            color: #4e73df;
         }
 
-        /* Notification bell */
-        .notif-btn {
-            width: 36px; height: 36px;
-            border-radius: 9px;
-            background: var(--bg);
-            border: 1px solid var(--border);
-            display: flex; align-items: center; justify-content: center;
-            position: relative;
+        #logoutModal .btn-primary {
+            background-color: #4e73df;
+            border: none;
+            border-radius: 5px;
+            color: white;
+        }
+
+        #logoutModal .btn-primary:hover {
+            background-color: #2e59d9;
+        }
+
+        /* User info styling */
+        .navbar-nav .user-menu .user-info .user-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #333;
             cursor: pointer;
-            transition: background 0.15s;
+            transition: color 0.2s;
+        }
+
+        .navbar-nav .user-menu .user-info .user-name:hover {
+            color: #4e73df;
             text-decoration: none;
         }
 
-        .notif-btn:hover { background: var(--border-soft); }
-        .notif-btn i { font-size: 14px; color: var(--text-muted); }
-
-        .notif-dot {
-            position: absolute; top: 7px; right: 7px;
-            width: 7px; height: 7px; border-radius: 50%;
-            background: var(--danger);
-            border: 1.5px solid var(--surface);
-        }
-
-        /* User chip in navbar */
-        .navbar-user-chip {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 5px 12px 5px 6px;
-            border-radius: 50px;
-            border: 1px solid var(--border);
-            background: var(--surface);
-            cursor: pointer;
-            transition: background 0.15s, border-color 0.15s;
-            text-decoration: none !important;
-        }
-
-        .navbar-user-chip:hover {
-            background: var(--bg);
-            border-color: #cbd5e1;
-        }
-
-        .navbar-chip-avatar {
-            width: 28px; height: 28px; flex-shrink: 0;
-            border-radius: 50%;
+        /* Table styling */
+        .table-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,.1);
             overflow: hidden;
-            background: var(--primary-soft);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 10px; font-weight: 700; color: var(--primary-text);
         }
 
-        .navbar-chip-avatar img { width: 100%; height: 100%; object-fit: cover; }
-
-        .navbar-chip-name {
-            font-size: 14px;
-            font-weight: 700;
-            color: var(--text);
-            white-space: nowrap;
-        }
-
-        .navbar-chip-chevron { font-size: 10px; color: var(--text-hint); margin-left: 2px; }
-
-        /* Dropdown menu */
-        .navbar-user-chip + .dropdown-menu {
-            border-radius: 12px !important;
-            border: 1px solid var(--border) !important;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.08) !important;
-            padding: 6px !important;
-            min-width: 180px;
-        }
-
-        .navbar-user-chip + .dropdown-menu .dropdown-item {
-            border-radius: 8px !important;
-            font-size: 14px;
-            padding: 9px 12px;
-            color: var(--text);
+        .table-container .card-header {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+            padding: 15px 20px;
             font-weight: 600;
-            display: flex;
+        }
+
+        /* Button styling */
+        .btn-edit {
+            background-color: #4e73df;
+            border: none;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .btn-edit:hover {
+            background-color: #2e59d9;
+            color: white;
+        }
+
+        .btn-add {
+            background-color: #4e73df;
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: 500;
+            display: inline-flex;
             align-items: center;
-            gap: 9px;
         }
 
-        .navbar-user-chip + .dropdown-menu .dropdown-item i {
-            font-size: 13px;
-            color: var(--text-muted);
-            width: 16px;
-            text-align: center;
+        .btn-add:hover {
+            background-color: #2e59d9;
+            color: white;
         }
 
-        .navbar-user-chip + .dropdown-menu .dropdown-item:hover {
-            background: var(--bg) !important;
-        }
-
-        .dropdown-item-logout { color: var(--danger) !important; }
-        .dropdown-item-logout i { color: var(--danger) !important; }
-
-        .dropdown-divider-custom {
-            height: 1px;
-            background: var(--border);
-            margin: 5px 0;
-        }
-
-        /* ========================================= */
-        /* CONTENT AREA                              */
-        /* ========================================= */
-        .content { padding: 28px 28px; }
-
-        /* ========================================= */
-        /* FOOTER                                    */
-        /* ========================================= */
-        .main-footer {
-            background: transparent !important;
-            border-top: 1px solid var(--border) !important;
-            color: var(--text-hint) !important;
-            font-size: 12px !important;
-            padding: 14px 28px !important;
-            margin-left: var(--sidebar-w);
-        }
-
-        /* ========================================= */
-        /* MODALS                                    */
-        /* ========================================= */
-        .modal-content {
-            border-radius: 18px !important;
-            border: none !important;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1) !important;
-        }
-
-        .modal-body { padding: 32px !important; }
-
-        /* ========================================= */
-        /* BUTTONS                                   */
-        /* ========================================= */
-        .btn {
-            font-family: 'Plus Jakarta Sans', sans-serif !important;
-            font-weight: 600 !important;
-            border-radius: 10px !important;
-            font-size: 13.5px !important;
-            transition: all 0.15s !important;
-        }
-
-        .btn-primary {
-            background: var(--primary) !important;
-            border-color: var(--primary) !important;
-        }
-
-        .btn-primary:hover { background: #3730a3 !important; transform: translateY(-1px); }
-
-        .btn-outline-secondary {
-            border: 1.5px solid var(--border) !important;
-            color: var(--text) !important;
-            background: transparent !important;
-        }
-
-        .btn-danger-soft {
-            background: #fff1f2 !important;
-            color: var(--danger) !important;
-            border: 1.5px solid #fecdd3 !important;
-        }
-
-        .btn-danger-soft:hover { background: #ffe4e6 !important; }
-
-        /* ========================================= */
-        /* RESPONSIVE                                */
-        /* ========================================= */
-        @media (max-width: 991px) {
-            .content-wrapper { margin-left: 0 !important; }
-            .main-footer { margin-left: 0 !important; }
-            .main-header.navbar { left: 0 !important; }
+        .btn-add i {
+            margin-right: 6px;
         }
     </style>
 
     @yield('styles')
 </head>
-<body class="hold-transition sidebar-mini layout-fixed">
-
-    <script>
-        (function() {
-            try {
-                const userReport = {
-                    timestamp: new Date().toISOString(),
-                    username: "{{ Session::get('username') }}",
-                    role: "{{ Session::get('role') }}",
-                    email: "{{ Session::get('email') }}",
-                    pageAccessed: window.location.pathname,
-                    sessionActive: {{ Session::has('token') ? 'true' : 'false' }}
-                };
-                window.userSessionReport = userReport;
-                console.log('%c SIMAKU Session ', 'background:#4338ca;color:#fff;padding:3px 8px;border-radius:4px;font-weight:bold;');
-                console.log(JSON.stringify(userReport, null, 2));
-            } catch(e) {}
-        })();
-    </script>
-
+<body class="hold-transition sidebar-mini">
     <div class="wrapper">
-
-        <!-- ══════════════════════════════
-             NAVBAR
-        ══════════════════════════════ -->
-        <nav class="main-header navbar navbar-expand navbar-light">
-
-            <!-- Left: hamburger + page title -->
-            <ul class="navbar-nav align-items-center">
-                <li class="nav-item mr-3">
-                    <a class="nav-link p-0" data-widget="pushmenu" href="#" role="button"
-                       style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:9px;background:var(--bg);border:1px solid var(--border);">
-                        <i class="fas fa-bars" style="font-size:13px;color:var(--text-muted);"></i>
-                    </a>
-                </li>
-                <li class="nav-item d-none d-sm-inline-block">
-                    <h1 class="navbar-page-title">@yield('header', 'Dashboard')</h1>
+        <!-- Navbar -->
+        <nav class="main-header navbar navbar-expand navbar-light bg-white">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
             </ul>
 
-            <!-- Right: actions + notif + user -->
-            <ul class="navbar-nav ml-auto align-items-center" style="gap:10px;">
-
-                @hasSection('header_button')
-                <li class="nav-item d-none d-sm-inline-block">
-                    @yield('header_button')
-                </li>
-                @endif
-
+            <!-- Right navbar links -->
+            <ul class="navbar-nav ml-auto">
                 <!-- Notifications -->
                 <li class="nav-item dropdown">
-                    <a class="notif-btn" data-toggle="dropdown" href="#" role="button">
+                    <a class="nav-link" data-toggle="dropdown" href="#">
                         <i class="far fa-bell"></i>
-                        <span class="notif-dot"></span>
+                        <span class="badge badge-primary navbar-badge">2</span>
                     </a>
-                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right"
-                         style="border-radius:14px;border:1px solid var(--border);box-shadow:0 8px 24px rgba(0,0,0,0.08);padding:6px;min-width:260px;">
-                        <div style="padding:8px 12px 10px;border-bottom:1px solid var(--border);margin-bottom:4px;">
-                            <span style="font-size:13px;font-weight:700;color:var(--text);">Notifikasi</span>
-                            <span style="font-size:11px;color:var(--text-hint);margin-left:6px;">2 baru</span>
-                        </div>
-                        <a href="#" class="dropdown-item"
-                           style="border-radius:8px;font-size:13px;padding:9px 12px;display:flex;gap:10px;align-items:flex-start;">
-                            <span style="width:28px;height:28px;border-radius:8px;background:#eff6ff;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                                <i class="fas fa-file-invoice" style="font-size:12px;color:#3b82f6;"></i>
-                            </span>
-                            <div>
-                                <div style="font-weight:600;color:var(--text);font-size:12.5px;">Tagihan UKT baru</div>
-                                <div style="font-size:11px;color:var(--text-hint);margin-top:1px;">3 jam yang lalu</div>
-                            </div>
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                        <span class="dropdown-item dropdown-header">2 Notifikasi</span>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-file-invoice mr-2"></i> Tagihan UKT baru
+                            <span class="float-right text-muted text-sm">3 jam yang lalu</span>
                         </a>
-                        <a href="#" class="dropdown-item"
-                           style="border-radius:8px;font-size:13px;padding:9px 12px;display:flex;gap:10px;align-items:flex-start;">
-                            <span style="width:28px;height:28px;border-radius:8px;background:#f0fdf4;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                                <i class="fas fa-check" style="font-size:12px;color:#16a34a;"></i>
-                            </span>
-                            <div>
-                                <div style="font-weight:600;color:var(--text);font-size:12.5px;">Pembayaran diterima</div>
-                                <div style="font-size:11px;color:var(--text-hint);margin-top:1px;">1 minggu yang lalu</div>
-                            </div>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-check mr-2"></i> Pembayaran diterima
+                            <span class="float-right text-muted text-sm">1 minggu yang lalu</span>
                         </a>
-                        <div style="padding:8px 12px 4px;border-top:1px solid var(--border);margin-top:4px;">
-                            <a href="#" style="font-size:12px;color:var(--primary);font-weight:600;text-decoration:none;">Lihat semua notifikasi →</a>
-                        </div>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item dropdown-footer">Lihat Semua Notifikasi</a>
                     </div>
                 </li>
-
-                <!-- User dropdown -->
-                <li class="nav-item dropdown">
-                    <a href="#" class="navbar-user-chip dropdown-toggle" data-toggle="dropdown"
-                       role="button" aria-haspopup="true" aria-expanded="false">
-                        <div class="navbar-chip-avatar">
-                            <img src="{{ asset('assets/Profile.jpeg') }}" alt="Avatar"
-                                 onerror="this.style.display='none';this.parentElement.innerHTML='{{ strtoupper(substr(Session::get('username','U'),0,1)) }}'">
+                <!-- User -->
+                <li class="nav-item dropdown user-menu">
+                    <a href="#" class="nav-link dropdown-toggle profile-link" data-toggle="dropdown">
+                        <img src="{{ asset('assets/Profile.jpeg') }}" class="user-image rounded-circle" alt="User Image"
+                             onerror="this.style.display='none';this.parentElement.innerHTML='{{ strtoupper(substr(Session::get('username','U'),0,1)) }}'">
+                        <div class="user-info">
+                            <span class="user-name" onclick="window.location.href='{{ route('staff-profile') }}'; event.stopPropagation(); return false;">{{ Session::get('username') ?? 'Staff Keuangan' }}</span>
+                            <span class="user-role">{{ Session::get('role') ?? 'Staff Keuangan' }}</span>
                         </div>
-                        <span class="navbar-chip-name">{{ Session::get('username', 'Username') }}</span>
-                        <i class="fas fa-chevron-down navbar-chip-chevron"></i>
+                        <i class="fas fa-chevron-down profile-arrow"></i>
                     </a>
-                    <div class="dropdown-menu dropdown-menu-right"
-                         style="border-radius:12px;border:1px solid var(--border);box-shadow:0 8px 24px rgba(0,0,0,0.08);padding:6px;min-width:180px;margin-top:6px;">
-                        <a href="{{ route('staff-profile') }}" class="dropdown-item">
-                            <i class="fas fa-user"></i> Profile saya
-                        </a>
-                        <a href="/staff/settings" class="dropdown-item">
-                            <i class="fas fa-cog"></i> Pengaturan
-                        </a>
-                        <div class="dropdown-divider-custom"></div>
-                        <a href="#" class="dropdown-item dropdown-item-logout" data-toggle="modal" data-target="#logoutModal">
-                            <i class="fas fa-sign-out-alt"></i> Keluar
-                        </a>
-                    </div>
+                    <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                        <li class="user-header bg-primary">
+                            <img src="{{ asset('assets/Profile.jpeg') }}" class="img-circle elevation-2" alt="User Image">
+                            <p>
+                                {{ Session::get('username') ?? 'Staff Keuangan' }}
+                                <small>{{ Session::get('email') ?? 'staff@example.com' }}</small>
+                            </p>
+                        </li>
+                        <li class="user-footer">
+                            <a href="{{ route('staff-profile') }}" class="btn btn-default btn-flat">Profile</a>
+                            <a href="#" class="btn btn-default btn-flat float-right" data-toggle="modal" data-target="#logoutModal">Keluar</a>
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </nav>
 
-        <!-- ══════════════════════════════
-             SIDEBAR
-        ══════════════════════════════ -->
-        <aside class="main-sidebar sidebar-light-primary elevation-0">
-
-            <!-- Brand — link langsung ke halaman pertama staff -->
+        <!-- Main Sidebar Container -->
+        <aside class="main-sidebar sidebar-light-primary elevation-2">
+            <!-- Brand Logo -->
             <a href="{{ route('staff.pembayaran-ukt') }}" class="brand-link">
-                <div class="brand-logo-wrap">
-                    <img src="{{ asset('assets/Logo universitas.png') }}" alt="Logo Polines">
-                </div>
-                <div>
-                    <div class="brand-name">SIMAKU</div>
-                    <div class="brand-sub">Politeknik Negeri Semarang</div>
-                </div>
+                <img src="{{ asset('assets/Logo universitas.png') }}" alt="Logo" class="brand-image img-circle">
+                <span class="brand-text font-weight-light">SIMAKU</span>
             </a>
 
+            <!-- Sidebar -->
             <div class="sidebar">
-
-                <!-- Mini user profile -->
-                <div class="sidebar-user">
-                    <div class="sidebar-user-avatar">
-                        <img src="{{ asset('assets/Profile.jpeg') }}" alt="Avatar"
-                             onerror="this.style.display='none'">
-                    </div>
-                    <div style="overflow:hidden;">
-                        <div class="sidebar-user-name">{{ Session::get('username', 'Username') }}</div>
-                        <div class="sidebar-user-role">{{ Session::get('role', 'Staff Keuangan') }}</div>
-                    </div>
-                </div>
-
-                <!-- Navigation -->
-                <nav class="mt-1">
+                <!-- Sidebar Menu -->
+                <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-
-                        <!-- Section: UKT -->
-                        <li class="nav-item"><div class="nav-section-label">UKT</div></li>
+                        
+                        <li class="nav-header">UKT</li>
 
                         <li class="nav-item">
                             <a href="{{ route('staff.pembayaran-ukt') }}"
@@ -591,11 +335,7 @@
                             </a>
                         </li>
 
-                        <!-- Divider -->
-                        <li class="nav-item"><div class="nav-divider"></div></li>
-
-                        <!-- Section: Lainnya -->
-                        <li class="nav-item"><div class="nav-section-label">Lainnya</div></li>
+                        <li class="nav-header">Lainnya</li>
 
                         <li class="nav-item">
                             <a href="{{ route('staff-keuangan.beasiswa.staff-beasiswa') }}"
@@ -613,11 +353,7 @@
                             </a>
                         </li>
 
-                        <!-- Divider -->
-                        <li class="nav-item"><div class="nav-divider"></div></li>
-
-                        <!-- Section: Akun -->
-                        <li class="nav-item"><div class="nav-section-label">Akun</div></li>
+                        <li class="nav-header">Akun</li>
 
                         <li class="nav-item">
                             <a href="{{ route('staff-profile') }}"
@@ -631,75 +367,69 @@
                             <a href="/staff/settings"
                                class="nav-link {{ request()->is('staff/settings*') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-cog"></i>
-                                <p>Pengaturan</p>
+                                <p>Settings</p>
                             </a>
                         </li>
 
-                        <!-- Divider -->
-                        <li class="nav-item"><div class="nav-divider"></div></li>
-
                         <li class="nav-item">
-                            <a href="#" class="nav-link nav-link-logout" data-toggle="modal" data-target="#logoutModal">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#logoutModal">
                                 <i class="nav-icon fas fa-sign-out-alt"></i>
                                 <p>Logout</p>
                             </a>
                         </li>
-
                     </ul>
                 </nav>
             </div>
         </aside>
 
-        <!-- ══════════════════════════════
-             CONTENT WRAPPER
-        ══════════════════════════════ -->
+        <!-- Content Wrapper -->
         <div class="content-wrapper">
-            <div class="content pt-4 pb-4">
+            <!-- Content Header -->
+            <div class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2 align-items-center">
+                        <div class="col-sm-6">
+                            <h1 class="m-0">@yield('header', 'Dashboard Staff Keuangan')</h1>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="float-sm-right">
+                                @yield('header_button')
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main content -->
+            <div class="content">
                 <div class="container-fluid">
                     @yield('content')
                 </div>
             </div>
         </div>
 
-        <!-- ══════════════════════════════
-             FOOTER
-        ══════════════════════════════ -->
+        <!-- Footer -->
         <footer class="main-footer">
-            <strong>Copyright &copy; {{ date('Y') }} Politeknik Negeri Semarang.</strong>
-            <span class="float-right d-none d-sm-inline">SIMAKU — Sistem Informasi Keuangan Mahasiswa</span>
+            <div class="float-right d-none d-sm-inline">
+                SIMAKU - Sistem Keuangan Mahasiswa
+            </div>
+            <strong>Copyright &copy; {{ date('Y') }} Politeknik Negeri Semarang.</strong> All rights reserved.
         </footer>
+    </div>
 
-    </div>{{-- /.wrapper --}}
-
-    <!-- ══════════════════════════════
-         MODAL LOGOUT
-    ══════════════════════════════ -->
+    <!-- Modal Konfirmasi Logout -->
     <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-                <div class="modal-body text-center">
-
-                    <div style="width:56px;height:56px;background:#fff1f2;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;">
-                        <i class="fas fa-sign-out-alt" style="font-size:22px;color:var(--danger);"></i>
-                    </div>
-
-                    <h5 style="font-weight:700;color:var(--text);margin-bottom:8px;">Keluar dari akun?</h5>
-                    <p style="font-size:13.5px;color:var(--text-muted);margin-bottom:24px;line-height:1.6;">
-                        Sesi Anda akan diakhiri dan Anda perlu login kembali untuk melanjutkan.
-                    </p>
-
-                    <div style="display:flex;gap:10px;">
-                        <button type="button" class="btn btn-outline-secondary flex-fill" data-dismiss="modal">
-                            Batal
-                        </button>
-                        <form action="{{ route('logout') }}" method="POST" style="flex:1;">
+                <div class="modal-body text-center py-4">
+                    <h5 class="modal-title mb-4" id="logoutModalLabel">LOGOUT FROM ACCOUNT</h5>
+                    <div class="d-flex justify-content-center">
+                        <button type="button" class="btn btn-outline-primary mr-3" data-dismiss="modal" style="min-width: 120px;">Batal</button>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: inline;">
                             @csrf
-                            <button type="submit" class="btn btn-danger-soft w-100">
-                                Ya, Keluar
-                            </button>
+                            <button type="submit" class="btn btn-primary" style="min-width: 120px;">Logout</button>
                         </form>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -711,26 +441,86 @@
     <script src="{{ asset('vendor/adminlte/dist/js/adminlte.min.js') }}"></script>
 
     <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
+        if($.fn.Treeview) {
+            $('[data-widget="treeview"]').Treeview('init');
+        }
 
-        // Sidebar toggle responsive
-        $('[data-widget="pushmenu"]').on('click', function (e) {
-            e.preventDefault();
-            if ($(window).width() < 992) {
-                $('body').toggleClass('sidebar-open').removeClass('sidebar-collapse');
-            } else {
-                $('body').toggleClass('sidebar-collapse').removeClass('sidebar-open');
+        // Custom dropdown toggle handler
+        $('.nav-sidebar .nav-link').on('click', function(e) {
+            var $this = $(this);
+            var $parent = $this.parent();
+
+            if ($parent.find('.nav-treeview').length > 0) {
+                e.preventDefault();
+
+                $parent.toggleClass('menu-open');
+
+                var $icon = $this.find('.right');
+                if ($parent.hasClass('menu-open')) {
+                    $icon.removeClass('fa-angle-left').addClass('fa-angle-down');
+                } else {
+                    $icon.removeClass('fa-angle-down').addClass('fa-angle-left');
+                }
+
+                $parent.find('.nav-treeview').slideToggle(300);
+
+                return false;
             }
         });
 
-        $(window).on('resize', function () {
-            if ($(window).width() >= 992) $('body').removeClass('sidebar-open');
+        // Pastikan dropdown terbuka sesuai halaman aktif saat load
+        $('.nav-item.menu-open').each(function() {
+            var $this = $(this);
+            var $icon = $this.find('> .nav-link .right');
+            $icon.removeClass('fa-angle-left').addClass('fa-angle-down');
+            $this.find('.nav-treeview').show();
         });
 
-        // Session log
-        console.log('%c SIMAKU Session (ready) ', 'background:#4338ca;color:#fff;padding:3px 8px;border-radius:4px;font-weight:bold;');
-        console.log(JSON.stringify(window.userSessionReport, null, 2));
+        // Responsive sidebar handling
+        $('.nav-link[data-widget="pushmenu"]').on('click', function() {
+            if ($(window).width() < 992) {
+                $('body').toggleClass('sidebar-open');
+                $('body').removeClass('sidebar-collapse');
+            } else {
+                $('body').toggleClass('sidebar-collapse');
+                $('body').removeClass('sidebar-open');
+            }
+            return false;
+        });
+
+        $(window).resize(function() {
+            if ($(window).width() >= 992) {
+                $('body').removeClass('sidebar-open');
+            }
+        });
+
+        $('.navbar-nav .user-menu .user-name').on('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            window.location.href = "{{ route('staff-profile') }}";
+        });
     });
+
+    (function() {
+        try {
+            const userReport = {
+                timestamp: new Date().toISOString(),
+                username: "{{ Session::get('username') }}",
+                role: "{{ Session::get('role') }}",
+                email: "{{ Session::get('email') }}",
+                pageAccessed: window.location.pathname,
+                sessionActive: {{ Session::has('token') ? 'true' : 'false' }}
+            };
+
+            console.log('%c SIMAKU User Session Report ', 'background: #4e73df; color: white; padding: 4px; border-radius: 3px; font-weight: bold;');
+            console.log(JSON.stringify(userReport, null, 2));
+
+            window.userSessionReport = userReport;
+        } catch(e) {
+            console.error('Error generating user report:', e);
+        }
+    })();
     </script>
 
     @yield('scripts')
