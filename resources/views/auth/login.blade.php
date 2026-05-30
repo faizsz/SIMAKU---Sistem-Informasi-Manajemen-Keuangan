@@ -9,25 +9,24 @@
     <style>
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-        /* ── 🔥 DESIGN SYSTEM: Match Dashboard ── */
         :root {
             --primary:       #4338ca;
             --primary-soft:  #e0e7ff;
             --primary-text:  #3730a3;
-            --primary-glow:  rgba(67, 56, 202, 0.15);
+            --primary-glow:  rgba(67, 56, 202, 0.18);
 
             --success:       #059669;
             --success-soft:  #d1fae5;
 
             --surface:       #ffffff;
-            --bg:            #f1f5f9;        /* ← SAME AS DASHBOARD */
+            --bg:            #f1f5f9;
             --text:          #0f172a;
             --text-muted:    #64748b;
             --border:        #e2e8f0;
-            --radius:        12px;
+            --radius:        10px;
             --radius-lg:     16px;
             --shadow-md:     0 4px 12px rgba(0,0,0,0.08);
-            --shadow-lg:     0 8px 24px rgba(0,0,0,0.12);
+            --shadow-lg:     0 8px 32px rgba(0,0,0,0.13);
         }
 
         body {
@@ -37,11 +36,11 @@
             align-items: center;
             justify-content: center;
             padding: 1.5rem;
-            background-color: var(--bg);   /* ← SOLID, NO IMAGE */
+            background-color: var(--bg);
             color: var(--text);
         }
 
-        /* ── CARD UTAMA: Clean & Consistent ── */
+        /* ── CARD UTAMA ── */
         .page {
             position: relative;
             display: flex;
@@ -56,7 +55,7 @@
         }
 
         /* ════════════════════════════
-           LEFT PANEL — Branding Gradient
+           LEFT PANEL — Branding
            ════════════════════════════ */
         .left {
             flex: 1.1;
@@ -70,7 +69,6 @@
             overflow: hidden;
         }
 
-        /* Subtle pattern overlay for depth */
         .left::before {
             content: '';
             position: absolute;
@@ -92,8 +90,8 @@
 
         .logo-sq {
             width: 52px; height: 52px; flex-shrink: 0;
-            background: rgba(255, 255, 255, 0.15);
-            border: 1.5px solid rgba(255, 255, 255, 0.25);
+            background: rgba(255,255,255,0.15);
+            border: 1.5px solid rgba(255,255,255,0.25);
             border-radius: 14px;
             display: flex; align-items: center; justify-content: center;
         }
@@ -106,7 +104,7 @@
         }
 
         .brand-text-sub {
-            font-size: 11.5px; color: rgba(255, 255, 255, 0.6);
+            font-size: 11.5px; color: rgba(255,255,255,0.6);
             margin-top: 3px;
         }
 
@@ -117,8 +115,8 @@
             font-size: 9.5px; font-weight: 700;
             letter-spacing: 0.1em; text-transform: uppercase;
             color: #fff;
-            background: rgba(255, 255, 255, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.25);
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.25);
             border-radius: 20px; padding: 4px 10px;
             margin-bottom: 1rem;
             width: fit-content;
@@ -134,7 +132,7 @@
 
         @keyframes pulse {
             0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
+            50%       { opacity: 0.4; }
         }
 
         .welcome-heading {
@@ -147,11 +145,11 @@
 
         .welcome-heading em {
             font-style: italic;
-            color: rgba(255, 255, 255, 0.9);
+            color: rgba(255,255,255,0.9);
         }
 
         .welcome-desc {
-            font-size: 13.5px; color: rgba(255, 255, 255, 0.7);
+            font-size: 13.5px; color: rgba(255,255,255,0.7);
             line-height: 1.75; margin-bottom: 2.25rem;
             max-width: 340px;
             position: relative;
@@ -181,112 +179,41 @@
 
         .feature-text {
             font-size: 12.5px;
-            color: rgba(255, 255, 255, 0.75);
+            color: rgba(255,255,255,0.75);
             line-height: 1.4;
         }
 
         /* ════════════════════════════
-           RIGHT PANEL — Clean Form
+           RIGHT PANEL — Form
            ════════════════════════════ */
         .right {
             flex: 0.9;
             background: var(--surface);
-            padding: 2.25rem 2.5rem 2.5rem;
+            padding: 2.5rem 2.5rem 2.25rem;
             display: flex;
             flex-direction: column;
             justify-content: center;
         }
 
-        /* ── Demo Quick-Fill ── */
-        .demo-section {
-            background: var(--primary-soft);
-            border: 1.5px solid #c7d2fe;
-            border-radius: var(--radius);
-            padding: 14px 16px;
-            margin-bottom: 1.4rem;
-        }
-
-        .demo-label {
-            font-size: 9.5px; font-weight: 700;
-            letter-spacing: 0.1em; text-transform: uppercase;
-            color: var(--primary-text);
-            margin-bottom: 10px;
-            display: flex; align-items: center; gap: 6px;
-        }
-
-        .demo-label::before {
-            content: '';
-            display: inline-block;
-            width: 6px; height: 6px;
-            border-radius: 50%;
-            background: var(--primary);
-            animation: pulse 2s infinite;
-        }
-
-        .demo-btns {
-            display: flex;
-            gap: 7px;
-        }
-
-        .demo-btn {
-            flex: 1;
-            padding: 9px 8px;
-            border-radius: var(--radius);
-            border: 1.5px solid var(--border);
-            background: #fff;
-            color: var(--text);
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 11.5px; font-weight: 600;
-            cursor: pointer;
-            transition: all 0.16s;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            text-align: center;
-        }
-
-        .demo-btn .btn-emoji { font-size: 18px; line-height: 1; }
-        .demo-btn .btn-role { font-size: 11px; font-weight: 700; color: var(--text); }
-
-        .role-badge {
-            font-size: 8.5px; padding: 1.5px 6px;
-            border-radius: 4px; font-weight: 700; letter-spacing: 0.04em;
-        }
-
-        /* Role Colors - Admin uses Primary Purple */
-        .badge-mhs   { background: var(--success-soft); color: var(--success); }
-        .badge-staff { background: var(--primary-soft); color: var(--primary-text); }
-        .badge-admin { background: #f5f3ff; color: var(--primary); border: 1px solid #ddd6fe; }
-
-        .demo-btn:hover {
-            border-color: var(--primary);
-            background: var(--primary-soft);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px var(--primary-glow);
-        }
-
-        .demo-btn.active-mhs   { border-color: var(--success); background: var(--success-soft); }
-        .demo-btn.active-staff { border-color: var(--primary); background: var(--primary-soft); }
-        .demo-btn.active-admin { border-color: var(--primary); background: #f5f3ff; box-shadow: 0 0 0 3px rgba(67, 56, 202, 0.1); }
-
-        /* ── Form ── */
+        /* ── Heading ── */
         .right h2 {
-            font-size: 19px; font-weight: 700; color: var(--text);
+            font-size: 20px; font-weight: 700; color: var(--text);
             letter-spacing: -0.3px; margin-bottom: 0.2rem;
         }
 
         .right > .sub {
-            font-size: 12px; color: var(--text-muted);
-            margin-bottom: 1.2rem;
+            font-size: 12.5px; color: var(--text-muted);
+            margin-bottom: 1.4rem;
         }
 
+        /* ── Alert ── */
         .alert-error {
             background: #fef2f2; border: 1px solid #fecaca;
             color: #dc2626; font-size: 12.5px;
             padding: 9px 12px; border-radius: var(--radius); margin-bottom: 1rem;
         }
 
+        /* ── Filled notice ── */
         .filled-notice {
             font-size: 12px; padding: 7px 12px;
             border-radius: var(--radius); border: 1px solid;
@@ -294,41 +221,56 @@
             font-weight: 500;
         }
 
-        .input-group { margin-bottom: 0.9rem; }
+        /* ── Input Groups ── */
+        .input-group { margin-bottom: 1rem; }
 
         .input-group label {
-            display: block; font-size: 12px;
+            display: block; font-size: 12.5px;
             font-weight: 600; color: var(--text); margin-bottom: 5px;
         }
 
         .input-group input {
             width: 100%; padding: 10px 14px;
-            border: 1.5px solid var(--border); border-radius: var(--radius);
+            border: 1.5px solid #d1d5db;
+            border-radius: var(--radius);
             font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 13.5px; color: var(--text); background: #f8fafc;
-            outline: none; transition: border 0.15s, background 0.15s, box-shadow 0.15s;
+            font-size: 13.5px; color: var(--text);
+            background: #ffffff;
+            outline: none;
+            transition: border-color 0.18s, box-shadow 0.18s;
         }
+
+        .input-group input::placeholder { color: #9ca3af; }
 
         .input-group input:focus {
             border-color: var(--primary);
-            background: #fff;
             box-shadow: 0 0 0 4px var(--primary-glow);
         }
 
+        /* ── Options row ── */
         .options-row {
             display: flex; justify-content: space-between;
-            align-items: center; margin-bottom: 1.1rem;
+            align-items: center; margin-bottom: 1.2rem;
         }
 
-        .remember { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-muted); cursor: pointer; }
+        .remember {
+            display: flex; align-items: center; gap: 6px;
+            font-size: 12px; color: var(--text-muted); cursor: pointer;
+        }
+
         .remember input[type="checkbox"] {
             width: 14px; height: 14px; cursor: pointer;
             accent-color: var(--primary);
         }
 
-        .forgot { font-size: 12px; color: var(--primary); text-decoration: none; font-weight: 500; }
+        .forgot {
+            font-size: 12px; color: var(--primary);
+            text-decoration: none; font-weight: 500;
+        }
+
         .forgot:hover { text-decoration: underline; color: var(--primary-text); }
 
+        /* ── Submit Button ── */
         .submit-btn {
             width: 100%; padding: 11px;
             background: var(--primary); color: #fff;
@@ -336,36 +278,120 @@
             font-family: 'Plus Jakarta Sans', sans-serif;
             font-size: 14px; font-weight: 600; cursor: pointer;
             transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
-            letter-spacing: 0.01em;
-            box-shadow: 0 2px 8px var(--primary-glow);
+            letter-spacing: 0.02em;
+            box-shadow: 0 4px 14px var(--primary-glow);
         }
 
         .submit-btn:hover {
             background: var(--primary-text);
             transform: translateY(-1px);
-            box-shadow: 0 4px 14px var(--primary-glow);
+            box-shadow: 0 6px 20px var(--primary-glow);
         }
 
         .submit-btn:active { transform: scale(0.99); }
         .submit-btn:disabled { opacity: 0.65; cursor: not-allowed; }
 
-        .copyright { text-align: center; font-size: 11px; color: var(--text-muted); margin-top: 1.5rem; }
+        /* ════════════════════════════
+           DEMO SECTION — Di bawah form
+           ════════════════════════════ */
+
+        /* Divider */
+        .demo-divider {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 1.4rem 0 1rem;
+        }
+
+        .demo-divider::before,
+        .demo-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .demo-divider span {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            white-space: nowrap;
+            letter-spacing: 0.02em;
+        }
+
+        /* Pill buttons row */
+        .demo-pills {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .demo-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 16px;
+            border-radius: 999px;
+            border: 1.5px solid var(--border);
+            background: #fff;
+            color: var(--text);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 12.5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.16s;
+            white-space: nowrap;
+        }
+
+        .demo-pill .pill-icon { font-size: 14px; line-height: 1; }
+
+        .demo-pill:hover {
+            border-color: var(--primary);
+            background: var(--primary-soft);
+            color: var(--primary-text);
+            transform: translateY(-1px);
+            box-shadow: 0 3px 10px var(--primary-glow);
+        }
+
+        .demo-pill.active-mhs {
+            border-color: var(--success);
+            background: var(--success-soft);
+            color: var(--success);
+        }
+
+        .demo-pill.active-staff {
+            border-color: var(--primary);
+            background: var(--primary-soft);
+            color: var(--primary-text);
+        }
+
+        .demo-pill.active-admin {
+            border-color: var(--primary);
+            background: #f5f3ff;
+            color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67,56,202,0.1);
+        }
+
+        /* ── Copyright ── */
+        .copyright {
+            text-align: center; font-size: 11px;
+            color: var(--text-muted); margin-top: 1.4rem;
+        }
 
         /* ── Responsive ── */
         @media (max-width: 700px) {
             .page { flex-direction: column; }
             .left {
                 padding: 2rem 1.75rem;
-                border-right: none;
                 border-bottom: 1px solid var(--border);
             }
             .welcome-heading { font-size: 22px; }
             .right { padding: 1.75rem 1.75rem 2rem; }
-            .demo-btns { gap: 6px; }
+            .demo-pills { flex-wrap: wrap; }
         }
 
         /* ── Accessibility ── */
-        .demo-btn:focus-visible,
+        .demo-pill:focus-visible,
         .input-group input:focus-visible,
         .submit-btn:focus-visible {
             outline: 2px solid var(--primary);
@@ -411,11 +437,11 @@
         <div class="feature-list">
             <div class="feature-item">
                 <span class="feature-dot"></span>
-                <span class="feature-text">Manajemen akademik & keuangan mahasiswa</span>
+                <span class="feature-text">Manajemen akademik &amp; keuangan mahasiswa</span>
             </div>
             <div class="feature-item">
                 <span class="feature-dot"></span>
-                <span class="feature-text">Dashboard staff & laporan administrasi</span>
+                <span class="feature-text">Dashboard staff &amp; laporan administrasi</span>
             </div>
             <div class="feature-item">
                 <span class="feature-dot"></span>
@@ -430,41 +456,12 @@
     </div>
 
     {{-- ════════════════════════════
-         RIGHT PANEL — Clean Form
+         RIGHT PANEL — Form Utama
          ════════════════════════════ --}}
     <div class="right">
 
-        {{-- Demo Quick-Fill --}}
-        <div class="demo-section">
-            <div class="demo-label">Pilih role untuk login demo</div>
-            <div class="demo-btns">
-
-                <button type="button" class="demo-btn" id="btn-mhs"
-                    onclick="fillDemo('4.33.2.08', '12345678', 'Mahasiswa', 'mhs')">
-                    <span class="btn-emoji">🎓</span>
-                    <span class="btn-role">Mahasiswa</span>
-                    <span class="role-badge badge-mhs">MHS</span>
-                </button>
-
-                <button type="button" class="demo-btn" id="btn-staff"
-                    onclick="fillDemo('199802102004210201', '12345678', 'Staff', 'staff')">
-                    <span class="btn-emoji">👩‍💼</span>
-                    <span class="btn-role">Staff</span>
-                    <span class="role-badge badge-staff">STAFF</span>
-                </button>
-
-                <button type="button" class="demo-btn" id="btn-admin"
-                    onclick="fillDemo('admin', '12345678', 'Administrator', 'admin')">
-                    <span class="btn-emoji">🛡️</span>
-                    <span class="btn-role">Admin</span>
-                    <span class="role-badge badge-admin">ADMIN</span>
-                </button>
-
-            </div>
-        </div>
-
         <h2>Masuk ke akun</h2>
-        <p class="sub">Atau isi username &amp; password secara manual</p>
+        <p class="sub">Masukkan username &amp; password Anda untuk melanjutkan</p>
 
         @if ($errors->any())
             <div class="alert-error">
@@ -518,6 +515,31 @@
 
         </form>
 
+        {{-- ── Demo Section — di bawah tombol Masuk ── --}}
+        <div class="demo-divider">
+            <span>Atau gunakan Akun Demo</span>
+        </div>
+
+        <div class="demo-pills">
+            <button type="button" class="demo-pill" id="pill-mhs"
+                onclick="fillDemo('4.33.2.08', '12345678', 'Mahasiswa', 'mhs')">
+                <span class="pill-icon">🎓</span>
+                Mahasiswa
+            </button>
+
+            <button type="button" class="demo-pill" id="pill-staff"
+                onclick="fillDemo('199802102004210201', '12345678', 'Staff', 'staff')">
+                <span class="pill-icon">💼</span>
+                Staff
+            </button>
+
+            <button type="button" class="demo-pill" id="pill-admin"
+                onclick="fillDemo('admin', '12345678', 'Admin', 'admin')">
+                <span class="pill-icon">🔑</span>
+                Admin
+            </button>
+        </div>
+
         <p class="copyright">Copyright &copy; {{ date('Y') }} Politeknik Negeri Semarang</p>
     </div>
 
@@ -528,28 +550,27 @@
         document.getElementById('username').value = username;
         document.getElementById('password').value = password;
 
-        // Reset active state
+        // Reset active state on all pills
         ['mhs', 'staff', 'admin'].forEach(function(r) {
-            var el = document.getElementById('btn-' + r);
-            el.classList.remove('active-mhs', 'active-staff', 'active-admin');
+            document.getElementById('pill-' + r).classList.remove('active-mhs', 'active-staff', 'active-admin');
         });
 
-        // Set active state
-        document.getElementById('btn-' + role).classList.add('active-' + role);
+        // Set active state on clicked pill
+        document.getElementById('pill-' + role).classList.add('active-' + role);
 
         var styles = {
-            mhs:   { color: 'var(--success)', background: 'var(--success-soft)', borderColor: '#a7f3d0' },
-            staff: { color: 'var(--primary-text)', background: 'var(--primary-soft)', borderColor: '#c7d2fe' },
-            admin: { color: 'var(--primary)', background: '#f5f3ff', borderColor: '#ddd6fe', boxShadow: '0 0 0 3px rgba(67, 56, 202, 0.1)' }
+            mhs:   { color: 'var(--success)',      background: 'var(--success-soft)', borderColor: '#a7f3d0' },
+            staff: { color: 'var(--primary-text)',  background: 'var(--primary-soft)', borderColor: '#c7d2fe' },
+            admin: { color: 'var(--primary)',        background: '#f5f3ff',             borderColor: '#ddd6fe', boxShadow: '0 0 0 3px rgba(67,56,202,0.1)' }
         };
 
         var notice = document.getElementById('filled-notice');
         var s = styles[role];
-        notice.style.color = s.color;
-        notice.style.background = s.background;
+        notice.style.color       = s.color;
+        notice.style.background  = s.background;
         notice.style.borderColor = s.borderColor;
-        if (s.boxShadow) notice.style.boxShadow = s.boxShadow;
-        notice.textContent = '✓ Role ' + roleLabel + ' dipilih — klik Masuk untuk melanjutkan';
+        notice.style.boxShadow   = s.boxShadow || '';
+        notice.textContent = '✓ Akun demo ' + roleLabel + ' dipilih — klik Masuk untuk melanjutkan';
         notice.style.display = 'block';
 
         document.getElementById('signin-btn').focus();
@@ -561,8 +582,7 @@
         btn.textContent = 'Sedang masuk...';
     });
 
-    // Enter key submit
-    document.querySelectorAll('.input-group input').forEach(input => {
+    document.querySelectorAll('.input-group input').forEach(function(input) {
         input.addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 e.preventDefault();
