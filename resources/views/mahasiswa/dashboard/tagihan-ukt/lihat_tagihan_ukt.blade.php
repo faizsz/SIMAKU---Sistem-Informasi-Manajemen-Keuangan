@@ -298,11 +298,12 @@
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        padding: 6px 13px;
+        padding: 5px 11px;
         border-radius: 20px;
         font-size: 12px;
         font-weight: 700;
         letter-spacing: 0.02em;
+        white-space: nowrap;
     }
 
     .badge-dot {
@@ -331,15 +332,15 @@
         align-items: center;
         justify-content: center;
         gap: 6px;
-        padding: 9px 18px;
+        padding: 7px 14px;
         height: auto;
-        min-height: 38px;
+        min-height: 34px;
         border-radius: 20px;
         background: var(--primary);
         color: #ffffff;
         border: none;
         text-decoration: none;
-        font-size: 13px;
+        font-size: 12px;
         font-weight: 600;
         letter-spacing: 0.02em;
         cursor: pointer;
@@ -360,10 +361,6 @@
     .btn-row-action:active {
         transform: translateY(0) scale(0.97);
         transition: none;
-    }
-
-    .btn-row-action i {
-        font-size: 14px;
     }
 
     /* ── Empty state ── */
@@ -503,13 +500,13 @@
             <thead>
                 <tr>
                     <th class="text-center" width="4%">No</th>
-                    <th width="14%">No. Invoice</th>
-                    <th width="17%">Semester</th>
+                    <th width="13%">No. Invoice</th>
+                    <th width="20%">Semester</th>
                     <th width="16%">Tagihan</th>
                     <th width="16%">Terbayar</th>
-                    <th width="11%">Jenis</th>
-                    <th width="12%">Status</th>
-                    <th width="14%" class="text-center">Aksi</th>
+                    <th width="10%">Jenis</th>
+                    <th width="13%">Status</th>
+                    <th width="8%" class="text-center">Aksi</th>
                 </tr>
             </thead>
             <tbody>
@@ -562,7 +559,6 @@
                                class="btn-row-action"
                                title="Lihat Detail Tagihan"
                                onclick="event.stopPropagation();">
-                                <i class="fas fa-eye"></i>
                                 <span>Detail</span>
                             </a>
                         </td>
