@@ -6,41 +6,40 @@
 
 @section('styles')
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&display=swap');
 
     :root {
-        --primary:       #4338ca;
-        --primary-soft:  #e0e7ff;
-        --primary-text:  #3730a3;
-        --success:       #059669;
-        --success-soft:  #d1fae5;
-        --danger:        #e11d48;
-        --danger-soft:   #ffe4e6;
-        --warning:       #d97706;
-        --warning-soft:  #fef3c7;
-        --info:          #0284c7;
-        --info-soft:     #e0f2fe;
+        --primary:       #4e73df;
+        --primary-soft:  rgba(78, 115, 223, 0.1);
+        --primary-text:  #4e73df;
+        --success:       #1cc88a;
+        --success-soft:  rgba(28, 200, 138, 0.1);
+        --danger:        #e74a3b;
+        --danger-soft:   rgba(231, 74, 59, 0.1);
+        --warning:       #f6c23e;
+        --warning-soft:  rgba(246, 194, 62, 0.1);
+        --info:          #36b9cc;
+        --info-soft:     rgba(54, 185, 204, 0.1);
         --surface:       #ffffff;
-        --bg:            #f1f5f9;
-        --text:          #0f172a;
-        --text-muted:    #64748b;
-        --text-hint:     #94a3b8;
-        --border:        #e2e8f0;
-        --radius:        12px;
-        --radius-lg:     16px;
-        --shadow-sm:     0 1px 2px rgba(0,0,0,0.04);
-        --shadow-md:     0 4px 12px rgba(0,0,0,0.08);
-        --shadow-lg:     0 8px 24px rgba(0,0,0,0.12);
+        --bg:            #f8f9fc;
+        --text:          #5a5c69;
+        --text-muted:    #858796;
+        --text-hint:     #b7b9cc;
+        --border:        #e3e6f0;
+        --radius:        8px;
+        --radius-lg:     10px;
+        --shadow-sm:     0 2px 4px rgba(0,0,0,0.02);
+        --shadow-md:     0 4px 12px rgba(58,59,69,0.06);
+        --shadow-lg:     0 8px 24px rgba(58,59,69,0.1);
     }
 
     .content-wrapper {
         background-color: var(--bg) !important;
-        font-family: 'Plus Jakarta Sans', sans-serif !important;
     }
 
     /* ── Section Wrapper ── */
     .section-wrapper {
-        margin-bottom: 28px;
+        margin-bottom: 24px;
     }
 
     .section-header {
@@ -53,7 +52,7 @@
     }
 
     .section-title {
-        font-size: 16px;
+        font-size: 15px;
         font-weight: 700;
         color: var(--text);
         margin: 0;
@@ -64,7 +63,7 @@
 
     .section-title i {
         color: var(--primary);
-        font-size: 15px;
+        font-size: 14px;
     }
 
     .section-subtitle {
@@ -81,12 +80,18 @@
         border-radius: var(--radius-lg);
         overflow: hidden;
         box-shadow: var(--shadow-sm);
+        margin-bottom: 24px;
+        transition: box-shadow 0.2s ease;
+    }
+
+    .table-card:hover {
+        box-shadow: var(--shadow-md);
     }
 
     .table-card-header {
         padding: 18px 24px;
         border-bottom: 1px solid var(--border);
-        background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+        background-color: var(--bg);
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -112,7 +117,7 @@
         font-size: 12px;
         font-weight: 600;
         color: var(--text-muted);
-        background: var(--bg);
+        background: var(--surface);
         border: 1px solid var(--border);
         border-radius: 20px;
         padding: 5px 13px;
@@ -130,7 +135,7 @@
 
     .table-premium thead th {
         background: var(--bg);
-        padding: 14px 20px;
+        padding: 13px 20px;
         font-size: 11px;
         font-weight: 700;
         text-transform: uppercase;
@@ -146,7 +151,7 @@
     }
 
     .table-premium tbody td {
-        padding: 16px 20px;
+        padding: 15px 20px;
         font-size: 14px;
         font-weight: 500;
         color: var(--text);
@@ -183,11 +188,12 @@
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        padding: 6px 13px;
+        padding: 5px 11px;
         border-radius: 20px;
         font-size: 12px;
         font-weight: 700;
         letter-spacing: 0.02em;
+        white-space: nowrap;
     }
 
     .badge-dot {
@@ -241,7 +247,7 @@
 
     .badge-status-aktif {
         background: var(--primary-soft);
-        color: var(--primary);
+        color: var(--primary-text);
     }
     .badge-status-aktif .badge-dot { background: var(--primary); }
 
@@ -256,31 +262,31 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        width: 36px;
-        height: 36px;
-        border-radius: 10px;
-        background: var(--primary-soft);
-        color: var(--primary);
+        padding: 6px 14px;
+        border-radius: 20px;
+        background: var(--primary);
+        color: #ffffff;
         border: none;
         text-decoration: none;
-        transition: all 0.2s ease;
+        transition: all 0.18s ease;
         cursor: pointer;
-        font-size: 13px;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        white-space: nowrap;
+        box-shadow: 0 3px 8px rgba(78, 115, 223, 0.2);
     }
 
     .btn-view-bukti:hover {
-        background: var(--primary);
+        background: #2e59d9;
         color: white;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(67, 56, 202, 0.25);
+        transform: translateY(-1px);
+        box-shadow: 0 5px 14px rgba(78, 115, 223, 0.3);
+        text-decoration: none;
     }
 
     .btn-view-bukti:active {
-        transform: translateY(0) scale(0.96);
-    }
-
-    .btn-view-bukti i {
-        font-size: 14px;
+        transform: translateY(0) scale(0.97);
     }
 
     /* ── Empty State ── */
@@ -293,7 +299,7 @@
     .empty-state-icon {
         width: 64px;
         height: 64px;
-        border-radius: 16px;
+        border-radius: 14px;
         background: var(--bg);
         border: 1px solid var(--border);
         display: flex;
@@ -302,11 +308,13 @@
         margin: 0 auto 16px;
         font-size: 24px;
         color: var(--text-hint);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.5);
     }
 
     .empty-state-text {
         font-size: 14px;
         font-weight: 500;
+        color: var(--text);
     }
 
     /* ── Pagination Premium ── */
@@ -336,9 +344,9 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        width: 36px;
-        height: 36px;
-        border-radius: 10px;
+        width: 34px;
+        height: 34px;
+        border-radius: var(--radius);
         background: var(--surface);
         border: 1.5px solid var(--border);
         color: var(--text-muted);
@@ -378,10 +386,10 @@
 
         .table-premium tbody tr {
             display: block;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
             border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 12px;
+            border-radius: var(--radius);
+            padding: 8px;
         }
 
         .table-premium tbody td {
@@ -456,16 +464,16 @@
                 <table class="table-premium">
                     <thead>
                         <tr>
-                            <th class="text-center" width="5%">No</th>
-                            <th width="12%">No Tagihan</th>
-                            <th width="12%">Tanggal Terbit</th>
-                            <th width="12%">Jatuh Tempo</th>
-                            <th width="10%">Semester</th>
+                            <th class="text-center" width="4%">No</th>
+                            <th width="11%">No Tagihan</th>
+                            <th width="10%">Tanggal Terbit</th>
+                            <th width="10%">Jatuh Tempo</th>
+                            <th width="18%">Semester</th>
                             <th width="12%" class="text-end">Total</th>
-                            <th width="12%">Bank Tujuan</th>
+                            <th width="10%">Bank Tujuan</th>
                             <th width="10%">Status</th>
                             <th width="10%">Keterangan</th>
-                            <th class="text-center" width="8%">Bukti</th>
+                            <th class="text-center" width="7%">Bukti</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -521,7 +529,7 @@
                                        class="btn-view-bukti"
                                        title="Lihat Bukti"
                                        target="_blank">
-                                        <i class="fas fa-eye"></i>
+                                        Bukti
                                     </a>
                                 @else
                                     <span class="text-muted">-</span>
@@ -590,12 +598,12 @@
                     <thead>
                         <tr>
                             <th class="text-center" width="5%">No</th>
-                            <th width="12%">Kelas</th>
-                            <th width="12%">Semester</th>
-                            <th width="15%">Daftar Ulang</th>
-                            <th width="18%">Tanggal Daftar Ulang</th>
-                            <th width="12%">Status</th>
-                            <th width="12%">Urutan Semester</th>
+                            <th width="18%">Kelas</th>
+                            <th width="22%">Semester</th>
+                            <th width="13%">Daftar Ulang</th>
+                            <th width="20%">Tanggal Daftar Ulang</th>
+                            <th width="13%">Status</th>
+                            <th class="text-center" width="9%">Urutan</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -666,16 +674,8 @@
 @section('scripts')
 <script>
 $(document).ready(function() {
-    // Smooth hover effect for action buttons
-    $('.btn-view-bukti').on('mouseenter', function() {
-        $(this).css('transform', 'translateY(-2px)');
-    }).on('mouseleave', function() {
-        $(this).css('transform', 'translateY(0)');
-    });
-
-    // Confirm before opening bukti in new tab (optional UX)
+    // Confirm before opening bukti in new tab
     $('.btn-view-bukti').on('click', function(e) {
-        // Biarkan default behavior (open in new tab), cuma buat logging/analytics kalau perlu
         console.log('Viewing bukti:', $(this).attr('href'));
     });
 });
