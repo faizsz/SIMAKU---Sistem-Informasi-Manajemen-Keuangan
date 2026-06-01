@@ -36,8 +36,10 @@
     "scripts": {
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover --ansi",
-            "@php -r \"if(getenv('VERCEL')||getenv('VERCEL_ENV')){ foreach(['plugins','docs','pages','build','dist'] as \\$d) { \\$p='vendor/almasaeed2010/adminlte/'.\\$d; if(is_dir(\\$p)) exec('rm -rf '.escapeshellarg(\\$p)); } }\""
+            "@php artisan package:discover --ansi"
+        ],
+        "vercel": [
+            "rm -rf vendor/almasaeed2010/adminlte/plugins vendor/almasaeed2010/adminlte/docs vendor/almasaeed2010/adminlte/dist vendor/almasaeed2010/adminlte/pages vendor/almasaeed2010/adminlte/build"
         ],
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
