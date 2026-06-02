@@ -59,10 +59,10 @@ return [
             'strict' => true,
             'engine' => null,
             'options' => extension_loaded('pdo_mysql') ? array_filter([
-                // Jika MYSQL_ATTR_SSL_CA di-set (path ke ca.pem), gunakan SSL dengan verifikasi.
-                // Jika tidak di-set, gunakan SSL tanpa verifikasi sertifikat (cocok untuk Aiven di Vercel).
-                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
-                PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => env('MYSQL_ATTR_SSL_CA') ? true : false,
+                // Gunakan ca.pem dari root project jika file ada, untuk koneksi SSL ke Aiven
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA',
+                    file_exists(base_path('ca.pem')) ? base_path('ca.pem') : null
+                ),
             ]) : [],
         ],
 
