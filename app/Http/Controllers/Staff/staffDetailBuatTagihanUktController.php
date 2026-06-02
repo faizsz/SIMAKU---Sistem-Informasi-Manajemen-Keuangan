@@ -56,7 +56,7 @@ class staffDetailBuatTagihanUktController extends Controller
                 $headers['Authorization'] = 'Bearer ' . $token;
             }
 
-            $baseUrl = config('app.api_url');
+            $baseUrl = \\App\\Helpers\\ApiHelper::baseUrl();
             $fullUrl = rtrim($baseUrl, '/') . $endpoint;
 
             Log::info('Requesting API', ['url' => $fullUrl]);

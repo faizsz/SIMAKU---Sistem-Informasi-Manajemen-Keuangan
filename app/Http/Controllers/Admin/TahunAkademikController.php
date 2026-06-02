@@ -15,7 +15,7 @@ class TahunAkademikController extends Controller
 
     public function __construct()
     {
-        $this->apiBaseUrl = config('app.api_url') . '/api/tahun-akademik';
+        $this->apiBaseUrl = \\App\\Helpers\\ApiHelper::baseUrl() . '/api/tahun-akademik';
     }
 
     public function index(Request $request)

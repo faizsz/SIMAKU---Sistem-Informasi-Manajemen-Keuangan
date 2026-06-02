@@ -17,7 +17,7 @@ class LihatTagihanUktController extends Controller
         // Jika belum ada user data tapi token tersedia
         if (!$userData && $token) {
             try {
-                $response = Http::withToken($token)->get(config('app.api_url') . '/api/user');
+                $response = Http::withToken($token)->get(\\App\\Helpers\\ApiHelper::baseUrl() . '/api/user');
                 if ($response->successful()) {
                     $allUsers = optional($response->json())['data'] ?? [];
                     $username = Session::get('username');
@@ -228,7 +228,7 @@ class LihatTagihanUktController extends Controller
 
             $response = Http::withToken($token)
                 ->asMultipart()
-                ->post(config('app.api_url') . '/api/pengajuan-cicilan', $multipart);
+                ->post(\\App\\Helpers\\ApiHelper::baseUrl() . '/api/pengajuan-cicilan', $multipart);
 
             if ($response->failed()) {
                 dd([
@@ -332,7 +332,7 @@ class LihatTagihanUktController extends Controller
 
             $response = Http::withToken($token)
                 ->asMultipart()
-                ->post(config('app.api_url') . '/api/detail-pembayaran', [
+                ->post(\\App\\Helpers\\ApiHelper::baseUrl() . '/api/detail-pembayaran', [
                     [
                         'name'     => 'tanggal_pembayaran',
                         'contents' => $validated['tanggal_transfer'],
@@ -377,7 +377,7 @@ class LihatTagihanUktController extends Controller
     private function getApiData($endpoint, $token)
     {
         try {
-            $response = Http::withToken($token)->get(config('app.api_url') . $endpoint);
+            $response = Http::withToken($token)->get(\\App\\Helpers\\ApiHelper::baseUrl() . $endpoint);
             return $response->successful() ? optional($response->json())['data'] ?? [] : [];
         } catch (\Exception $e) {
             return [];

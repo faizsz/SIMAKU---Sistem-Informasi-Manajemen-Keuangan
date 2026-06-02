@@ -15,7 +15,7 @@ class TingkatController extends Controller
 
     public function __construct()
     {
-        $this->apiBaseUrl = config('app.api_url') . '/api/tingkat';
+        $this->apiBaseUrl = \\App\\Helpers\\ApiHelper::baseUrl() . '/api/tingkat';
     }
 
     public function index(Request $request)

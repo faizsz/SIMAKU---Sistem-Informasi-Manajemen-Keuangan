@@ -87,7 +87,7 @@ class StaffDetailDataMahasiswaController extends Controller
     {
         try {
             // Send GET request to the API with the token and query parameters
-            $response = Http::withToken($token)->get(config('app.api_url') . $endpoint, $queryParams);
+            $response = Http::withToken($token)->get(\\App\\Helpers\\ApiHelper::baseUrl() . $endpoint, $queryParams);
 
             // Check if the response is successful, otherwise return an empty array
             return $response->successful() ? optional($response->json())['data'] ?? [] : [];

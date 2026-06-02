@@ -16,8 +16,8 @@ class KelasController extends Controller
 
     public function __construct()
     {
-        $this->apiBaseUrl = config('app.api_url') . '/api/kelas';
-        $this->prodiApiUrl = config('app.api_url') . '/api/program-studi';
+        $this->apiBaseUrl = \\App\\Helpers\\ApiHelper::baseUrl() . '/api/kelas';
+        $this->prodiApiUrl = \\App\\Helpers\\ApiHelper::baseUrl() . '/api/program-studi';
     }
 
     public function index(Request $request)

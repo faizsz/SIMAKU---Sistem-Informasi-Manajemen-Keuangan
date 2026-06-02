@@ -15,7 +15,7 @@ class MahasiswaController extends Controller
 
     public function __construct()
     {
-        $this->apiBaseUrl = config('app.api_url') . '/api/mahasiswa';
+        $this->apiBaseUrl = \\App\\Helpers\\ApiHelper::baseUrl() . '/api/mahasiswa';
     }
 
     public function index(Request $request)

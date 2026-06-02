@@ -18,7 +18,7 @@ class DaftarUlangController extends Controller
     //     // Cek session user
     //     if (!$userData && $token) {
     //         try {
-    //             $response = Http::withToken($token)->get(config('app.api_url') . '/api/user');
+    //             $response = Http::withToken($token)->get(\\App\\Helpers\\ApiHelper::baseUrl() . '/api/user');
     //             if ($response->successful()) {
     //                 $allUsers = optional($response->json())['data'] ?? [];
     //                 $username = Session::get('username');
@@ -107,7 +107,7 @@ class DaftarUlangController extends Controller
     // private function getApiData($endpoint, $token)
     // {
     //     try {
-    //         $response = Http::withToken($token)->get(config('app.api_url') . $endpoint);
+    //         $response = Http::withToken($token)->get(\\App\\Helpers\\ApiHelper::baseUrl() . $endpoint);
     //         return $response->successful() ? optional($response->json())['data'] ?? [] : [];
     //     } catch (\Exception $e) {
     //         return [];
@@ -121,7 +121,7 @@ class DaftarUlangController extends Controller
         // Cek session user
         if (!$userData && $token) {
             try {
-                $response = Http::withToken($token)->get(config('app.api_url') . '/api/user');
+                $response = Http::withToken($token)->get(\\App\\Helpers\\ApiHelper::baseUrl() . '/api/user');
                 if ($response->successful()) {
                     $allUsers = optional($response->json())['data'] ?? [];
                     $username = Session::get('username');
@@ -238,7 +238,7 @@ class DaftarUlangController extends Controller
     private function getApiData($endpoint, $token)
     {
         try {
-            $response = Http::withToken($token)->get(config('app.api_url') . $endpoint);
+            $response = Http::withToken($token)->get(\\App\\Helpers\\ApiHelper::baseUrl() . $endpoint);
             return $response->successful() ? optional($response->json())['data'] ?? [] : [];
         } catch (\Exception $e) {
             return [];

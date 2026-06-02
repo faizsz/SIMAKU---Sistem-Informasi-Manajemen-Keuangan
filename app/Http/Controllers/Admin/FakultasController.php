@@ -15,7 +15,7 @@ class FakultasController extends Controller
 
     public function __construct()
     {
-        $this->apiBaseUrl = config('app.api_url') . '/api/fakultas';
+        $this->apiBaseUrl = \\App\\Helpers\\ApiHelper::baseUrl() . '/api/fakultas';
     }
 
     public function index(Request $request)

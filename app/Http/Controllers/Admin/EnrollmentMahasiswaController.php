@@ -21,13 +21,13 @@ class EnrollmentMahasiswaController extends Controller
 
     public function __construct()
     {
-        $this->apiBaseUrl = config('app.api_url') . '/api/enrollment-mahasiswa';
-        $this->mahasiswaApiUrl = config('app.api_url') . '/api/mahasiswa';
-        $this->prodiApiUrl = config('app.api_url') . '/api/program-studi';
-        $this->golonganUktApiUrl = config('app.api_url') . '/api/golongan-ukt';
-        $this->kelasApiUrl = config('app.api_url') . '/api/kelas';
-        $this->tingkatApiUrl = config('app.api_url') . '/api/tingkat';
-        $this->tahunAkademikApiUrl = config('app.api_url') . '/api/tahun-akademik';
+        $this->apiBaseUrl = \\App\\Helpers\\ApiHelper::baseUrl() . '/api/enrollment-mahasiswa';
+        $this->mahasiswaApiUrl = \\App\\Helpers\\ApiHelper::baseUrl() . '/api/mahasiswa';
+        $this->prodiApiUrl = \\App\\Helpers\\ApiHelper::baseUrl() . '/api/program-studi';
+        $this->golonganUktApiUrl = \\App\\Helpers\\ApiHelper::baseUrl() . '/api/golongan-ukt';
+        $this->kelasApiUrl = \\App\\Helpers\\ApiHelper::baseUrl() . '/api/kelas';
+        $this->tingkatApiUrl = \\App\\Helpers\\ApiHelper::baseUrl() . '/api/tingkat';
+        $this->tahunAkademikApiUrl = \\App\\Helpers\\ApiHelper::baseUrl() . '/api/tahun-akademik';
     }
 
     public function index(Request $request)

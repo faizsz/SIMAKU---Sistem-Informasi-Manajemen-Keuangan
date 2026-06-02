@@ -120,7 +120,7 @@ class CekTagihanUktController extends Controller
     private function getApiData($endpoint, $queryParams = [], $token)
     {
         try {
-            $response = Http::withToken($token)->get(config('app.api_url') . $endpoint, $queryParams);
+            $response = Http::withToken($token)->get(\\App\\Helpers\\ApiHelper::baseUrl() . $endpoint, $queryParams);
             return $response->successful() ? optional($response->json())['data'] ?? [] : [];
         } catch (\Exception $e) {
             return [];

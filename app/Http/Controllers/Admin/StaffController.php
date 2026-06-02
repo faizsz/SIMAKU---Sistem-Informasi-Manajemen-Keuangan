@@ -15,7 +15,7 @@ class StaffController extends Controller
 
     public function __construct()
     {
-        $this->apiBaseUrl = config('app.api_url') . '/api/staff';
+        $this->apiBaseUrl = \\App\\Helpers\\ApiHelper::baseUrl() . '/api/staff';
     }
 
     public function index(Request $request)

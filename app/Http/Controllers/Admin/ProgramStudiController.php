@@ -16,8 +16,8 @@ class ProgramStudiController extends Controller
 
     public function __construct()
     {
-        $this->apiBaseUrl = config('app.api_url') . '/api/program-studi';
-        $this->fakultasApiUrl = config('app.api_url') . '/api/fakultas';
+        $this->apiBaseUrl = \\App\\Helpers\\ApiHelper::baseUrl() . '/api/program-studi';
+        $this->fakultasApiUrl = \\App\\Helpers\\ApiHelper::baseUrl() . '/api/fakultas';
     }
 
     public function index(Request $request)
