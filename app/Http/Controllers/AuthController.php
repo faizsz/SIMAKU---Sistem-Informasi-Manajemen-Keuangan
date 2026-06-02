@@ -18,7 +18,7 @@ class AuthController extends Controller
             $role = Session::get('role');
 
             if ($role === 'mahasiswa') {
-                return redirect()->route('lihat-tagihan-ukt');
+                return redirect()->route('mahasiswa-dashboard');
             } elseif ($role === 'admin') {
                 return redirect()->route('admin.kelola-pengguna');
             } elseif ($role === 'staff') {
