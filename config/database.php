@@ -59,7 +59,10 @@ return [
             'strict' => true,
             'engine' => null,
             'options' => extension_loaded('pdo_mysql') ? array_filter([
-                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA', base_path('ca.pem')),
+                // Jika MYSQL_ATTR_SSL_CA di-set (path ke ca.pem), gunakan SSL dengan verifikasi.
+                // Jika tidak di-set, gunakan SSL tanpa verifikasi sertifikat (cocok untuk Aiven di Vercel).
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+                PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => env('MYSQL_ATTR_SSL_CA') ? true : false,
             ]) : [],
         ],
 
