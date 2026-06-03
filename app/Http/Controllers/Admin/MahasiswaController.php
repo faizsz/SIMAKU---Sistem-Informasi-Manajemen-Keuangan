@@ -56,7 +56,7 @@ class MahasiswaController extends Controller
                     $mahasiswa = $this->createManualPagination($allMahasiswa, $request);
                 }
             }
-            } else {
+            else {
                 Log::error('Mahasiswa API Error', ['status' => $response->status(), 'body' => $response->body()]);
                 session()->flash('error', 'Gagal mengambil data mahasiswa dari server.');
                 $mahasiswa = new \Illuminate\Pagination\LengthAwarePaginator([], 0, 10, 1, ['path' => $request->url(), 'pageName' => 'page']);
