@@ -27,6 +27,9 @@ SIMAKU adalah sistem informasi berbasis web yang dirancang untuk mengelola keuan
 - Pantau status cicilan secara realtime
 - Lihat status penerima beasiswa
 - Kelola profil akun
+<img width="1902" height="909" alt="Screenshot 2026-06-03 232555" src="https://github.com/user-attachments/assets/e2de3aab-d5ea-4f69-8a53-0de493aef39e" />
+<img width="1919" height="1079" alt="Screenshot 2026-06-03 232637" src="https://github.com/user-attachments/assets/670160e6-aaf9-447b-ac9b-1df82b543ebe" />
+<img width="1576" height="1072" alt="Screenshot 2026-06-03 232731" src="https://github.com/user-attachments/assets/88e6127d-a3d7-4264-a218-b5bba041bd8f" />
 
 ### Staff Keuangan
 - Buat dan generate tagihan UKT massal
@@ -35,6 +38,7 @@ SIMAKU adalah sistem informasi berbasis web yang dirancang untuk mengelola keuan
 - Kelola data banding UKT
 - Lihat detail data mahasiswa
 - Manajemen data beasiswa
+<img width="1901" height="1079" alt="Screenshot 2026-06-03 232816" src="https://github.com/user-attachments/assets/468fbe5b-1a00-4e77-80dd-b9bbdffb69c0" />
 
 ### Admin
 - Manajemen pengguna & role
@@ -42,6 +46,7 @@ SIMAKU adalah sistem informasi berbasis web yang dirancang untuk mengelola keuan
 - Kelola Tahun Akademik & Periode Pembayaran
 - Manajemen Enrollment Mahasiswa
 - Kelola data Mahasiswa & Staff
+<img width="1902" height="1079" alt="Screenshot 2026-06-03 232916" src="https://github.com/user-attachments/assets/7b95a3c2-5e18-4675-bd59-383b3523a821" />
 
 ---
 
@@ -122,9 +127,11 @@ Akses di `http://localhost:8000`
 
 ## Akun Demo (Seeder)
 
-| Role | Username | Password |
-|---|---|---|
-| Admin / Staff / Mahasiswa | `4.33.2.3.01` s/d `4.33.2.3.12` | `12345678` |
+| Role | Username / NIM | Password | Akses Fitur |
+|---|---|---|---|
+| **Admin** | `admin@simaku.test` atau `4.33.2.3.01` | `12345678` | Manajemen Master Data & User |
+| **Staff** | `staff@simaku.test` atau `4.33.2.3.02` | `12345678` | Verifikasi Keuangan & Cicilan |
+| **Mahasiswa** | `mhs@simaku.test` atau `4.33.2.3.03` | `12345678` | Pengajuan & Riwayat Pembayaran |
 
 > Role di-assign secara acak saat seeder. Cek tabel `users` untuk melihat role masing-masing akun.
 
@@ -215,9 +222,3 @@ GET    /api/beasiswa
 GET    /api/penerima-beasiswa
 GET    /api/log-aktivitas
 ```
-
----
-
-## License
-
-MIT
