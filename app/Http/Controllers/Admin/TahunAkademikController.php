@@ -53,12 +53,12 @@ class TahunAkademikController extends Controller
             } else {
                 Log::error('Tahun Akademik API Error', ['status' => $response->status(), 'body' => $response->body()]);
                 session()->flash('error', 'Gagal mengambil data tahun akademik dari server.');
-                $tahunAkademik = collect([]);
+                $tahunAkademik = new \Illuminate\Pagination\LengthAwarePaginator([], 0, 10, 1, ['path' => $request->url(), 'pageName' => 'page']);
             }
         } catch (\Exception $e) {
             Log::error('TahunAkademikController Error: ' . $e->getMessage());
             session()->flash('error', 'Terjadi kesalahan saat mengambil data tahun akademik.');
-            $tahunAkademik = collect([]);
+            $tahunAkademik = new \Illuminate\Pagination\LengthAwarePaginator([], 0, 10, 1, ['path' => $request->url(), 'pageName' => 'page']);
         }
 
         return view('admin.dashboard.tahun-akademik.index', compact('tahunAkademik'));

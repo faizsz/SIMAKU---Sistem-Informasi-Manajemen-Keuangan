@@ -87,13 +87,13 @@ class EnrollmentMahasiswaController extends Controller
             } else {
                 Log::error('Enrollment Mahasiswa API Error', ['status' => $response->status(), 'body' => $response->body()]);
                 session()->flash('error', 'Gagal mengambil data enrollment mahasiswa dari server.');
-                $enrollments = collect([]);
+                $enrollments = new \Illuminate\Pagination\LengthAwarePaginator([], 0, 10, 1, ['path' => $request->url(), 'pageName' => 'page']);
             }
 
         } catch (\Exception $e) {
             Log::error('EnrollmentMahasiswaController Error: ' . $e->getMessage());
             session()->flash('error', 'Terjadi kesalahan saat mengambil data enrollment mahasiswa.');
-            $enrollments = collect([]);
+            $enrollments = new \Illuminate\Pagination\LengthAwarePaginator([], 0, 10, 1, ['path' => $request->url(), 'pageName' => 'page']);
             $filterData = [
                 'prodiList' => [],
                 'kelasList' => [],

@@ -53,12 +53,12 @@ class TingkatController extends Controller
             } else {
                 Log::error('Tingkat API Error', ['status' => $response->status(), 'body' => $response->body()]);
                 session()->flash('error', 'Gagal mengambil data tingkat dari server.');
-                $tingkat = collect([]);
+                $tingkat = new \Illuminate\Pagination\LengthAwarePaginator([], 0, 10, 1, ['path' => $request->url(), 'pageName' => 'page']);
             }
         } catch (\Exception $e) {
             Log::error('TingkatController Error: ' . $e->getMessage());
             session()->flash('error', 'Terjadi kesalahan saat mengambil data tingkat.');
-            $tingkat = collect([]);
+            $tingkat = new \Illuminate\Pagination\LengthAwarePaginator([], 0, 10, 1, ['path' => $request->url(), 'pageName' => 'page']);
         }
 
         return view('admin.dashboard.tingkat.index', compact('tingkat'));

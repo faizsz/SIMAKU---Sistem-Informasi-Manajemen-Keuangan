@@ -22,7 +22,7 @@ class AppServiceProvider extends ServiceProvider
         // Intercept internal HTTP requests to avoid serverless timeout loop
         try {
             \Illuminate\Support\Facades\Http::fake([
-                \App\Helpers\ApiHelper::baseUrl() . '/*' => function (\Illuminate\Http\Client\Request $request) {
+                '*/api/*' => function (\Illuminate\Http\Client\Request $request) {
                     $originalRequest = app('request');
                     
                     $parsed = parse_url($request->url());

@@ -67,7 +67,7 @@ class StaffController extends Controller
             } else {
                 Log::error('Staff API Error', ['status' => $response->status(), 'body' => $response->body()]);
                 session()->flash('error', 'Gagal mengambil data staff dari server.');
-                $staff = collect([]);
+                $staff = new \Illuminate\Pagination\LengthAwarePaginator([], 0, 10, 1, ['path' => $request->url(), 'pageName' => 'page']);
                 $jabatanList = [];
                 $unitList = [];
             }
@@ -75,7 +75,7 @@ class StaffController extends Controller
         } catch (\Exception $e) {
             Log::error('StaffController Error: ' . $e->getMessage());
             session()->flash('error', 'Terjadi kesalahan saat mengambil data staff.');
-            $staff = collect([]);
+            $staff = new \Illuminate\Pagination\LengthAwarePaginator([], 0, 10, 1, ['path' => $request->url(), 'pageName' => 'page']);
             $jabatanList = [];
             $unitList = [];
         }

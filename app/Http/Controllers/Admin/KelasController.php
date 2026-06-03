@@ -77,7 +77,7 @@ class KelasController extends Controller
             } else {
                 Log::error('Kelas API Error', ['status' => $response->status(), 'body' => $response->body()]);
                 session()->flash('error', 'Gagal mengambil data kelas dari server.');
-                $kelas = collect([]);
+                $kelas = new \Illuminate\Pagination\LengthAwarePaginator([], 0, 10, 1, ['path' => $request->url(), 'pageName' => 'page']);
             }
 
             // Get unique tahun angkatan for filter
@@ -86,7 +86,7 @@ class KelasController extends Controller
         } catch (\Exception $e) {
             Log::error('KelasController Error: ' . $e->getMessage());
             session()->flash('error', 'Terjadi kesalahan saat mengambil data kelas.');
-            $kelas = collect([]);
+            $kelas = new \Illuminate\Pagination\LengthAwarePaginator([], 0, 10, 1, ['path' => $request->url(), 'pageName' => 'page']);
             $tahunAngkatanList = [];
         }
 

@@ -77,12 +77,12 @@ class ProgramStudiController extends Controller
             } else {
                 Log::error('Program Studi API Error', ['status' => $response->status(), 'body' => $response->body()]);
                 session()->flash('error', 'Gagal mengambil data program studi dari server.');
-                $programStudi = collect([]);
+                $programStudi = new \Illuminate\Pagination\LengthAwarePaginator([], 0, 10, 1, ['path' => $request->url(), 'pageName' => 'page']);
             }
         } catch (\Exception $e) {
             Log::error('ProgramStudiController Error: ' . $e->getMessage());
             session()->flash('error', 'Terjadi kesalahan saat mengambil data program studi.');
-            $programStudi = collect([]);
+            $programStudi = new \Illuminate\Pagination\LengthAwarePaginator([], 0, 10, 1, ['path' => $request->url(), 'pageName' => 'page']);
         }
 
         return view('admin.dashboard.program-studi.index', compact('programStudi', 'fakultasList'));

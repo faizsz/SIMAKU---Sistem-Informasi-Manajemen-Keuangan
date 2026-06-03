@@ -61,7 +61,7 @@ class FakultasController extends Controller
                 Log::error('Fakultas API Error', ['status' => $response->status(), 'body' => $response->body()]);
                 session()->flash('error', 'Gagal mengambil data fakultas dari server.');
                 $fakultas = new LengthAwarePaginator(
-                    collect([]),
+                    new \Illuminate\Pagination\LengthAwarePaginator([], 0, 10, 1, ['path' => $request->url(), 'pageName' => 'page']),
                     0, // total items
                     10, // per page
                     $request->get('page', 1),
@@ -73,7 +73,7 @@ class FakultasController extends Controller
             Log::error('FakultasController Error: ' . $e->getMessage());
             session()->flash('error', 'Terjadi kesalahan saat mengambil data fakultas.');
             $fakultas = new LengthAwarePaginator(
-                collect([]),
+                new \Illuminate\Pagination\LengthAwarePaginator([], 0, 10, 1, ['path' => $request->url(), 'pageName' => 'page']),
                 0, // total items
                 10, // per page
                 $request->get('page', 1),
@@ -236,3 +236,4 @@ class FakultasController extends Controller
         );
     }
 }
+
