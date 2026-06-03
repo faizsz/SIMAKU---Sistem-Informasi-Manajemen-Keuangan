@@ -99,7 +99,7 @@ class StaffBeasiswaController extends Controller
     private function getApiData($endpoint, $queryParams = [], $token)
     {
         try {
-            $response = Http::withToken($token)->get(ApiHelper::baseUrl() . $endpoint, $queryParams);
+            $response = ApiHelper::httpClient($token)->get(ApiHelper::baseUrl() . $endpoint, $queryParams);
             return $response->successful() ? optional($response->json())['data'] ?? [] : [];
         } catch (\Exception $e) {
             return [];

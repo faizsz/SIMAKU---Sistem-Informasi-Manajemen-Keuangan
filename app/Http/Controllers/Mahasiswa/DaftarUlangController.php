@@ -19,7 +19,7 @@ class DaftarUlangController extends Controller
     //     // Cek session user
     //     if (!$userData && $token) {
     //         try {
-    //             $response = Http::withToken($token)->get(ApiHelper::baseUrl() . '/api/user');
+    //             $response = ApiHelper::httpClient($token)->get(ApiHelper::baseUrl() . '/api/user');
     //             if ($response->successful()) {
     //                 $allUsers = optional($response->json())['data'] ?? [];
     //                 $username = Session::get('username');
@@ -108,7 +108,7 @@ class DaftarUlangController extends Controller
     // private function getApiData($endpoint, $token)
     // {
     //     try {
-    //         $response = Http::withToken($token)->get(ApiHelper::baseUrl() . $endpoint);
+    //         $response = ApiHelper::httpClient($token)->get(ApiHelper::baseUrl() . $endpoint);
     //         return $response->successful() ? optional($response->json())['data'] ?? [] : [];
     //     } catch (\Exception $e) {
     //         return [];
@@ -218,7 +218,7 @@ class DaftarUlangController extends Controller
     private function getApiData($endpoint, $token)
     {
         try {
-            $response = Http::withToken($token)->get(ApiHelper::baseUrl() . $endpoint);
+            $response = ApiHelper::httpClient($token)->get(ApiHelper::baseUrl() . $endpoint);
             return $response->successful() ? optional($response->json())['data'] ?? [] : [];
         } catch (\Exception $e) {
             return [];

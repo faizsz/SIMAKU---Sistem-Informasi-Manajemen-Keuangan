@@ -46,10 +46,10 @@ class ProgramStudiController extends Controller
             }
 
             // Get Program Studi data
-            $response = Http::withToken($token)->get($this->apiBaseUrl, $query);
+            $response = ApiHelper::httpClient($token)->get($this->apiBaseUrl, $query);
 
             // Get Fakultas data for filter dropdown
-            $fakultasResponse = Http::withToken($token)->get($this->fakultasApiUrl);
+            $fakultasResponse = ApiHelper::httpClient($token)->get($this->fakultasApiUrl);
             $fakultasList = [];
 
             if ($fakultasResponse->successful()) {
@@ -94,7 +94,7 @@ class ProgramStudiController extends Controller
 
         try {
             // Get fakultas list for dropdown
-            $fakultasResponse = Http::withToken($token)->get($this->fakultasApiUrl);
+            $fakultasResponse = ApiHelper::httpClient($token)->get($this->fakultasApiUrl);
             $fakultasList = [];
 
             if ($fakultasResponse->successful()) {
@@ -128,7 +128,7 @@ class ProgramStudiController extends Controller
                 'id_fakultas' => $request->id_fakultas
             ];
 
-            $response = Http::withToken($token)->post($this->apiBaseUrl, $data);
+            $response = ApiHelper::httpClient($token)->post($this->apiBaseUrl, $data);
 
             if ($response->successful()) {
                 session()->flash('success', 'Program Studi berhasil ditambahkan.');
@@ -150,10 +150,10 @@ class ProgramStudiController extends Controller
 
         try {
             // Get program studi data
-            $response = Http::withToken($token)->get($this->apiBaseUrl . '/' . $id);
+            $response = ApiHelper::httpClient($token)->get($this->apiBaseUrl . '/' . $id);
 
             // Get fakultas list for dropdown
-            $fakultasResponse = Http::withToken($token)->get($this->fakultasApiUrl);
+            $fakultasResponse = ApiHelper::httpClient($token)->get($this->fakultasApiUrl);
             $fakultasList = [];
 
             if ($fakultasResponse->successful()) {
@@ -195,7 +195,7 @@ class ProgramStudiController extends Controller
                 'id_fakultas' => $request->id_fakultas
             ];
 
-            $response = Http::withToken($token)->put($this->apiBaseUrl . '/' . $id, $data);
+            $response = ApiHelper::httpClient($token)->put($this->apiBaseUrl . '/' . $id, $data);
 
             if ($response->successful()) {
                 session()->flash('success', 'Program Studi berhasil diperbarui.');
@@ -216,7 +216,7 @@ class ProgramStudiController extends Controller
         $token = Session::get('token');
 
         try {
-            $response = Http::withToken($token)->delete($this->apiBaseUrl . '/' . $id);
+            $response = ApiHelper::httpClient($token)->delete($this->apiBaseUrl . '/' . $id);
 
             if ($response->successful()) {
                 session()->flash('success', 'Program Studi berhasil dihapus.');

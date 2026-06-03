@@ -15,7 +15,7 @@ class ProfileController extends Controller
         $token = Session::get('token');
         $nim = Session::get('username'); // Ambil NIM dari session
 
-        $response = Http::withToken($token)->get(ApiHelper::baseUrl() . "/api/mahasiswa?nim=" . urlencode($nim));
+        $response = ApiHelper::httpClient($token)->get(ApiHelper::baseUrl() . "/api/mahasiswa?nim=" . urlencode($nim));
         $data = optional($response->json())['data'][0] ?? null;
 
         if (!$data) {

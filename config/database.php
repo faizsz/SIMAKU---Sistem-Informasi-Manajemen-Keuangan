@@ -59,7 +59,11 @@ return [
             'strict' => true,
             'engine' => null,
             'options' => extension_loaded('pdo_mysql') ? array_filter([
-                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA', base_path('ca.pem')),
+                // MYSQL_ATTR_SSL_CA: set path ke ca.pem via env MYSQL_ATTR_SSL_CA
+                // Set MYSQL_ATTR_SSL_CA=false di env untuk disable SSL verify (tidak recommended untuk production)
+                // Untuk Aiven di Vercel: upload ca.pem ke project dan set path, atau gunakan MYSQL_ATTR_SSL_VERIFY_SERVER_CERT=false
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA') ?: null,
+                PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => filter_var(env('MYSQL_ATTR_SSL_VERIFY_SERVER_CERT', true), FILTER_VALIDATE_BOOLEAN),
             ]) : [],
         ],
 

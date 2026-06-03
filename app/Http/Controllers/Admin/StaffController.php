@@ -48,7 +48,7 @@ class StaffController extends Controller
             }
 
             // Get Staff data
-            $response = Http::withToken($token)->get($this->apiBaseUrl, $query);
+            $response = ApiHelper::httpClient($token)->get($this->apiBaseUrl, $query);
 
             if ($response->successful()) {
                 $result = $response->json();
@@ -110,7 +110,7 @@ class StaffController extends Controller
                 'unit_kerja' => trim($request->unit_kerja)
             ];
 
-            $response = Http::withToken($token)->post($this->apiBaseUrl, $data);
+            $response = ApiHelper::httpClient($token)->post($this->apiBaseUrl, $data);
 
             if ($response->successful()) {
                 session()->flash('success', 'Staff berhasil ditambahkan.');
@@ -132,7 +132,7 @@ class StaffController extends Controller
 
         try {
             // Get staff data
-            $response = Http::withToken($token)->get($this->apiBaseUrl . '/' . $id);
+            $response = ApiHelper::httpClient($token)->get($this->apiBaseUrl . '/' . $id);
 
             if ($response->successful()) {
                 $result = $response->json();
@@ -172,7 +172,7 @@ class StaffController extends Controller
                 'unit_kerja' => trim($request->unit_kerja)
             ];
 
-            $response = Http::withToken($token)->put($this->apiBaseUrl . '/' . $id, $data);
+            $response = ApiHelper::httpClient($token)->put($this->apiBaseUrl . '/' . $id, $data);
 
             if ($response->successful()) {
                 session()->flash('success', 'Staff berhasil diperbarui.');
@@ -193,7 +193,7 @@ class StaffController extends Controller
         $token = Session::get('token');
 
         try {
-            $response = Http::withToken($token)->delete($this->apiBaseUrl . '/' . $id);
+            $response = ApiHelper::httpClient($token)->delete($this->apiBaseUrl . '/' . $id);
 
             if ($response->successful()) {
                 session()->flash('success', 'Staff berhasil dihapus.');

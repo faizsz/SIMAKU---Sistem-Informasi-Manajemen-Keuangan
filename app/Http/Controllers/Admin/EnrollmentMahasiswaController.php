@@ -68,7 +68,7 @@ class EnrollmentMahasiswaController extends Controller
             }
 
             // Get Enrollment Mahasiswa data
-            $response = Http::withToken($token)->get($this->apiBaseUrl, $query);
+            $response = ApiHelper::httpClient($token)->get($this->apiBaseUrl, $query);
 
             // Get filter data
             $filterData = $this->getFilterData($token);
@@ -147,7 +147,7 @@ class EnrollmentMahasiswaController extends Controller
                 'id_tahun_akademik' => $request->id_tahun_akademik
             ];
 
-            $response = Http::withToken($token)->post($this->apiBaseUrl, $data);
+            $response = ApiHelper::httpClient($token)->post($this->apiBaseUrl, $data);
 
             if ($response->successful()) {
                 session()->flash('success', 'Enrollment mahasiswa berhasil ditambahkan.');
@@ -169,7 +169,7 @@ class EnrollmentMahasiswaController extends Controller
 
         try {
             // Get enrollment data
-            $response = Http::withToken($token)->get($this->apiBaseUrl . '/' . $id);
+            $response = ApiHelper::httpClient($token)->get($this->apiBaseUrl . '/' . $id);
 
             // Get form data for dropdowns
             $formData = $this->getFormData($token);
@@ -218,7 +218,7 @@ class EnrollmentMahasiswaController extends Controller
                 'id_tahun_akademik' => $request->id_tahun_akademik
             ];
 
-            $response = Http::withToken($token)->put($this->apiBaseUrl . '/' . $id, $data);
+            $response = ApiHelper::httpClient($token)->put($this->apiBaseUrl . '/' . $id, $data);
 
             if ($response->successful()) {
                 session()->flash('success', 'Enrollment mahasiswa berhasil diperbarui.');
@@ -239,7 +239,7 @@ class EnrollmentMahasiswaController extends Controller
         $token = Session::get('token');
 
         try {
-            $response = Http::withToken($token)->delete($this->apiBaseUrl . '/' . $id);
+            $response = ApiHelper::httpClient($token)->delete($this->apiBaseUrl . '/' . $id);
 
             if ($response->successful()) {
                 session()->flash('success', 'Enrollment mahasiswa berhasil dihapus.');
@@ -293,7 +293,7 @@ class EnrollmentMahasiswaController extends Controller
     private function getApiData($url, $token)
     {
         try {
-            $response = Http::withToken($token)->get($url);
+            $response = ApiHelper::httpClient($token)->get($url);
             if ($response->successful()) {
                 $result = $response->json();
                 return $result['data'] ?? $result;

@@ -206,7 +206,7 @@ class LihatTagihanUktController extends Controller
                 ];
             }
 
-            $response = Http::withToken($token)
+            $response = ApiHelper::httpClient($token)
                 ->asMultipart()
                 ->post(ApiHelper::baseUrl() . '/api/pengajuan-cicilan', $multipart);
 
@@ -310,7 +310,7 @@ class LihatTagihanUktController extends Controller
                 $storedPath = $request->file('bukti_pembayaran_path')->storeAs('bukti-pembayaran', $originalName, 'public');
             }
 
-            $response = Http::withToken($token)
+            $response = ApiHelper::httpClient($token)
                 ->asMultipart()
                 ->post(ApiHelper::baseUrl() . '/api/detail-pembayaran', [
                     [
@@ -357,7 +357,7 @@ class LihatTagihanUktController extends Controller
     private function getApiData($endpoint, $token)
     {
         try {
-            $response = Http::withToken($token)->get(ApiHelper::baseUrl() . $endpoint);
+            $response = ApiHelper::httpClient($token)->get(ApiHelper::baseUrl() . $endpoint);
             return $response->successful() ? optional($response->json())['data'] ?? [] : [];
         } catch (\Exception $e) {
             return [];

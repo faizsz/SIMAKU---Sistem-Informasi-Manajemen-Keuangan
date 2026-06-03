@@ -48,25 +48,16 @@ class staffDetailBuatTagihanUktController extends Controller
     private function getApiData($endpoint, $params = [], $token = null)
     {
         try {
-            $headers = [
-                'Accept' => 'application/json',
-                'Content-Type' => 'application/json',
-            ];
-
-            if ($token) {
-                $headers['Authorization'] = 'Bearer ' . $token;
-            }
-
             $baseUrl = ApiHelper::baseUrl();
             $fullUrl = rtrim($baseUrl, '/') . $endpoint;
 
             Log::info('Requesting API', ['url' => $fullUrl]);
 
-            $response = Http::withHeaders($headers);
+            $client = ApiHelper::httpClient($token);
 
             $response = !empty($params)
-                ? $response->get($fullUrl, $params)
-                : $response->get($fullUrl);
+                ? $client->get($fullUrl, $params)
+                : $client->get($fullUrl);
 
             Log::info('API Response Raw', ['body' => $response->body()]);
 

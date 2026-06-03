@@ -42,7 +42,7 @@ class KelolaPenggunaController extends Controller
             // DEBUG: Log before API call
             Log::info('Making API call to fetch users...');
 
-            $response = Http::withToken($token)
+            $response = ApiHelper::httpClient($token)
                 ->timeout(30) // Add timeout
                 ->get($apiUrl);
 
@@ -194,7 +194,7 @@ class KelolaPenggunaController extends Controller
         }
 
         try {
-            $response = Http::withToken($token)
+            $response = ApiHelper::httpClient($token)
                 ->timeout(10)
                 ->get($apiUrl);
 
@@ -234,7 +234,7 @@ class KelolaPenggunaController extends Controller
 
         try {
             // Get existing users to check which mahasiswa/staff already have accounts
-            $usersResponse = Http::withToken($token)
+            $usersResponse = ApiHelper::httpClient($token)
                 ->timeout(30)
                 ->get(ApiHelper::baseUrl() . '/api/user');
 
@@ -256,7 +256,7 @@ class KelolaPenggunaController extends Controller
             }
 
             // Get mahasiswa data
-            $mahasiswaResponse = Http::withToken($token)
+            $mahasiswaResponse = ApiHelper::httpClient($token)
                 ->timeout(30)
                 ->get(ApiHelper::baseUrl() . '/api/mahasiswa');
 
@@ -269,7 +269,7 @@ class KelolaPenggunaController extends Controller
             }
 
             // Get staff data
-            $staffResponse = Http::withToken($token)
+            $staffResponse = ApiHelper::httpClient($token)
                 ->timeout(30)
                 ->get(ApiHelper::baseUrl() . '/api/staff');
 
@@ -349,7 +349,7 @@ class KelolaPenggunaController extends Controller
             //     // Get mahasiswa data to set username as NIM
 
             //     // dd($idValue);
-            //     $mahasiswaResponse = Http::withToken($token)
+            //     $mahasiswaResponse = ApiHelper::httpClient($token)
             //     ->timeout(30);
             //     // ->get(ApiHelper::baseUrl() . '/api/mahasiswa/' . $validatedData['person_id']);
             //     if ($mahasiswaResponse->successful()) {
@@ -372,7 +372,7 @@ class KelolaPenggunaController extends Controller
         } elseif ($validatedData['role'] === 'staff') {
             try {
                 // Get staff data to set username as NIP
-                $staffResponse = Http::withToken($token)
+                $staffResponse = ApiHelper::httpClient($token)
                     ->timeout(30)
                     ->get(ApiHelper::baseUrl() . '/api/staff/' . $validatedData['person_id']);
 
@@ -402,7 +402,7 @@ class KelolaPenggunaController extends Controller
 
         // Send data to the external API for creating a new user
         try {
-            $response = Http::withToken($token)
+            $response = ApiHelper::httpClient($token)
                 ->timeout(30)
                 ->post(ApiHelper::baseUrl() . '/api/user', $apiData);
 
@@ -480,7 +480,7 @@ class KelolaPenggunaController extends Controller
 
         try {
             if ($role === 'mahasiswa') {
-                $response = Http::withToken($token)
+                $response = ApiHelper::httpClient($token)
                     ->timeout(30)
                     ->get(ApiHelper::baseUrl() . '/api/mahasiswa/' . $personId);
 
@@ -492,7 +492,7 @@ class KelolaPenggunaController extends Controller
                     ]);
                 }
             } elseif ($role === 'staff') {
-                $response = Http::withToken($token)
+                $response = ApiHelper::httpClient($token)
                     ->timeout(30)
                     ->get(ApiHelper::baseUrl() . '/api/staff/' . $personId);
 
@@ -527,7 +527,7 @@ class KelolaPenggunaController extends Controller
 
         // Retrieve user data for the specified ID
         try {
-            $response = Http::withToken($token)
+            $response = ApiHelper::httpClient($token)
                 ->timeout(30)
                 ->get(ApiHelper::baseUrl() . '/api/user/' . $id);
 
@@ -598,7 +598,7 @@ class KelolaPenggunaController extends Controller
             ->toArray();
 
         try {
-            $response = Http::withToken($token)
+            $response = ApiHelper::httpClient($token)
                 ->put(ApiHelper::baseUrl() . "/api/user/{$id}", $data);
 
             // dd($response);
@@ -633,7 +633,7 @@ class KelolaPenggunaController extends Controller
         }
 
         try {
-            $response = Http::withToken($token)->delete(ApiHelper::baseUrl() . '/api/user/' . $id);
+            $response = ApiHelper::httpClient($token)->delete(ApiHelper::baseUrl() . '/api/user/' . $id);
             if ($response->successful()) {
                 return redirect()->route('admin.kelola-pengguna')->with('success', 'User deleted successfully.');
             } else {

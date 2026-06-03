@@ -39,7 +39,7 @@ class TingkatController extends Controller
                 $query['page'] = $request->page;
             }
 
-            $response = Http::withToken($token)->get($this->apiBaseUrl, $query);
+            $response = ApiHelper::httpClient($token)->get($this->apiBaseUrl, $query);
 
             if ($response->successful()) {
                 $result = $response->json();
@@ -87,7 +87,7 @@ class TingkatController extends Controller
                 'deskripsi' => $request->deskripsi ? trim($request->deskripsi) : null,
             ];
 
-            $response = Http::withToken($token)->post($this->apiBaseUrl, $data);
+            $response = ApiHelper::httpClient($token)->post($this->apiBaseUrl, $data);
 
             if ($response->successful()) {
                 session()->flash('success', 'Tingkat berhasil ditambahkan.');
@@ -108,7 +108,7 @@ class TingkatController extends Controller
         $token = Session::get('token');
 
         try {
-            $response = Http::withToken($token)->get($this->apiBaseUrl . '/' . $id);
+            $response = ApiHelper::httpClient($token)->get($this->apiBaseUrl . '/' . $id);
 
             if ($response->successful()) {
                 $result = $response->json();
@@ -144,7 +144,7 @@ class TingkatController extends Controller
                 'deskripsi' => $request->deskripsi ? trim($request->deskripsi) : null,
             ];
 
-            $response = Http::withToken($token)->put($this->apiBaseUrl . '/' . $id, $data);
+            $response = ApiHelper::httpClient($token)->put($this->apiBaseUrl . '/' . $id, $data);
 
             if ($response->successful()) {
                 session()->flash('success', 'Tingkat berhasil diperbarui.');
@@ -165,7 +165,7 @@ class TingkatController extends Controller
         $token = Session::get('token');
 
         try {
-            $response = Http::withToken($token)->delete($this->apiBaseUrl . '/' . $id);
+            $response = ApiHelper::httpClient($token)->delete($this->apiBaseUrl . '/' . $id);
 
             if ($response->successful()) {
                 session()->flash('success', 'Tingkat berhasil dihapus.');

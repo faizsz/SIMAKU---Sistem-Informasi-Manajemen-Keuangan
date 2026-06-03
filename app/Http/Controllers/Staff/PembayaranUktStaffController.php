@@ -131,7 +131,7 @@ class PembayaranUktStaffController extends Controller
         }
 
         try {
-            $response = Http::withToken($token)->put(ApiHelper::baseUrl() . "/api/detail-pembayaran/{$id}", [
+            $response = ApiHelper::httpClient($token)->put(ApiHelper::baseUrl() . "/api/detail-pembayaran/{$id}", [
                 'status' => $status
             ]);
 
@@ -149,7 +149,7 @@ class PembayaranUktStaffController extends Controller
     private function getApiData($endpoint, $queryParams = [], $token)
     {
         try {
-            $response = Http::withToken($token)->get(ApiHelper::baseUrl() . $endpoint, $queryParams);
+            $response = ApiHelper::httpClient($token)->get(ApiHelper::baseUrl() . $endpoint, $queryParams);
             return $response->successful() ? optional($response->json())['data'] ?? [] : [];
         } catch (\Exception $e) {
             return [];

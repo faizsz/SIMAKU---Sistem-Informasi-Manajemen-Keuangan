@@ -30,7 +30,7 @@ class BeasiswaController extends Controller
     private function getApiData($endpoint, $token)
     {
         try {
-            $response = Http::withToken($token)->get(ApiHelper::baseUrl() . $endpoint);
+            $response = ApiHelper::httpClient($token)->get(ApiHelper::baseUrl() . $endpoint);
             return $response->successful() ? optional($response->json())['data'] ?? [] : [];
         } catch (\Exception $e) {
             return [];

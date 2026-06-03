@@ -40,7 +40,7 @@ class MahasiswaController extends Controller
             }
 
             // Get Mahasiswa data
-            $response = Http::withToken($token)->get($this->apiBaseUrl, $query);
+            $response = ApiHelper::httpClient($token)->get($this->apiBaseUrl, $query);
 
             if ($response->successful()) {
                 $result = $response->json();
@@ -101,11 +101,11 @@ class MahasiswaController extends Controller
 
             // Handle file upload if exists
             if ($request->hasFile('foto')) {
-                $response = Http::withToken($token)
+                $response = ApiHelper::httpClient($token)
                     ->attach('foto', file_get_contents($request->file('foto')), $request->file('foto')->getClientOriginalName())
                     ->post($this->apiBaseUrl, $data);
             } else {
-                $response = Http::withToken($token)->post($this->apiBaseUrl, $data);
+                $response = ApiHelper::httpClient($token)->post($this->apiBaseUrl, $data);
             }
 
             if ($response->successful()) {
@@ -134,7 +134,7 @@ class MahasiswaController extends Controller
             $url = $this->apiBaseUrl . '/' . $nim;
             Log::info('API URL:', ['url' => $url]);
 
-            $response = Http::withToken($token)->get($url);
+            $response = ApiHelper::httpClient($token)->get($url);
 
             Log::info('API Response', [
                 'status' => $response->status(),
@@ -184,11 +184,11 @@ class MahasiswaController extends Controller
 
             // Handle file upload if exists
             if ($request->hasFile('foto')) {
-                $response = Http::withToken($token)
+                $response = ApiHelper::httpClient($token)
                     ->attach('foto', file_get_contents($request->file('foto')), $request->file('foto')->getClientOriginalName())
                     ->put($this->apiBaseUrl . '/' . $id, $data);
             } else {
-                $response = Http::withToken($token)->put($this->apiBaseUrl . '/' . $id, $data);
+                $response = ApiHelper::httpClient($token)->put($this->apiBaseUrl . '/' . $id, $data);
             }
 
             if ($response->successful()) {
@@ -210,7 +210,7 @@ class MahasiswaController extends Controller
         $token = Session::get('token');
 
         try {
-            $response = Http::withToken($token)->delete($this->apiBaseUrl . '/' . $id);
+            $response = ApiHelper::httpClient($token)->delete($this->apiBaseUrl . '/' . $id);
 
             if ($response->successful()) {
                 session()->flash('success', 'Mahasiswa berhasil dihapus.');
