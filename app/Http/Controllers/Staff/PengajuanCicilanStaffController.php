@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Staff;
+use App\Helpers\ApiHelper;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -119,7 +120,7 @@ class PengajuanCicilanStaffController extends Controller
         }
 
         try {
-            $response = Http::withToken($token)->put(\\App\\Helpers\\ApiHelper::baseUrl() . "/api/pengajuan-cicilan/{$id}", [
+            $response = Http::withToken($token)->put(ApiHelper::baseUrl() . "/api/pengajuan-cicilan/{$id}", [
                 'status' => $status
             ]);
 
@@ -190,7 +191,7 @@ class PengajuanCicilanStaffController extends Controller
         ];
 
         try {
-            $response = Http::withToken($token)->put(\\App\\Helpers\\ApiHelper::baseUrl() . "/api/pengajuan-cicilan/{$id}", $payload);
+            $response = Http::withToken($token)->put(ApiHelper::baseUrl() . "/api/pengajuan-cicilan/{$id}", $payload);
 
             if ($response->successful()) {
                 return redirect()->route('staff.pengajuan-cicilan')->with('success', 'Pengajuan cicilan berhasil diperbarui.');
@@ -283,7 +284,7 @@ class PengajuanCicilanStaffController extends Controller
                     'id_pengajuan_cicilan' => $pengajuanId
                 ];
 
-                $response = Http::withToken($token)->post(\\App\\Helpers\\ApiHelper::baseUrl() . "/api/pembayaran-ukt-semester", $tagihanBaru);
+                $response = Http::withToken($token)->post(ApiHelper::baseUrl() . "/api/pembayaran-ukt-semester", $tagihanBaru);
 
                 if (!$response->successful()) {
                     Log::error('Gagal membuat tagihan cicilan', [
@@ -319,7 +320,7 @@ class PengajuanCicilanStaffController extends Controller
     private function getJenisPembayaran($token)
     {
         try {
-            $response = Http::withToken($token)->get(\\App\\Helpers\\ApiHelper::baseUrl() . "/api/jenis-pembayaran");
+            $response = Http::withToken($token)->get(ApiHelper::baseUrl() . "/api/jenis-pembayaran");
             return $response->successful() ? $response->json('data') ?? [] : [];
         } catch (\Exception $e) {
             Log::error('Gagal mengambil data jenis pembayaran', ['error' => $e->getMessage()]);
@@ -438,7 +439,7 @@ class PengajuanCicilanStaffController extends Controller
     private function updatePembayaranStatus($pembayaranId, $status, $token)
     {
         try {
-            $response = Http::withToken($token)->put(\\App\\Helpers\\ApiHelper::baseUrl() . "/api/pembayaran-ukt-semester/{$pembayaranId}", [
+            $response = Http::withToken($token)->put(ApiHelper::baseUrl() . "/api/pembayaran-ukt-semester/{$pembayaranId}", [
                 'status' => $status
             ]);
 
@@ -498,7 +499,7 @@ class PengajuanCicilanStaffController extends Controller
                 $pembayaran['id_enrollment'] == $pengajuanData['id_enrollment'] &&
                 $pembayaran['id_ukt_semester'] == $pengajuanData['id_ukt_semester']
             ) {
-                $deleteResponse = Http::withToken($token)->delete(\\App\\Helpers\\ApiHelper::baseUrl() . "/api/pembayaran-ukt-semester/{$pembayaran['id']}");
+                $deleteResponse = Http::withToken($token)->delete(ApiHelper::baseUrl() . "/api/pembayaran-ukt-semester/{$pembayaran['id']}");
                 if ($deleteResponse->successful()) {
                     $deletedIds[] = $pembayaran['id'];
                 } else {
@@ -529,7 +530,7 @@ class PengajuanCicilanStaffController extends Controller
     private function getApiData($endpoint, $queryParams = [], $token)
     {
         try {
-            $response = Http::withToken($token)->get(\\App\\Helpers\\ApiHelper::baseUrl() . $endpoint, $queryParams);
+            $response = Http::withToken($token)->get(ApiHelper::baseUrl() . $endpoint, $queryParams);
             return $response->successful() ? optional($response->json())['data'] ?? [] : [];
         } catch (\Exception $e) {
             return [];

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Mahasiswa;
+use App\Helpers\ApiHelper;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -18,7 +19,7 @@ class DaftarUlangController extends Controller
     //     // Cek session user
     //     if (!$userData && $token) {
     //         try {
-    //             $response = Http::withToken($token)->get(\\App\\Helpers\\ApiHelper::baseUrl() . '/api/user');
+    //             $response = Http::withToken($token)->get(ApiHelper::baseUrl() . '/api/user');
     //             if ($response->successful()) {
     //                 $allUsers = optional($response->json())['data'] ?? [];
     //                 $username = Session::get('username');
@@ -107,7 +108,7 @@ class DaftarUlangController extends Controller
     // private function getApiData($endpoint, $token)
     // {
     //     try {
-    //         $response = Http::withToken($token)->get(\\App\\Helpers\\ApiHelper::baseUrl() . $endpoint);
+    //         $response = Http::withToken($token)->get(ApiHelper::baseUrl() . $endpoint);
     //         return $response->successful() ? optional($response->json())['data'] ?? [] : [];
     //     } catch (\Exception $e) {
     //         return [];
@@ -117,27 +118,6 @@ class DaftarUlangController extends Controller
     {
         $userData = Session::get('user_data');
         $token = Session::get('token');
-
-        // Cek session user
-        if (!$userData && $token) {
-            try {
-                $response = Http::withToken($token)->get(\\App\\Helpers\\ApiHelper::baseUrl() . '/api/user');
-                if ($response->successful()) {
-                    $allUsers = optional($response->json())['data'] ?? [];
-                    $username = Session::get('username');
-
-                    foreach ($allUsers as $user) {
-                        if ($user['username'] === $username) {
-                            $userData = $user;
-                            Session::put('user_data', $userData);
-                            break;
-                        }
-                    }
-                }
-            } catch (\Exception $e) {
-                return redirect()->route('login')->withErrors(['error' => 'Sesi telah berakhir. Silakan login kembali.']);
-            }
-        }
 
         if (!$userData) {
             return redirect()->route('login')->withErrors(['error' => 'Harap login terlebih dahulu.']);
@@ -238,7 +218,7 @@ class DaftarUlangController extends Controller
     private function getApiData($endpoint, $token)
     {
         try {
-            $response = Http::withToken($token)->get(\\App\\Helpers\\ApiHelper::baseUrl() . $endpoint);
+            $response = Http::withToken($token)->get(ApiHelper::baseUrl() . $endpoint);
             return $response->successful() ? optional($response->json())['data'] ?? [] : [];
         } catch (\Exception $e) {
             return [];

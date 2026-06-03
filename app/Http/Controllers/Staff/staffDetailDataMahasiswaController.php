@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Staff;
+use App\Helpers\ApiHelper;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -87,7 +88,7 @@ class StaffDetailDataMahasiswaController extends Controller
     {
         try {
             // Send GET request to the API with the token and query parameters
-            $response = Http::withToken($token)->get(\\App\\Helpers\\ApiHelper::baseUrl() . $endpoint, $queryParams);
+            $response = Http::withToken($token)->get(ApiHelper::baseUrl() . $endpoint, $queryParams);
 
             // Check if the response is successful, otherwise return an empty array
             return $response->successful() ? optional($response->json())['data'] ?? [] : [];

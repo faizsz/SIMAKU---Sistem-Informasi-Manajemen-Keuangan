@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Staff;
+use App\Helpers\ApiHelper;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -120,7 +121,7 @@ class CekTagihanUktController extends Controller
     private function getApiData($endpoint, $queryParams = [], $token)
     {
         try {
-            $response = Http::withToken($token)->get(\\App\\Helpers\\ApiHelper::baseUrl() . $endpoint, $queryParams);
+            $response = Http::withToken($token)->get(ApiHelper::baseUrl() . $endpoint, $queryParams);
             return $response->successful() ? optional($response->json())['data'] ?? [] : [];
         } catch (\Exception $e) {
             return [];

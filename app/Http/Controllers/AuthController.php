@@ -3,11 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Log;
-use App\Models\User;
-use Carbon\Carbon;
 
 class AuthController extends Controller
 {
@@ -17,11 +15,16 @@ class AuthController extends Controller
         if (Session::has('token') && Session::has('logged_in')) {
             $role = Session::get('role');
 
-            if ($role === 'mahasiswa') {
+            Log::info('User already logged in', [
+                'role' => $role,
+                'username' => Session::get('username')
+            ]);
+
+            if ($role == 'mahasiswa') {
                 return redirect()->route('mahasiswa-dashboard');
-            } elseif ($role === 'admin') {
+            } elseif ($role == 'admin') {
                 return redirect()->route('admin.kelola-pengguna');
-            } elseif ($role === 'staff') {
+            } elseif ($role == 'staff') {
                 return redirect()->route('staff.pembayaran-ukt');
             }
         }
@@ -36,60 +39,69 @@ class AuthController extends Controller
         ]);
 
         try {
-            // Cari user langsung dari database (tidak pakai self HTTP call)
-            $user = User::where('username', $request->username)->first();
+            // Cek user di database secara langsung
+            $user = \App\Models\User::where('username', $request->username)->first();
 
-            if (! $user || ! Hash::check($request->password, $user->password)) {
-                Log::warning('Login gagal: credentials salah', ['username' => $request->username]);
+            if (!$user || !\Illuminate\Support\Facades\Hash::check($request->password, $user->password)) {
                 return back()->withErrors(['username' => 'Login gagal! Cek kembali username dan password.']);
             }
 
-            if (! $user->is_active) {
-                Log::warning('Login gagal: akun tidak aktif', ['username' => $request->username]);
+            if (!$user->is_active) {
                 return back()->withErrors(['username' => 'Akun Anda tidak aktif. Silakan hubungi administrator.']);
             }
 
             // Update last login
-            $user->update(['last_login' => Carbon::now()]);
+            $user->update(['last_login' => \Carbon\Carbon::now()]);
 
-            // Buat Sanctum token
+            // Generate token (opsional, jika API masih dibutuhkan)
             $token = $user->createToken('auth_token')->plainTextToken;
 
-            // Simpan ke session
+            // Simpan data ke session
             Session::put('token', $token);
             Session::put('token_type', 'Bearer');
             Session::put('username', $user->username);
             Session::put('logged_in', true);
-            Session::put('role', $user->role);
+            
+            $userData = $user->toArray();
+            
+            // Pastikan role diset dari user
+            $role = strtolower($user->role);
+            if ($role === 'administrator' || $user->is_admin == 1) {
+                $role = 'admin';
+            }
+            
+            Session::put('user_data', $userData);
+            Session::put('role', $role);
             Session::put('email', $user->email ?? '');
-            Session::put('user_data', [
-                'id'       => $user->id,
+
+            // Login untuk auth session bawaan Laravel
+            \Illuminate\Support\Facades\Auth::login($user);
+
+            Log::info('Login successful directly via model', [
                 'username' => $user->username,
-                'email'    => $user->email,
-                'role'     => $user->role,
+                'role' => $role
             ]);
 
-            Log::info('Login berhasil', ['username' => $user->username, 'role' => $user->role]);
-
             // Redirect berdasarkan role
-            if ($user->role === 'admin') {
+            if ($role === 'admin') {
                 return redirect()->route('admin.kelola-pengguna');
-            } elseif ($user->role === 'mahasiswa') {
-                return redirect()->route('mahasiswa-dashboard');
-            } elseif ($user->role === 'staff') {
+            } elseif ($role === 'mahasiswa') {
+                return redirect()->route('lihat-tagihan-ukt');
+            } elseif ($role === 'staff') {
                 return redirect()->route('staff.pembayaran-ukt');
             }
 
-            // Fallback jika role tidak dikenali
-            Log::warning('Role tidak dikenali setelah login', ['role' => $user->role]);
-            return back()->withErrors(['username' => 'Peran pengguna tidak dikenali. Hubungi administrator.']);
+            // Fallback default
+            return redirect()->route('login')
+                ->with('error', 'Tidak dapat menentukan peran pengguna. Silakan hubungi administrator.');
 
         } catch (\Exception $e) {
             Log::error('Exception during login', [
-                'error'    => $e->getMessage(),
+                'error' => $e->getMessage(),
                 'username' => $request->username,
+                'trace' => $e->getTrace()
             ]);
-            return back()->withErrors(['username' => 'Terjadi kesalahan sistem: ' . $e->getMessage()]);
+            return back()->withErrors(['username' => 'Terjadi kesalahan: ' . $e->getMessage()]);
         }
     }
 
@@ -103,26 +115,21 @@ class AuthController extends Controller
             'has_token' => !empty($token)
         ]);
 
-        // Hapus Sanctum token dari database jika ada
-        if ($token) {
-            try {
-                // Cari dan hapus token dari database
-                $user = \App\Models\User::where('username', $username)->first();
-                if ($user) {
-                    $user->tokens()->where('name', 'auth_token')->delete();
-                }
-            } catch (\Exception $e) {
-                Log::warning('Gagal hapus token saat logout', [
-                    'error'    => $e->getMessage(),
-                    'username' => $username
-                ]);
+        if (auth()->check()) {
+            $user = auth()->user();
+            if ($user) {
+                // Hapus token Sanctum yang sedang aktif
+                $user->currentAccessToken()?->delete();
             }
+            \Illuminate\Support\Facades\Auth::logout();
         }
 
         // Hapus session
         Session::flush();
 
-        Log::info('Logout completed', ['username' => $username]);
+        Log::info('Logout completed', [
+            'username' => $username
+        ]);
 
         return redirect()->route('login')->with('success', 'Berhasil logout.');
     }

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+use App\Helpers\ApiHelper;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -33,7 +34,7 @@ class KelolaPenggunaController extends Controller
         ]);
 
         // DEBUG: Log API URL
-        $apiUrl = \\App\\Helpers\\ApiHelper::baseUrl() . '/api/user';
+        $apiUrl = ApiHelper::baseUrl() . '/api/user';
         Log::info('API URL:', ['url' => $apiUrl]);
 
         // Fetch user data from external API using token
@@ -183,7 +184,7 @@ class KelolaPenggunaController extends Controller
     public function testApiConnection()
     {
         $token = Session::get('token');
-        $apiUrl = \\App\\Helpers\\ApiHelper::baseUrl() . '/api/user';
+        $apiUrl = ApiHelper::baseUrl() . '/api/user';
 
         if (!$token) {
             return response()->json([
@@ -235,7 +236,7 @@ class KelolaPenggunaController extends Controller
             // Get existing users to check which mahasiswa/staff already have accounts
             $usersResponse = Http::withToken($token)
                 ->timeout(30)
-                ->get(\\App\\Helpers\\ApiHelper::baseUrl() . '/api/user');
+                ->get(ApiHelper::baseUrl() . '/api/user');
 
             $existingUsers = [
                 'mahasiswa' => [],
@@ -257,7 +258,7 @@ class KelolaPenggunaController extends Controller
             // Get mahasiswa data
             $mahasiswaResponse = Http::withToken($token)
                 ->timeout(30)
-                ->get(\\App\\Helpers\\ApiHelper::baseUrl() . '/api/mahasiswa');
+                ->get(ApiHelper::baseUrl() . '/api/mahasiswa');
 
             if ($mahasiswaResponse->successful()) {
                 $allMahasiswa = $mahasiswaResponse->json()['data'] ?? [];
@@ -270,7 +271,7 @@ class KelolaPenggunaController extends Controller
             // Get staff data
             $staffResponse = Http::withToken($token)
                 ->timeout(30)
-                ->get(\\App\\Helpers\\ApiHelper::baseUrl() . '/api/staff');
+                ->get(ApiHelper::baseUrl() . '/api/staff');
 
             if ($staffResponse->successful()) {
                 $allStaff = $staffResponse->json()['data'] ?? [];
@@ -350,7 +351,7 @@ class KelolaPenggunaController extends Controller
             //     // dd($idValue);
             //     $mahasiswaResponse = Http::withToken($token)
             //     ->timeout(30);
-            //     // ->get(\\App\\Helpers\\ApiHelper::baseUrl() . '/api/mahasiswa/' . $validatedData['person_id']);
+            //     // ->get(ApiHelper::baseUrl() . '/api/mahasiswa/' . $validatedData['person_id']);
             //     if ($mahasiswaResponse->successful()) {
             //         // $mahasiswa = $mahasiswaResponse->json()['data'];
 
@@ -373,7 +374,7 @@ class KelolaPenggunaController extends Controller
                 // Get staff data to set username as NIP
                 $staffResponse = Http::withToken($token)
                     ->timeout(30)
-                    ->get(\\App\\Helpers\\ApiHelper::baseUrl() . '/api/staff/' . $validatedData['person_id']);
+                    ->get(ApiHelper::baseUrl() . '/api/staff/' . $validatedData['person_id']);
 
                 if ($staffResponse->successful()) {
                     $staff = $staffResponse->json()['data'];
@@ -396,14 +397,14 @@ class KelolaPenggunaController extends Controller
         // Log data being sent to API
         Log::info('Creating user via API:', [
             'data' => array_merge($apiData, ['password' => '[HIDDEN]']),
-            'api_url' => \\App\\Helpers\\ApiHelper::baseUrl() . '/api/user'
+            'api_url' => ApiHelper::baseUrl() . '/api/user'
         ]);
 
         // Send data to the external API for creating a new user
         try {
             $response = Http::withToken($token)
                 ->timeout(30)
-                ->post(\\App\\Helpers\\ApiHelper::baseUrl() . '/api/user', $apiData);
+                ->post(ApiHelper::baseUrl() . '/api/user', $apiData);
 
             // Log API response
             Log::info('API Response for user creation:', [
@@ -481,7 +482,7 @@ class KelolaPenggunaController extends Controller
             if ($role === 'mahasiswa') {
                 $response = Http::withToken($token)
                     ->timeout(30)
-                    ->get(\\App\\Helpers\\ApiHelper::baseUrl() . '/api/mahasiswa/' . $personId);
+                    ->get(ApiHelper::baseUrl() . '/api/mahasiswa/' . $personId);
 
                 if ($response->successful()) {
                     $data = $response->json()['data'];
@@ -493,7 +494,7 @@ class KelolaPenggunaController extends Controller
             } elseif ($role === 'staff') {
                 $response = Http::withToken($token)
                     ->timeout(30)
-                    ->get(\\App\\Helpers\\ApiHelper::baseUrl() . '/api/staff/' . $personId);
+                    ->get(ApiHelper::baseUrl() . '/api/staff/' . $personId);
 
                 if ($response->successful()) {
                     $data = $response->json()['data'];
@@ -528,7 +529,7 @@ class KelolaPenggunaController extends Controller
         try {
             $response = Http::withToken($token)
                 ->timeout(30)
-                ->get(\\App\\Helpers\\ApiHelper::baseUrl() . '/api/user/' . $id);
+                ->get(ApiHelper::baseUrl() . '/api/user/' . $id);
 
             if ($response->successful() && $response->json('status') === true) {
                 $userData = $response->json('data');
@@ -598,7 +599,7 @@ class KelolaPenggunaController extends Controller
 
         try {
             $response = Http::withToken($token)
-                ->put(\\App\\Helpers\\ApiHelper::baseUrl() . "/api/user/{$id}", $data);
+                ->put(ApiHelper::baseUrl() . "/api/user/{$id}", $data);
 
             // dd($response);
 
@@ -632,7 +633,7 @@ class KelolaPenggunaController extends Controller
         }
 
         try {
-            $response = Http::withToken($token)->delete(\\App\\Helpers\\ApiHelper::baseUrl() . '/api/user/' . $id);
+            $response = Http::withToken($token)->delete(ApiHelper::baseUrl() . '/api/user/' . $id);
             if ($response->successful()) {
                 return redirect()->route('admin.kelola-pengguna')->with('success', 'User deleted successfully.');
             } else {

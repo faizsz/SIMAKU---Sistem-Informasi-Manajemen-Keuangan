@@ -14,15 +14,15 @@ use App\Http\Controllers\Mahasiswa\DaftarUlangController;
 use App\Http\Controllers\Mahasiswa\LihatTagihanUktController;
 use App\Http\Controllers\Mahasiswa\BeasiswaController;
 use App\Http\Controllers\Mahasiswa\ProfileController;
-use App\Http\Controllers\Staff\staffBeasiswaController;
-use App\Http\Controllers\Staff\staffProfileController;
-use App\Http\Controllers\Staff\staffDataMahasiswaController;
+use App\Http\Controllers\staff\staffBeasiswaController;
+use App\Http\Controllers\staff\staffProfileController;
+use App\Http\Controllers\staff\staffDataMahasiswaController;
 use App\Http\Controllers\Staff\CekTagihanUktController;
 use App\Http\Controllers\Staff\staffDetailDataMahasiswaController;
+use App\Http\Controllers\staffBeasiswaController as ControllersStaffBeasiswaController;
+use App\Http\Controllers\staffDataMahasiswaController as ControllersStaffDataMahasiswaController;
 use App\Http\Controllers\Staff\StaffDetailBeasiswaController;
-use App\Http\Controllers\Staff\staffDetailBuatTagihanUktController;
-use App\Http\Controllers\Staff\PembayaranUktStaffController;
-use App\Http\Controllers\Staff\PengajuanCicilanStaffController;
+use App\Http\Controllers\Staff\StaffDetailBuatTagihanUktController;
 use App\Http\Controllers\Admin\FakultasController;
 use App\Http\Controllers\Admin\ProgramStudiController;
 use App\Http\Controllers\Admin\KelasController;
@@ -31,6 +31,11 @@ use App\Http\Controllers\Admin\StaffController;
 use App\Http\Controllers\Admin\TahunAkademikController;
 use App\Http\Controllers\Admin\MahasiswaController;
 use App\Http\Controllers\Admin\EnrollmentMahasiswaController;
+
+
+// Import controller yang missing
+use App\Http\Controllers\Staff\PengajuanCicilanStaffController;
+use App\Http\Controllers\Staff\PembayaranUktStaffController;
 
 // Login Routes
 Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
@@ -151,7 +156,7 @@ Route::middleware(['check.login'])->group(function () {
     Route::get('staff-keuangan/beasiswa/staff-beasiswa', [StaffBeasiswaController::class, 'index'])->name('staff-keuangan.beasiswa.staff-beasiswa');
     // Route for viewing beasiswa details
     Route::get('staff-keuangan/beasiswa/staff-detail-beasiswa/{nim}', [StaffDetailBeasiswaController::class, 'index'])->name('staff-keuangan.beasiswa.staff-detail-beasiswa');
-    Route::get('/staff-profile', [staffProfileController::class, 'index'])->name('staff-profile');
+    Route::get('/staff-profile', [staffprofileController::class, 'index'])->name('staff-profile');
     //Route::get('/staff-keuangan/data-mahasiswa', [staffDataMahasiswaController::class, 'showDataMahasiswa'])->name('staff.keuangan.data-mahasiswa');
     Route::get('/staff-keuangan/data-mahasiswa', [staffDataMahasiswaController::class, 'index'])->name('staff-keuangan.data-mahasiswa');
 
@@ -172,8 +177,8 @@ Route::middleware(['check.login'])->group(function () {
     Route::post('/staff/detail-buat-tagihan-ukt/preview', [staffDetailBuatTagihanUktController::class, 'preview'])->name('staff.detail-buatTagihanUkt.preview');
 
     // detail buat tagihan (generate)
-    Route::get('/staff/tagihan-ukt', [staffDetailBuatTagihanUktController::class, 'index'])->name('staff.detail-buatTagihanUkt.index');
-    Route::post('/staff/tagihan-ukt/create', [staffDetailBuatTagihanUktController::class, 'create'])->name('staff.detail-buatTagihanUkt.create');
+    Route::get('/staff/tagihan-ukt', [StaffDetailBuatTagihanUktController::class, 'index'])->name('staff.detail-buatTagihanUkt.index');
+    Route::post('/staff/tagihan-ukt/create', [StaffDetailBuatTagihanUktController::class, 'create'])->name('staff.detail-buatTagihanUkt.create');
 
 
 

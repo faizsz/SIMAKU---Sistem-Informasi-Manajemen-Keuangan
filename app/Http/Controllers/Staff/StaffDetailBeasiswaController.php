@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Staff;
+use App\Helpers\ApiHelper;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -42,7 +43,7 @@ class StaffDetailBeasiswaController extends Controller
     private function getApiData($endpoint, $token)
     {
         try {
-            $response = Http::withToken($token)->get(\\App\\Helpers\\ApiHelper::baseUrl() . $endpoint);
+            $response = Http::withToken($token)->get(ApiHelper::baseUrl() . $endpoint);
             return $response->successful() ? optional($response->json())['data'] ?? [] : [];
         } catch (\Exception $e) {
             return [];

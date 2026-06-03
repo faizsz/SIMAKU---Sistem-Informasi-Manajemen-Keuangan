@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Staff;
+use App\Helpers\ApiHelper;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -130,7 +131,7 @@ class PembayaranUktStaffController extends Controller
         }
 
         try {
-            $response = Http::withToken($token)->put(\\App\\Helpers\\ApiHelper::baseUrl() . "/api/detail-pembayaran/{$id}", [
+            $response = Http::withToken($token)->put(ApiHelper::baseUrl() . "/api/detail-pembayaran/{$id}", [
                 'status' => $status
             ]);
 
@@ -148,7 +149,7 @@ class PembayaranUktStaffController extends Controller
     private function getApiData($endpoint, $queryParams = [], $token)
     {
         try {
-            $response = Http::withToken($token)->get(\\App\\Helpers\\ApiHelper::baseUrl() . $endpoint, $queryParams);
+            $response = Http::withToken($token)->get(ApiHelper::baseUrl() . $endpoint, $queryParams);
             return $response->successful() ? optional($response->json())['data'] ?? [] : [];
         } catch (\Exception $e) {
             return [];

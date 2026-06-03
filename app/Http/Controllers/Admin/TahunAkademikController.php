@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+use App\Helpers\ApiHelper;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -15,7 +16,7 @@ class TahunAkademikController extends Controller
 
     public function __construct()
     {
-        $this->apiBaseUrl = \\App\\Helpers\\ApiHelper::baseUrl() . '/api/tahun-akademik';
+        $this->apiBaseUrl = ApiHelper::baseUrl() . '/api/tahun-akademik';
     }
 
     public function index(Request $request)

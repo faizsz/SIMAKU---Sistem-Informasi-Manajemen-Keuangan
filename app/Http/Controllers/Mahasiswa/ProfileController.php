@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Mahasiswa;
+use App\Helpers\ApiHelper;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -14,7 +15,7 @@ class ProfileController extends Controller
         $token = Session::get('token');
         $nim = Session::get('username'); // Ambil NIM dari session
 
-        $response = Http::withToken($token)->get(\\App\\Helpers\\ApiHelper::baseUrl() . "/api/mahasiswa?nim=" . urlencode($nim));
+        $response = Http::withToken($token)->get(ApiHelper::baseUrl() . "/api/mahasiswa?nim=" . urlencode($nim));
         $data = optional($response->json())['data'][0] ?? null;
 
         if (!$data) {

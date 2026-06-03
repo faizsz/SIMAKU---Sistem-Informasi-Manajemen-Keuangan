@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Mahasiswa;
+use App\Helpers\ApiHelper;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -13,27 +14,6 @@ class LihatTagihanUktController extends Controller
     {
         $userData = Session::get('user_data');
         $token = Session::get('token');
-
-        // Jika belum ada user data tapi token tersedia
-        if (!$userData && $token) {
-            try {
-                $response = Http::withToken($token)->get(\\App\\Helpers\\ApiHelper::baseUrl() . '/api/user');
-                if ($response->successful()) {
-                    $allUsers = optional($response->json())['data'] ?? [];
-                    $username = Session::get('username');
-
-                    foreach ($allUsers as $user) {
-                        if ($user['username'] === $username) {
-                            $userData = $user;
-                            Session::put('user_data', $userData);
-                            break;
-                        }
-                    }
-                }
-            } catch (\Exception $e) {
-                return redirect()->route('login')->withErrors(['error' => 'Sesi telah berakhir. Silakan login kembali.']);
-            }
-        }
 
         // Jika tidak ada data user, redirect ke login
         if (!$userData) {
@@ -228,7 +208,7 @@ class LihatTagihanUktController extends Controller
 
             $response = Http::withToken($token)
                 ->asMultipart()
-                ->post(\\App\\Helpers\\ApiHelper::baseUrl() . '/api/pengajuan-cicilan', $multipart);
+                ->post(ApiHelper::baseUrl() . '/api/pengajuan-cicilan', $multipart);
 
             if ($response->failed()) {
                 dd([
@@ -332,7 +312,7 @@ class LihatTagihanUktController extends Controller
 
             $response = Http::withToken($token)
                 ->asMultipart()
-                ->post(\\App\\Helpers\\ApiHelper::baseUrl() . '/api/detail-pembayaran', [
+                ->post(ApiHelper::baseUrl() . '/api/detail-pembayaran', [
                     [
                         'name'     => 'tanggal_pembayaran',
                         'contents' => $validated['tanggal_transfer'],
@@ -377,7 +357,7 @@ class LihatTagihanUktController extends Controller
     private function getApiData($endpoint, $token)
     {
         try {
-            $response = Http::withToken($token)->get(\\App\\Helpers\\ApiHelper::baseUrl() . $endpoint);
+            $response = Http::withToken($token)->get(ApiHelper::baseUrl() . $endpoint);
             return $response->successful() ? optional($response->json())['data'] ?? [] : [];
         } catch (\Exception $e) {
             return [];

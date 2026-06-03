@@ -56,9 +56,7 @@ return [
     */
 
     'url' => env('APP_URL', 'http://localhost'),
-    // api_url selalu sama dengan APP_URL karena API dan web ada di app yang sama
-    // Gunakan url('/') helper saat runtime agar tidak hardcode domain
-    'api_url' => env('APP_URL', 'http://localhost'),
+    'api_url' => env('API_URL', 'http://localhost'),
 
 
     'asset_url' => env('ASSET_URL'),

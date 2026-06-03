@@ -59,10 +59,7 @@ return [
             'strict' => true,
             'engine' => null,
             'options' => extension_loaded('pdo_mysql') ? array_filter([
-                // Gunakan ca.pem dari root project jika file ada, untuk koneksi SSL ke Aiven
-                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA',
-                    file_exists(base_path('ca.pem')) ? base_path('ca.pem') : null
-                ),
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA', base_path('ca.pem')),
             ]) : [],
         ],
 

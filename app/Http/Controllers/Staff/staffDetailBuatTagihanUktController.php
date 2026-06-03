@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Staff;
+use App\Helpers\ApiHelper;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -56,7 +57,7 @@ class staffDetailBuatTagihanUktController extends Controller
                 $headers['Authorization'] = 'Bearer ' . $token;
             }
 
-            $baseUrl = \\App\\Helpers\\ApiHelper::baseUrl();
+            $baseUrl = ApiHelper::baseUrl();
             $fullUrl = rtrim($baseUrl, '/') . $endpoint;
 
             Log::info('Requesting API', ['url' => $fullUrl]);

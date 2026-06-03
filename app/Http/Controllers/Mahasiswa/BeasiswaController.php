@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Mahasiswa;
+use App\Helpers\ApiHelper;
 
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
@@ -14,27 +15,6 @@ class BeasiswaController extends Controller
     {
         $userData = Session::get('user_data');
         $token = Session::get('token');
-
-        // Cek user login
-        if (!$userData && $token) {
-            try {
-                $response = Http::withToken($token)->get(\\App\\Helpers\\ApiHelper::baseUrl() . '/api/user');
-                if ($response->successful()) {
-                    $allUsers = optional($response->json())['data'] ?? [];
-                    $username = Session::get('username');
-                    
-                    foreach ($allUsers as $user) {
-                        if ($user['username'] === $username) {
-                            $userData = $user;
-                            Session::put('user_data', $userData);
-                            break;
-                        }
-                    }
-                }
-            } catch (\Exception $e) {
-                return redirect()->route('login')->withErrors(['error' => 'Sesi habis. Silakan login ulang.']);
-            }
-        }
 
         // Jika tidak ada user data
         if (!$userData) {
@@ -50,7 +30,7 @@ class BeasiswaController extends Controller
     private function getApiData($endpoint, $token)
     {
         try {
-            $response = Http::withToken($token)->get(\\App\\Helpers\\ApiHelper::baseUrl() . $endpoint);
+            $response = Http::withToken($token)->get(ApiHelper::baseUrl() . $endpoint);
             return $response->successful() ? optional($response->json())['data'] ?? [] : [];
         } catch (\Exception $e) {
             return [];

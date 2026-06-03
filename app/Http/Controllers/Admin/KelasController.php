@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+use App\Helpers\ApiHelper;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -16,8 +17,8 @@ class KelasController extends Controller
 
     public function __construct()
     {
-        $this->apiBaseUrl = \\App\\Helpers\\ApiHelper::baseUrl() . '/api/kelas';
-        $this->prodiApiUrl = \\App\\Helpers\\ApiHelper::baseUrl() . '/api/program-studi';
+        $this->apiBaseUrl = ApiHelper::baseUrl() . '/api/kelas';
+        $this->prodiApiUrl = ApiHelper::baseUrl() . '/api/program-studi';
     }
 
     public function index(Request $request)

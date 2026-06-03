@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+use App\Helpers\ApiHelper;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -16,8 +17,8 @@ class ProgramStudiController extends Controller
 
     public function __construct()
     {
-        $this->apiBaseUrl = \\App\\Helpers\\ApiHelper::baseUrl() . '/api/program-studi';
-        $this->fakultasApiUrl = \\App\\Helpers\\ApiHelper::baseUrl() . '/api/fakultas';
+        $this->apiBaseUrl = ApiHelper::baseUrl() . '/api/program-studi';
+        $this->fakultasApiUrl = ApiHelper::baseUrl() . '/api/fakultas';
     }
 
     public function index(Request $request)
