@@ -56,16 +56,16 @@ class MahasiswaController extends Controller
                     $mahasiswa = $this->createManualPagination($allMahasiswa, $request);
                 }
             }
-             else {
+            } else {
                 Log::error('Mahasiswa API Error', ['status' => $response->status(), 'body' => $response->body()]);
                 session()->flash('error', 'Gagal mengambil data mahasiswa dari server.');
-                $mahasiswa = collect([]);
+                $mahasiswa = new \Illuminate\Pagination\LengthAwarePaginator([], 0, 10, 1, ['path' => $request->url(), 'pageName' => 'page']);
             }
 
         } catch (\Exception $e) {
             Log::error('MahasiswaController Error: ' . $e->getMessage());
             session()->flash('error', 'Terjadi kesalahan saat mengambil data mahasiswa.');
-            $mahasiswa = collect([]);
+            $mahasiswa = new \Illuminate\Pagination\LengthAwarePaginator([], 0, 10, 1, ['path' => $request->url(), 'pageName' => 'page']);
         }
 
         return view('admin.dashboard.mahasiswa.index', compact('mahasiswa'));
