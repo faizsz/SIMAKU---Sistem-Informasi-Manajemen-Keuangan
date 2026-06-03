@@ -92,15 +92,3 @@ Route::middleware(['auth:sanctum', 'role:staff,mahasiswa,admin'])->group(functio
 Route::middleware(['auth:sanctum', 'role:staff,mahasiswa,admin'])->group(function () {
     Route::apiResource('user', UsersController::class);
 });
-
-Route::get('/debug-vercel', function (\Illuminate\Http\Request $request) {
-    return response()->json([
-        'db_connection' => config('database.default'),
-        'db_host' => config('database.connections.' . config('database.default') . '.host'),
-        'db_database' => config('database.connections.' . config('database.default') . '.database'),
-        'users_count' => \App\Models\User::count(),
-        'auth_header_present' => $request->hasHeader('Authorization'),
-        'auth_header_value' => $request->header('Authorization') ? substr($request->header('Authorization'), 0, 15) . '...' : null,
-        'all_headers' => $request->headers->all(),
-    ]);
-});
