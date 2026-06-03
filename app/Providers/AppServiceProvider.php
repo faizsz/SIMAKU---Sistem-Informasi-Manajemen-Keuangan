@@ -35,7 +35,8 @@ class AppServiceProvider extends ServiceProvider
                     }
                     $internalRequest->headers->set('Accept', 'application/json');
 
-                    $response = app()->handle($internalRequest);
+                    $kernel = app(\Illuminate\Contracts\Http\Kernel::class);
+                    $response = $kernel->handle($internalRequest);
 
                     // Restore original request
                     app()->instance('request', $originalRequest);
