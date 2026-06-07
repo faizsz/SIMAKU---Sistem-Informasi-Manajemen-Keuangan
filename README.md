@@ -222,3 +222,4 @@ GET    /api/beasiswa
 GET    /api/penerima-beasiswa
 GET    /api/log-aktivitas
 ```
+ty
